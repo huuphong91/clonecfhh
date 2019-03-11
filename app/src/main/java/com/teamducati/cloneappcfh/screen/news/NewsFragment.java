@@ -2,7 +2,9 @@ package com.teamducati.cloneappcfh.screen.news;
 
 
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import com.teamducati.cloneappcfh.R;
  */
 public class NewsFragment extends Fragment implements NewsContract.View {
 
+    private NewsContract.Presenter mPresenter;
 
     public NewsFragment() {
         // Required empty public constructor
@@ -29,6 +32,6 @@ public class NewsFragment extends Fragment implements NewsContract.View {
 
     @Override
     public void setPresenter(NewsContract.Presenter presenter) {
-
+        mPresenter = presenter;
     }
 }

@@ -9,9 +9,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.adapter.MainFragmentsPagerAdapter;
 import com.teamducati.cloneappcfh.screen.account.AccountFragment;
+import com.teamducati.cloneappcfh.screen.account.AccountPresenter;
 import com.teamducati.cloneappcfh.screen.news.NewsFragment;
+import com.teamducati.cloneappcfh.screen.news.NewsPresenter;
 import com.teamducati.cloneappcfh.screen.order.OrderFragment;
+import com.teamducati.cloneappcfh.screen.order.OrderPresenter;
 import com.teamducati.cloneappcfh.screen.store.StoreFragment;
+import com.teamducati.cloneappcfh.screen.store.StorePresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +26,11 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView mNavigationView;
     @BindView(R.id.viewPager)
     MainViewPager mViewPager;
+
+    private NewsPresenter mNewsPresenter;
+    private OrderPresenter mOrderPresenter;
+    private StorePresenter mStorePresenter;
+    private AccountPresenter mAccountPresenter;
 
     private MainFragmentsPagerAdapter mFragmentsPagerAdapter;
 
@@ -47,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
         createPagerAdapterAndMainFragments();
 
+        createPresenters();
+
         addFragmentToPagerAdapter();
 
         mNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -59,6 +70,13 @@ public class MainActivity extends AppCompatActivity {
         mOrderFragment = new OrderFragment();
         mStoreFragment = new StoreFragment();
         mAccountFragment = new AccountFragment();
+    }
+
+    private void createPresenters() {
+        mNewsPresenter = new NewsPresenter(mNewsFragment);
+        mOrderPresenter = new OrderPresenter(mOrderFragment);
+        mStorePresenter = new StorePresenter(mStoreFragment);
+        mAccountPresenter = new AccountPresenter(mAccountFragment);
     }
 
     private void addFragmentToPagerAdapter() {

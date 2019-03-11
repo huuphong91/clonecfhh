@@ -9,6 +9,6 @@ public interface StoreContract {
     interface Presenter extends BasePresenter {
     }
 
-    interface View extends BaseView<NewsContract.Presenter> {
+    interface View extends BaseView<Presenter> {
     }
 }

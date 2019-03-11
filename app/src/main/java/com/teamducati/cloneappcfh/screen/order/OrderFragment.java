@@ -2,7 +2,9 @@ package com.teamducati.cloneappcfh.screen.order;
 
 
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import com.teamducati.cloneappcfh.screen.news.NewsContract;
  */
 public class OrderFragment extends Fragment implements OrderContract.View {
 
+    private OrderContract.Presenter mPresenter;
 
     public OrderFragment() {
         // Required empty public constructor
@@ -28,8 +31,9 @@ public class OrderFragment extends Fragment implements OrderContract.View {
         return inflater.inflate(R.layout.fragment_order, container, false);
     }
 
-    @Override
-    public void setPresenter(NewsContract.Presenter presenter) {
 
+    @Override
+    public void setPresenter(OrderContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 }
