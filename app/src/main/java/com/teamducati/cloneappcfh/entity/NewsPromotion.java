@@ -3,7 +3,7 @@ package com.teamducati.cloneappcfh.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class News {
+public class NewsPromotion {
     @SerializedName("id")
     @Expose
     private String id;
@@ -18,7 +18,7 @@ public class News {
     private String image;
     @SerializedName("content")
     @Expose
-    private String content;
+    private Object content;
     @SerializedName("date")
     @Expose
     private String date;
@@ -30,10 +30,10 @@ public class News {
     private Object key;
     @SerializedName("button")
     @Expose
-    private String button;
+    private Object button;
     @SerializedName("deeplink")
     @Expose
-    private String deeplink;
+    private Object deeplink;
     @SerializedName("effects")
     @Expose
     private Object effects;
@@ -73,11 +73,11 @@ public class News {
         this.image = image;
     }
 
-    public String getContent() {
+    public Object getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(Object content) {
         this.content = content;
     }
 
@@ -105,19 +105,19 @@ public class News {
         this.key = key;
     }
 
-    public String getButton() {
+    public Object getButton() {
         return button;
     }
 
-    public void setButton(String button) {
+    public void setButton(Object button) {
         this.button = button;
     }
 
-    public String getDeeplink() {
+    public Object getDeeplink() {
         return deeplink;
     }
 
-    public void setDeeplink(String deeplink) {
+    public void setDeeplink(Object deeplink) {
         this.deeplink = deeplink;
     }
 
@@ -137,5 +137,5 @@ public class News {
         this.shareUrl = shareUrl;
     }
 
-}
 
+}
