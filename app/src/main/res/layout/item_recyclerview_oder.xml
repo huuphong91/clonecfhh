@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="7dp">
+
+    <ImageView
+        android:id="@+id/iv_drink"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/common_google_signin_btn_icon_dark" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_drink"
+        android:text="asdsad"
+        android:textColor="#000" />
+
+    <TextView
+        android:id="@+id/tv_classify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_name"
+        android:text="Nhỏ"
+        android:textColor="#E4000000" />
+
+    <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_classify"
+        android:text="50.000 đ"
+        android:textColor="#000" />
+
+    <ImageView
+        android:id="@+id/iv_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_classify"
+        android:layout_alignBaseline="@id/tv_classify"
+        android:layout_marginLeft="40dp"
+        android:layout_toRightOf="@id/tv_price"
+        android:src="@drawable/icon_add" />
+
+</RelativeLayout>
