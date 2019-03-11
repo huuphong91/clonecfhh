@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'key'
             keyPassword '123456789fpt'
-            storeFile file('C:/Users/huupt/Desktop/FA_Android_1/app/signkey/key.jks')
+            storeFile file('../app/signkey/key.jks')
             storePassword '123456789fpt'
         }
     }
@@ -23,6 +23,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.config
         }
     }
     compileOptions {
