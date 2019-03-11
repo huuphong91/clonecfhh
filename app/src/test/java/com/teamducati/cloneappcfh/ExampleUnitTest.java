@@ -1,4 +1,4 @@
-package fsoft.com.faandroid;
+package com.teamducati.cloneappcfh;
 
 import org.junit.Test;
 

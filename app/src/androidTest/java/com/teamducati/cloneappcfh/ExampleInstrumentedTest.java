@@ -1,8 +1,8 @@
-package fsoft.com.faandroid;
+package com.teamducati.cloneappcfh;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("fsoft.com.faandroid", appContext.getPackageName());
+        assertEquals("com.huu.cloneappcfh", appContext.getPackageName());
     }
 }
