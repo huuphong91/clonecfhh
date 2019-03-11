@@ -6,7 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.teamducati.cloneappcfh.R;
-import com.teamok.cloneappcfh.adapter.FragmentOrderAdapter;
+import com.teamducati.cloneappcfh.adapter.FragmentOrderAdapter;
+import com.teamducati.cloneappcfh.entity.api_order.DataItem;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ public class FeaturedFoodFragment extends Fragment {
 
     private FragmentOrderAdapter fragmentOrderAdapter;
     private RecyclerView rvListFoods;
-    private ArrayList<Product> productArrayList;
+    private ArrayList<DataItem> productArrayList;
 
     public FeaturedFoodFragment() {
         // Required empty public constructor

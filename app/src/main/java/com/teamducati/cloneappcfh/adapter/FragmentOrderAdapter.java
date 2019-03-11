@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.teamducati.cloneappcfh.R;
+import com.teamducati.cloneappcfh.entity.api_order.DataItem;
 
 import java.util.ArrayList;
 
@@ -17,10 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 public class FragmentOrderAdapter extends RecyclerView.Adapter<FragmentOrderAdapter.ViewHolderOder> {
 
     private Context context;
-    private ArrayList<Product> productArrayList;
+    private ArrayList<DataItem> productArrayList;
 //    private IItemClickCallback iItemClickCallback;
 
-    public FragmentOrderAdapter(@NonNull Context context, @NonNull ArrayList<Product> productArrayList) {
+    public FragmentOrderAdapter(@NonNull Context context, @NonNull ArrayList<DataItem> productArrayList) {
         this.context = context;
         this.productArrayList = productArrayList;
 //        this.iItemClickCallback = iItemClickCallback;
@@ -35,7 +36,7 @@ public class FragmentOrderAdapter extends RecyclerView.Adapter<FragmentOrderAdap
 
     @Override
     public void onBindViewHolder(@NonNull FragmentOrderAdapter.ViewHolderOder viewHolderOder, final int position) {
-        Product p = productArrayList.get(position);
+        DataItem p = productArrayList.get(position);
 //        Glide.with(context)
 //                .load(p.getImage())
 //                .centerCrop()
