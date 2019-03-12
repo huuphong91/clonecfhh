@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="130dp"
+    android:layout_height="140dp"
+    android:background="@drawable/boder_item_store_map"
+    android:orientation="vertical"
+    android:weightSum="10">
+
+    <ImageView
+        android:id="@+id/imgStoreMap"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:scaleType="fitXY"
+        android:src="@drawable/custom_button" />
+
+    <TextView
+        android:id="@+id/txtNameStoreMap"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="center|left"
+        android:paddingLeft="5dp"
+        android:text="Quận Thủ Đức"
+        android:textColor="#000000"
+        android:textSize="9sp" />
+
+    <TextView
+        android:id="@+id/txtAddress"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="center|left"
+        android:paddingLeft="5dp"
+        android:text="114 Võ Văn Ngân"
+        android:textColor="#000000"
+        android:textSize="13sp" />
+</LinearLayout>
