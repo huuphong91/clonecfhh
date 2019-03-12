@@ -10,9 +10,9 @@ import retrofit2.http.GET;
 
 public interface RetrofitInterface {
 
-    @GET("news_promotion/")
+    @GET("v2/news_promotion/")
     Observable<List<NewsPromotion>> getAllNewsPromotion();
 
-    @GET("news/")
+    @GET("v2/news/")
     Observable<List<News>> getAllNews();
 }
