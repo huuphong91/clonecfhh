@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#FFE9E8E8</color>
+    <color name="colorAccent">#ffff792c</color>
+    <color name="error_color_material">#f4511e</color>
+    <color name="moca_rs_dusty_orange">#e98025</color>
+    <color name="orange">#ffff792c</color>
+    <color name="popup_top">#ffff792c</color>
+    <color name="textColorBlack">#000000</color>
+    <color name="textColorWhite">#ffffff</color>
 </resources>
