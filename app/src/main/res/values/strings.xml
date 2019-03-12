@@ -7,4 +7,5 @@
     <string name="action_settings">Settings</string>
     <string name="GOOGLE_MAP_API_KEY">AIzaSyAksCftJZ_8_RV3O5gMqP43I4Yb-8ShkMs</string>
     <string name="label_login">Login</string>
+    <string name="action_open_news">Open New</string>
 </resources>
