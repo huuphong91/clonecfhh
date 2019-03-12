@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "884825102322",
+    "firebase_url": "https://thecoffeehouseproject-1d85c.firebaseio.com",
+    "project_id": "thecoffeehouseproject-1d85c",
+    "storage_bucket": "thecoffeehouseproject-1d85c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:884825102322:android:13c021fd7bd403c8",
+        "android_client_info": {
+          "package_name": "com.teamducati.cloneappcfh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "884825102322-fvlmd3pm1nitlec7gkvl9bhe74tdn25i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.teamducati.cloneappcfh",
+            "certificate_hash": "f577c0b9c857c4260d701ec0383edc8c5545c316"
+          }
+        },
+        {
+          "client_id": "884825102322-e5aldirr3e55i3es5ssbfuinuk30jr5t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCf6AXLneFbAUg5qIGChiSoov7sgvnwix8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "884825102322-e5aldirr3e55i3es5ssbfuinuk30jr5t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

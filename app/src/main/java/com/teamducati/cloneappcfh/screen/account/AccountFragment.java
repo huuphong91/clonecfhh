@@ -2,7 +2,9 @@ package com.teamducati.cloneappcfh.screen.account;
 
 
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import com.teamducati.cloneappcfh.screen.news.NewsContract;
  */
 public class AccountFragment extends Fragment implements AccountContract.View {
 
+    private AccountContract.Presenter mPresenter;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -27,11 +30,6 @@ public class AccountFragment extends Fragment implements AccountContract.View {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_account, container, false);
-    }
-
-    @Override
-    public void setPresenter(NewsContract.Presenter presenter) {
-
     }
 
     @Override
@@ -57,5 +55,10 @@ public class AccountFragment extends Fragment implements AccountContract.View {
     @Override
     public void showLoginScreen() {
 
+    }
+
+    @Override
+    public void setPresenter(AccountContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 }

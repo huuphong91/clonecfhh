@@ -1,15 +1,18 @@
 package com.teamducati.cloneappcfh.screen.news;
 
 
+import android.app.ActionBar;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toolbar;
 
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.adapter.NewsListAdapter;
@@ -33,11 +36,10 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     private NewsListAdapter mAdapterNews;
 
 
+    private NewsContract.Presenter mPresenter;
     private List<NewsPromotion> mNewsPromotions;
 
     private List<News> mNews;
-
-    private NewsContract.Presenter mPresenter;
 
     public NewsFragment() {
         // Required empty public constructor
@@ -48,7 +50,6 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news, container, false);
-        initPresenter();
         initEvent();
         initRecyclerViewNewsPromotion(view);
         initRecyclerViewNews(view);
@@ -60,11 +61,6 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     private void initEvent() {
         mPresenter.getAllListNewsPromotion();
         mPresenter.getAllListNews();
-    }
-
-    private void initPresenter() {
-        mPresenter = new NewsPresenter(this);
-
     }
 
     private void initRecyclerViewNewsPromotion(View view) {

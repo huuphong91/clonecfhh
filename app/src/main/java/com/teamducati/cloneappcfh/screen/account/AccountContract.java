@@ -16,7 +16,7 @@ public interface AccountContract {
         void updateUserProperty(User user);
     }
 
-    interface View extends BaseView<NewsContract.Presenter> {
+    interface View extends BaseView<Presenter> {
 
         void showUserDetail(User user);
 

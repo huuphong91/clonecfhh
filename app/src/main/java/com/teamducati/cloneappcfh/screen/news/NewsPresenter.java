@@ -14,14 +14,14 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class NewsPresenter implements NewsContract.Presenter {
-    NewsContract.View mListNewsView;
-    private ArrayList<NewsPromotion> mAndroidArrayList;
+    NewsContract.View mNewsView;
     private CompositeDisposable mCompositeDisposable;
     Disposable disposable;
     RetrofitConfig retrofitConfig;
 
-    public NewsPresenter(NewsContract.View listNewsPromotion) {
-        this.mListNewsView = listNewsPromotion;
+    public NewsPresenter(NewsContract.View newsView) {
+        this.mNewsView = newsView;
+        mNewsView.setPresenter(this);
         mCompositeDisposable = new CompositeDisposable();
         retrofitConfig = new RetrofitConfig();
     }
@@ -39,18 +39,18 @@ public class NewsPresenter implements NewsContract.Presenter {
 
                     @Override
                     public void onNext(List<NewsPromotion> value) {
-                        mListNewsView.showListNewsPromotion(value);
+                        mNewsView.showListNewsPromotion(value);
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        mListNewsView.handleError();
+                        mNewsView.handleError();
                     }
 
                     @Override
                     public void onComplete() {
-                        mListNewsView.handleSuccess();
+                        mNewsView.handleSuccess();
                     }
                 });
 
@@ -69,21 +69,22 @@ public class NewsPresenter implements NewsContract.Presenter {
 
                     @Override
                     public void onNext(List<News> value) {
-                        mListNewsView.showListNews(value);
+                        mNewsView.showListNews(value);
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        mListNewsView.handleError();
+                        mNewsView.handleError();
                     }
 
                     @Override
                     public void onComplete() {
-                        mListNewsView.handleSuccess();
+                        mNewsView.handleSuccess();
                     }
                 });
     }
+
 
     @Override
     public void start() {

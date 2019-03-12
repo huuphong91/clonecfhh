@@ -5,10 +5,11 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+
     android:gravity="center_horizontal">
     <androidx.cardview.widget.CardView
         android:layout_width="fill_parent"
-        android:layout_height="245dp"
+        android:layout_height="250dp"
         android:layout_gravity="center_horizontal"
         android:layout_margin="16dp"
         cardview:cardElevation="4dp"
@@ -19,13 +20,13 @@
             android:orientation="vertical">
             <ImageView
                 android:layout_width="fill_parent"
-                android:layout_height="100dp"
+                android:layout_height="160dp"
                 android:id="@+id/img_news"
                 android:scaleType="centerCrop" />
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_height="60dp"
+                android:layout_marginLeft="8dp"
                 android:textColor="#333333"
                 android:text="Photo Title"
                 android:id="@+id/txt_tilte_news"

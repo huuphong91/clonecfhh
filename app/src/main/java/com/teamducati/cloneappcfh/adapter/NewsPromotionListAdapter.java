@@ -3,6 +3,7 @@ package com.teamducati.cloneappcfh.adapter;
 import android.app.Application;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.NewsPromotion;
+import com.teamducati.cloneappcfh.screen.news.NewsWebViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +68,10 @@ public class NewsPromotionListAdapter extends RecyclerView.Adapter<NewsPromotion
         @Override
         public void onClick(View v) {
             itemClickListener.onClick(v, getAdapterPosition(), false);
+            String url_news = mNewsPromotions.get(getAdapterPosition()).getUrl();
+            Intent intent = new Intent(context, NewsWebViewActivity.class);
+            intent.putExtra("url_news", url_news);
+            context.startActivity(intent);
         }
 
         @Override
