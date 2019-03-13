@@ -73,10 +73,15 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreAdapter
         StoresItem storesItem = mApiStores.get(holder.getAdapterPosition());
         holder.txtNameStoreMap.setText(mApiStores.get(holder.getAdapterPosition()).getName());
         holder.txtAddress.setText(mApiStores.get(holder.getAdapterPosition()).getAddress().getStreet());
-        Glide.with(context)
-                .load(mApiStores.get(holder.getAdapterPosition()).getImages())
-                .placeholder(R.drawable.common_full_open_on_phone)
-                .into(holder.imgStoreMap);
+        String mImage = mApiStores.get(position).getImages().toString();
+        String mImgStrore =mImage.substring(1,mImage.length()-1);
+        String store = mImgStrore.substring(mImgStrore.length()-3);
+        if(store.equals("jpg")){
+            Glide.with(context)
+                    .load(mImgStrore)
+                    .placeholder(R.drawable.common_full_open_on_phone)
+                    .into(holder.imgStoreMap);
+        }
 
         holder.imgStoreMap.setOnClickListener(new View.OnClickListener() {
             @Override
