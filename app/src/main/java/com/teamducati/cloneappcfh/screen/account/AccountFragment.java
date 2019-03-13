@@ -9,6 +9,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,17 +57,15 @@ public class AccountFragment extends Fragment implements AccountContract.View {
             profileUserFragment = ProfileUserFragment.newInstance();
             ActivityUtils.addFragmentToActivity(getActivity().getSupportFragmentManager(), profileUserFragment, R.id.contentAccountFrame);
         }
-
         loginFragment = (LoginFragment) Objects.requireNonNull(getActivity())
                 .getSupportFragmentManager()
                 .findFragmentById(R.id.contentAccountFrame);
         if (loginFragment == null) {
-            loginFragment = new LoginFragment();
+            loginFragment = LoginFragment.newInstance();
             ActivityUtils.addFragmentToActivity(getActivity().getSupportFragmentManager(), loginFragment, R.id.contentAccountFrame);
         }
         ActivityUtils.chooseFragmentWannaDisplay(getActivity().getSupportFragmentManager(), loginFragment, R.id.contentAccountFrame);
         loginFragment.setPresenter(mPresenter);
-        profileUserFragment.setPresenter(mPresenter);
         profileUserFragment.setPresenter(mPresenter);
     }
 

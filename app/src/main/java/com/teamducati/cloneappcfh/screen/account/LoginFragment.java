@@ -2,6 +2,7 @@ package com.teamducati.cloneappcfh.screen.account;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,9 @@ public class LoginFragment extends Fragment implements AccountContract.View {
     EditText mEdtUsername;
     @BindView(R.id.edt_password)
     EditText mEdtPassword;
+
     private Unbinder unbinder;
+
     private AccountContract.Presenter mPresenter;
 
     public LoginFragment(){}
@@ -62,15 +65,12 @@ public class LoginFragment extends Fragment implements AccountContract.View {
 
     @Override
     public void showUserDetail(User user) {
-//        ProfileUserFragment profileUserFragment = (ProfileUserFragment) Objects.requireNonNull(getActivity())
-//                .getSupportFragmentManager()
-//                .findFragmentById(R.id.contentAccountFrame);
-//        if (profileUserFragment != null) {
-//            ActivityUtils.chooseFragmentWannaDisplay(getActivity().getSupportFragmentManager(), profileUserFragment, R.id.contentAccountFrame);
-//        }
-//        Toast.makeText(getContext(), "Thanh Cong", Toast.LENGTH_SHORT).show();
-
-
+        ProfileUserFragment profileUserFragment = (ProfileUserFragment) Objects.requireNonNull(getActivity())
+                .getSupportFragmentManager()
+                .findFragmentById(R.id.contentAccountFrame);
+        if (profileUserFragment != null) {
+            ActivityUtils.chooseFragmentWannaDisplay(getActivity().getSupportFragmentManager(), profileUserFragment, R.id.contentAccountFrame);
+        }
     }
 
     @Override

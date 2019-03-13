@@ -1,6 +1,7 @@
 package com.teamducati.cloneappcfh.screen.account;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,16 +61,11 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
 
     @Override
     public void showUserDetail(User user) {
-        ProfileUserFragment profileUserFragment = (ProfileUserFragment) Objects.requireNonNull(getActivity())
-                .getSupportFragmentManager()
-                .findFragmentById(R.id.contentAccountFrame);
-        if (profileUserFragment != null) {
-            ActivityUtils.chooseFragmentWannaDisplay(getActivity().getSupportFragmentManager(), profileUserFragment, R.id.contentAccountFrame);
+        if (user != null) {
+            Toast.makeText(getActivity(), user.getFirstName(), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
         }
-        Toast.makeText(getContext(), "Thanh Cong", Toast.LENGTH_SHORT).show();
-
-        mEdtFirstName.setText(user.getFirstName());
-        mEdtLastName.setText(user.getLastName());
 
     }
 
