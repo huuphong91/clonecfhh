@@ -1,4 +1,4 @@
-package com.example.thecoffeehouse.order;
+package com.example.thecoffeehouse.order.detail;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,28 +9,28 @@ import com.example.thecoffeehouse.R;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.DialogFragment;
 
-public class FoodFragment extends Fragment {
+public class DetailDialogFragment extends DialogFragment {
 
-    public static FoodFragment newInstance() {
-        FoodFragment fragment = new FoodFragment();
+    private static DetailDialogFragment fragment;
+
+    public static DetailDialogFragment newInstance() {
+        if (fragment == null) {
+            fragment = new DetailDialogFragment();
+        }
         return fragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.content_product, container, false);
+        return inflater.inflate(R.layout.fragment_detail_product, container, false);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogFragment);
     }
 }

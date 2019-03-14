@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1074131404831",
+    "firebase_url": "https://thecoffeehouse-279bb.firebaseio.com",
+    "project_id": "thecoffeehouse-279bb",
+    "storage_bucket": "thecoffeehouse-279bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1074131404831:android:d7f761ac67771bba",
+        "android_client_info": {
+          "package_name": "com.example.thecoffeehouse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1074131404831-vrjn8fnoeu5nedpv2u6nsfa1r4tolrtr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.thecoffeehouse",
+            "certificate_hash": "8568f603ad6deb22372072e33e60481f6c6b7016"
+          }
+        },
+        {
+          "client_id": "1074131404831-2efvddr5p6qa33bq1u7mkjta1sf6c9ln.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMrMYoViUFxkEYNcpDXlpqT_s8u6IIATE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1074131404831-2efvddr5p6qa33bq1u7mkjta1sf6c9ln.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
