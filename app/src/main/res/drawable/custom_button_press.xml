@@ -13,8 +13,8 @@
         android:bottom="10dp"
         />
     <solid
-        android:color="@android:color/white"/>
+        android:color="@android:color/holo_orange_dark"/>
     <stroke
-        android:color="@android:color/holo_orange_dark"
+        android:color="@android:color/holo_orange_light"
         android:width="1dp" />
 </shape>

@@ -1,7 +1,5 @@
 package com.teamducati.cloneappcfh.adapter;
 
-import android.app.Application;
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -14,9 +12,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.NewsPromotion;
-import com.teamducati.cloneappcfh.screen.news.NewsWebViewActivity;
+import com.teamducati.cloneappcfh.screen.news.newsdetails.NewsDetailsActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -25,9 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class NewsPromotionListAdapter extends RecyclerView.Adapter<NewsPromotionListAdapter.NewsPromotionViewHolder> {
 
-    Context context;
-    public int position;
-    private final LayoutInflater mInflater;
+    private Context context;
+    private int position;
+    private LayoutInflater mInflater;
     private List<NewsPromotion> mNewsPromotions;
 
     public NewsPromotionListAdapter(Context context, List<NewsPromotion> mNewsPromotions) {
@@ -36,29 +33,22 @@ public class NewsPromotionListAdapter extends RecyclerView.Adapter<NewsPromotion
         mInflater = LayoutInflater.from(context);
     }
 
-    public int getPosition() {
-        return position;
-    }
-
     public void setPosition(int position) {
         this.position = position;
     }
 
     class NewsPromotionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
             View.OnLongClickListener {
-        private final ImageView imgItemImageNewsPromotion;
-        private final TextView txtItemTilteNewsPromotion;
+        private ImageView imgItemImageNewsPromotion;
+        private TextView txtItemTilteNewsPromotion;
         private ItemClickListener itemClickListener;
 
         private NewsPromotionViewHolder(View itemView) {
             super(itemView);
             imgItemImageNewsPromotion = itemView.findViewById(R.id.img_news_promotion);
             txtItemTilteNewsPromotion = itemView.findViewById(R.id.txt_tilte_news_promotion);
-
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
-
-
         }
 
         public void setItemClickListener(ItemClickListener itemClickListener) {
@@ -69,7 +59,7 @@ public class NewsPromotionListAdapter extends RecyclerView.Adapter<NewsPromotion
         public void onClick(View v) {
             itemClickListener.onClick(v, getAdapterPosition(), false);
             String url_news = mNewsPromotions.get(getAdapterPosition()).getUrl();
-            Intent intent = new Intent(context, NewsWebViewActivity.class);
+            Intent intent = new Intent(context, NewsDetailsActivity.class);
             intent.putExtra("url_news", url_news);
             context.startActivity(intent);
         }
@@ -82,7 +72,6 @@ public class NewsPromotionListAdapter extends RecyclerView.Adapter<NewsPromotion
         }
 
     }
-
 
     @Override
     public NewsPromotionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -109,15 +98,9 @@ public class NewsPromotionListAdapter extends RecyclerView.Adapter<NewsPromotion
 
                 } else {
                     //onClick
-
                 }
             }
         });
-    }
-
-    public void setDevices(ArrayList<NewsPromotion> newsPromotions) {
-        mNewsPromotions = newsPromotions;
-        notifyDataSetChanged();
     }
 
     @Override

@@ -1,10 +1,10 @@
 package com.teamducati.cloneappcfh.screen.news;
 
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.teamducati.cloneappcfh.data.network.RetrofitConfig;
 import com.teamducati.cloneappcfh.entity.News;
 import com.teamducati.cloneappcfh.entity.NewsPromotion;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -13,24 +13,24 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class NewsPresenter implements NewsContract.Presenter {
-    NewsContract.View mNewsView;
+public class NewsPresenter extends FirebaseMessagingService implements NewsContract.Presenter  {
+    private NewsContract.View mNewsView;
     private CompositeDisposable mCompositeDisposable;
-    Disposable disposable;
-    RetrofitConfig retrofitConfig;
-
+    private Disposable disposable;
+    private RetrofitConfig retrofitConfig;
     public NewsPresenter(NewsContract.View newsView) {
         this.mNewsView = newsView;
         mNewsView.setPresenter(this);
         mCompositeDisposable = new CompositeDisposable();
         retrofitConfig = new RetrofitConfig();
+
     }
 
     @Override
-    public void getAllListNewsPromotion() {
+    public void onAllListNewsPromotion() {
         retrofitConfig.getInstanceRetrofit().getAllNewsPromotion()
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<NewsPromotion>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -39,25 +39,25 @@ public class NewsPresenter implements NewsContract.Presenter {
 
                     @Override
                     public void onNext(List<NewsPromotion> value) {
-                        mNewsView.showListNewsPromotion(value);
+                        mNewsView.getListNewsPromotion(value);
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        mNewsView.handleError();
+                        mNewsView.getHandleError();
                     }
 
                     @Override
                     public void onComplete() {
-                        mNewsView.handleSuccess();
+                        mNewsView.getHandleSuccess();
                     }
                 });
 
     }
 
     @Override
-    public void getAllListNews() {
+    public void onAllListNews() {
         retrofitConfig.getInstanceRetrofit().getAllNews()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -69,24 +69,25 @@ public class NewsPresenter implements NewsContract.Presenter {
 
                     @Override
                     public void onNext(List<News> value) {
-                        mNewsView.showListNews(value);
+                        mNewsView.getListNews(value);
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        mNewsView.handleError();
+                        mNewsView.getHandleError();
                     }
 
                     @Override
                     public void onComplete() {
-                        mNewsView.handleSuccess();
+                        mNewsView.getHandleSuccess();
                     }
                 });
     }
 
     @Override
     public void start() {
-
+        onAllListNews();
+        onAllListNewsPromotion();
     }
 }

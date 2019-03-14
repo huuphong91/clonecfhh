@@ -1,9 +1,8 @@
 <?xml version = "1.0" encoding = "utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="56dp"
-    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    xmlns:cardview="http://schemas.android.com/tools"
     android:background="@android:color/white">
 
     <androidx.cardview.widget.CardView
@@ -17,33 +16,30 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/img_news_person"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:id="@+id/img_close_notificaton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="16dp"
-                android:src="@drawable/ic_person_grey_700_24dp" />
+                android:src="@drawable/ic_close_grey_700_18dp" />
 
-            <Button
-                android:id="@+id/btn_login"
+            <TextView
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Menu"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
-                android:layout_toRightOf="@id/img_news_person"
-                android:background="@drawable/custom_button"
-                android:text="Đăng Nhập"
-                android:textAllCaps="false"
-                android:textColor="@drawable/custom_button_selector" />
+                android:text="Thông Báo"
+                android:textAllCaps="false" />
 
             <ImageView
-                android:id="@+id/img_news_notification"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="16dp"
                 android:src="@drawable/icons_bell_" />
+
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

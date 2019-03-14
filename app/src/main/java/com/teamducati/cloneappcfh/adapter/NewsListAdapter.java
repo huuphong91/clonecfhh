@@ -12,9 +12,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.News;
-import com.teamducati.cloneappcfh.screen.news.NewsWebViewActivity;
+import com.teamducati.cloneappcfh.screen.news.newsdetails.NewsDetailsActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -23,9 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsViewHolder> {
 
-    Context context;
-    public int position;
     private final LayoutInflater mInflater;
+    private Context context;
+    private int position;
     private List<News> mNewss;
 
     public NewsListAdapter(Context context, List<News> mNewss) {
@@ -34,53 +33,10 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
         mInflater = LayoutInflater.from(context);
     }
 
-    public int getPosition() {
-        return position;
-    }
 
     public void setPosition(int position) {
         this.position = position;
     }
-
-    class NewsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
-            View.OnLongClickListener {
-        private final ImageView imgItemImageNews;
-        private final TextView txtItemTilteNews;
-        private ItemClickListener itemClickListener;
-
-        private NewsViewHolder(View itemView) {
-            super(itemView);
-            imgItemImageNews = itemView.findViewById(R.id.img_news);
-            txtItemTilteNews = itemView.findViewById(R.id.txt_tilte_news);
-
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
-
-
-        }
-
-        public void setItemClickListener(ItemClickListener itemClickListener) {
-            this.itemClickListener = itemClickListener;
-        }
-
-        @Override
-        public void onClick(View v) {
-            itemClickListener.onClick(v, getAdapterPosition(), false);
-            String url_news = mNewss.get(getAdapterPosition()).getUrl();
-            Intent intent = new Intent(context, NewsWebViewActivity.class);
-            intent.putExtra("url_news", url_news);
-            context.startActivity(intent);
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-            itemClickListener.onClick(v, getAdapterPosition(), true);
-
-            return true;
-        }
-
-    }
-
 
     @Override
     public NewsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -92,6 +48,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
         final News NewsObj = mNewss.get(position);
         holder.txtItemTilteNews.setText(NewsObj.getTitle());
+        holder.txtItemContentNews.setText(NewsObj.getContent());
         Glide.with(context)
                 .load(NewsObj.getImage())
                 .placeholder(R.drawable.common_full_open_on_phone)
@@ -113,16 +70,48 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
         });
     }
 
-    public void setDevices(ArrayList<News> Newss) {
-        mNewss = Newss;
-        notifyDataSetChanged();
-    }
-
     @Override
     public int getItemCount() {
         if (mNewss != null)
             return mNewss.size();
         else return 0;
+    }
+
+    class NewsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
+            View.OnLongClickListener {
+        private final ImageView imgItemImageNews;
+        private final TextView txtItemTilteNews;
+        private final TextView txtItemContentNews;
+        private ItemClickListener itemClickListener;
+
+        private NewsViewHolder(View itemView) {
+            super(itemView);
+            imgItemImageNews = itemView.findViewById(R.id.img_news);
+            txtItemTilteNews = itemView.findViewById(R.id.txt_tilte_news);
+            txtItemContentNews = itemView.findViewById(R.id.txt_content_news);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        public void setItemClickListener(ItemClickListener itemClickListener) {
+            this.itemClickListener = itemClickListener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            itemClickListener.onClick(v, getAdapterPosition(), false);
+            String url_news = mNewss.get(getAdapterPosition()).getUrl();
+            Intent intent = new Intent(context, NewsDetailsActivity.class);
+            intent.putExtra("url_news", url_news);
+            context.startActivity(intent);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            itemClickListener.onClick(v, getAdapterPosition(), true);
+            return true;
+        }
+
     }
 
 
