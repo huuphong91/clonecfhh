@@ -26,7 +26,7 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductViewHo
     @Override
     public OrderProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new OrderProductViewHolder(LayoutInflater.from(mContext)
-                .inflate(R.layout.list_product, parent, false));
+                .inflate(R.layout.list_product, parent, false), mContext);
     }
 
     @Override
@@ -34,6 +34,7 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductViewHo
         DataItem product = mListValues.get(position);
         holder.bindToViewHolder(product);
     }
+
     public void setValues(List<DataItem> values) {
         mListValues = values;
         notifyDataSetChanged();
