@@ -16,11 +16,11 @@ public interface AccountContract {
         void updateUserProperty(User user);
     }
 
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseView<AccountContract.Presenter> {
 
         void showUserDetail(User user);
 
-        void showLoginFail();
+        void showLoginFail(String whyFail);
 
         void showUpdateUserPropertySuccess();
 

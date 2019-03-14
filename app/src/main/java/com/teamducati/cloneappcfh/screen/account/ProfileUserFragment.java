@@ -1,0 +1,123 @@
+package com.teamducati.cloneappcfh.screen.account;
+
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.teamducati.cloneappcfh.R;
+import com.teamducati.cloneappcfh.entity.User;
+import com.teamducati.cloneappcfh.utils.ActivityUtils;
+
+import java.util.Objects;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
+public class ProfileUserFragment extends Fragment implements AccountContract.View {
+
+    @BindView(R.id.btn_close)
+    ImageButton mBtnClose;
+    @BindView(R.id.btnLogOut)
+    Button mBtnLogOut;
+    @BindView(R.id.edtFirstName)
+    EditText mEdtFirstName;
+    @BindView(R.id.edtLastName)
+    EditText mEdtLastName;
+    @BindView(R.id.edtBirthDate)
+    EditText mEdtBirthdate;
+    @BindView(R.id.edtEmail)
+    EditText mEdtEmail;
+    @BindView(R.id.edtPhoneNumber)
+    EditText mEdtPhoneNumber;
+    @BindView(R.id.edtGender)
+    EditText mEdtGender;
+    @BindView(R.id.imgAvatar)
+    ImageView mImageAvatar;
+
+    private Unbinder unbinder;
+
+    private AccountContract.Presenter mPresenter;
+
+    public ProfileUserFragment() {
+    }
+
+    public static ProfileUserFragment newInstance() {
+        return new ProfileUserFragment();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_profile_user, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mBtnClose.setOnClickListener(v -> {
+            mPresenter.onLogout();
+        });
+        mBtnLogOut.setOnClickListener(v -> {
+            mPresenter.onLogout();
+        });
+
+//        mEdtFirstName.setOnClickListener(v -> {mPresenter.updateUserProperty();});
+    }
+
+    @Override
+    public void showUserDetail(User user) {
+        mEdtFirstName.setText(user.getFirstName());
+        mEdtLastName.setText(user.getLastName());
+        mEdtBirthdate.setText(user.getBirthday());
+        mEdtEmail.setText(user.getEmail());
+        mEdtPhoneNumber.setText(user.getPhoneNumber());
+        mEdtGender.setText(user.getGender());
+        Glide.with(Objects.requireNonNull(getActivity())).load(user.getImgAvatarUrl()).into(mImageAvatar);
+    }
+
+    @Override
+    public void showLoginFail(String whyFail) {
+
+    }
+
+    @Override
+    public void showUpdateUserPropertySuccess() {
+
+    }
+
+    @Override
+    public void showUpdateUserPropertyFail() {
+
+    }
+
+    @Override
+    public void showLoginScreen() {
+
+    }
+
+    @Override
+    public void setPresenter(AccountContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+}
