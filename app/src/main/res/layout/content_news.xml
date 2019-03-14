@@ -15,10 +15,11 @@
         <TextView
             android:id="@+id/txt_for_you"
             android:layout_width="match_parent"
-            android:layout_height="29dp"
-            android:layout_margin="16dp"
-            android:layout_marginTop="32dp"
-            android:text="Danh Cho Ban"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="8dp"
+            android:text="Dành Cho Bạn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -29,8 +30,8 @@
             android:id="@+id/for_you_recycleview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_for_you">
 
@@ -39,7 +40,8 @@
         <TextView
             android:id="@+id/txt_view_news"
             android:layout_width="match_parent"
-            android:layout_height="28dp"
+            android:layout_height="22dp"
+            android:layout_margin="16dp"
             android:text="Tin Tức"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,9 +50,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/news_recycleview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="136dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_view_news">
