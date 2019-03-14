@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="0dp"
+    android:background="@color/white"
+    tool:showIn=".DetailDialogFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:padding="@dimen/fab_margin"
+            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/img_btn_product"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="@dimen/fab_margin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_name_product"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="TextView"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintEnd_toStartOf="@id/img_btn_close"
+            app:layout_constraintStart_toEndOf="@+id/img_btn_product"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="TextView"
+            android:textColor="@color/colorBlack"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_btn_product"
+            app:layout_constraintTop_toBottomOf="@+id/tv_name_product" />
+
+        <ImageView
+            android:id="@+id/img_btn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_action_close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:background="@color/moca_rs_black_two_50"
+            app:layout_constraintBottom_toTopOf="@+id/textView9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_btn_product"></LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/view3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:background="@color/moca_rs_black_two_50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView9"></LinearLayout>
+
+        <TextView
+            android:id="@+id/textView9"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:padding="5dp"
+            android:text="Size"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view2" />
+
+        <TextView
+            android:id="@+id/btn_small"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Nhỏ"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintBaseline_toBaselineOf="@id/textView9"
+            app:layout_constraintStart_toEndOf="@id/textView9" />
+
+        <TextView
+            android:id="@+id/btn_normal"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Vừa"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintBaseline_toBaselineOf="@id/textView9"
+            app:layout_constraintStart_toEndOf="@id/btn_small" />
+
+        <TextView
+            android:id="@+id/btn_big"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Lớn"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintBaseline_toBaselineOf="@id/textView9"
+            app:layout_constraintStart_toEndOf="@id/btn_normal" />
+
+        <TextView
+            android:id="@+id/textView11"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:padding="5dp"
+            android:text="Tạm tính"
+            android:textColor="@color/colorBlack"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:padding="5dp"
+            android:text="TextView"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_quantity"
+            app:layout_constraintEnd_toStartOf="@+id/img_btn_decrease"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+        <ImageView
+            android:id="@+id/img_btn_increase"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/btn_action_increase_background_selector"
+            android:clickable="true"
+            android:src="@drawable/ic_action_increase"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+        <ImageView
+            android:id="@+id/img_btn_decrease"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/btn_action_decrease_background_selector"
+            android:clickable="true"
+            android:src="@drawable/ic_action_decrease"
+            app:layout_constraintBottom_toBottomOf="@+id/img_btn_increase"
+            app:layout_constraintEnd_toStartOf="@+id/tv_quantity"
+            app:layout_constraintTop_toTopOf="@+id/img_btn_increase" />
+
+        <TextView
+            android:id="@+id/tv_quantity"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="02"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/img_btn_increase"
+            app:layout_constraintEnd_toStartOf="@+id/img_btn_increase"
+            app:layout_constraintTop_toTopOf="@+id/img_btn_increase" />
+
+        <Button
+            android:id="@+id/btn_add_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/btn_action_background_selector"
+            android:clickable="true"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp"
+            android:text="Thêm vào giỏ"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintTop_toBottomOf="@+id/img_btn_increase" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

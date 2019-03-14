@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import com.example.thecoffeehouse.Constant;
 import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.main.adapter.ViewPagerAdapter;
+import com.example.thecoffeehouse.order.drinks.DrinksFragment;
+import com.example.thecoffeehouse.order.food.FoodFragment;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
@@ -50,6 +53,8 @@ public class OrderFragment extends Fragment {
 
         mTabLayout = view.findViewById(R.id.tabLayout);
         mTabLayout.setupWithViewPager(mViewPager);
+        AppBarLayout appBarLayout = view.findViewById(R.id.layout_cart);
+        appBarLayout.setVisibility(View.GONE);
     }
 
     private void setupViewPager(ViewPager viewPager) {

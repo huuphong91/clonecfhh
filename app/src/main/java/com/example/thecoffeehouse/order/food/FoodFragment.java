@@ -1,4 +1,4 @@
-package com.example.thecoffeehouse.order;
+package com.example.thecoffeehouse.order.food;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
