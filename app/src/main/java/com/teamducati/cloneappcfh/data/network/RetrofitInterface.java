@@ -3,6 +3,7 @@ package com.teamducati.cloneappcfh.data.network;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.APIStore;
 import com.teamducati.cloneappcfh.entity.News;
 import com.teamducati.cloneappcfh.entity.NewsPromotion;
+import com.teamducati.cloneappcfh.entity.api_order.ItemProductResponse;
 
 import java.util.List;
 
@@ -19,4 +20,7 @@ public interface RetrofitInterface {
 
     @GET("get_list_store")
     Observable<APIStore> getAllStoreMap();
+
+    @GET("v2/menu")
+    Observable<ItemProductResponse> getAllProduct();
 }
