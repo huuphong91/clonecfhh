@@ -4,14 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.teamducati.cloneappcfh.data.network.RetrofitConfig;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StoresItem;
-
 import java.util.List;
-
 import androidx.core.content.ContextCompat;
 import io.reactivex.Observable;
 import io.reactivex.SingleObserver;
@@ -23,20 +20,11 @@ public class StorePresenter implements StoreContract.Presenter {
 
     private StoreContract.View mStoreView;
     private RetrofitConfig mRetrofitConfig;
+
     public StorePresenter(StoreContract.View storeView) {
         this.mStoreView = storeView;
         mStoreView.setPresenter(this);
         mRetrofitConfig = new RetrofitConfig();
-    }
-
-    @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void onAddMarker() {
-        mStoreView.addMarker();
     }
 
     @Override
@@ -53,7 +41,6 @@ public class StorePresenter implements StoreContract.Presenter {
 
     @Override
     public void onGetAllStore() {
-
         mRetrofitConfig.getInstanceRetrofit().getAllStoreMap()
                 .subscribeOn(Schedulers.io())
                 .flatMap(apiStore -> Observable.fromIterable(apiStore.getStates()))
@@ -77,5 +64,10 @@ public class StorePresenter implements StoreContract.Presenter {
 
                     }
                 });
+    }
+
+    @Override
+    public void start() {
+
     }
 }

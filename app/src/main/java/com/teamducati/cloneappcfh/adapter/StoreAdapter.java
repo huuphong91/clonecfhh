@@ -6,15 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StoresItem;
-
+import com.teamducati.cloneappcfh.screen.store.DialogStoreDetail;
 import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import butterknife.ButterKnife;
 
 public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreAdapterViewHolder> {
 
@@ -38,6 +37,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreAdapter
 
         private StoreAdapterViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
             imgStoreMap = itemView.findViewById(R.id.imgStoreMap);
             txtNameStoreMap = itemView.findViewById(R.id.txtNameStoreMap);
             txtAddress = itemView.findViewById(R.id.txtAddress);
@@ -73,20 +73,25 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreAdapter
         StoresItem storesItem = mApiStores.get(holder.getAdapterPosition());
         holder.txtNameStoreMap.setText(mApiStores.get(holder.getAdapterPosition()).getName());
         holder.txtAddress.setText(mApiStores.get(holder.getAdapterPosition()).getAddress().getStreet());
-        String mImage = mApiStores.get(position).getImages().toString();
-        String mImgStrore =mImage.substring(1,mImage.length()-1);
-        String store = mImgStrore.substring(mImgStrore.length()-3);
-        if(store.equals("jpg")){
-            Glide.with(context)
-                    .load(mImgStrore)
-                    .placeholder(R.drawable.common_full_open_on_phone)
-                    .into(holder.imgStoreMap);
-        }
+        Glide.with(context)
+                .load(mApiStores.get(position).getImages().get(0))
+                .placeholder(R.drawable.common_full_open_on_phone)
+                .into(holder.imgStoreMap);
 
         holder.imgStoreMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                DialogStoreDetail dialogStoreDetail = new DialogStoreDetail();
+                dialogStoreDetail.showDialog(context,
+                        mApiStores.get(position).getName(),
+                        mApiStores.get(position).getImages().get(0),
+                        Double.parseDouble(mApiStores.get(position).getLongitude()),
+                        Double.parseDouble(mApiStores.get(position).getLongitude()),
+                        mApiStores.get(position).getAddress().getFullAddress(),
+                        mApiStores.get(position).getOpeningTime() + " - " +
+                                mApiStores.get(position).getClosingTime(),
+                        mApiStores.get(position).getPhone());
             }
         });
 
@@ -98,6 +103,4 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreAdapter
             return mApiStores.size();
         else return 0;
     }
-
-
 }
