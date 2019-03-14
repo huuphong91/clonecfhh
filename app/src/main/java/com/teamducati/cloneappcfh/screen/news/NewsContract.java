@@ -5,27 +5,27 @@ import com.teamducati.cloneappcfh.entity.NewsPromotion;
 import com.teamducati.cloneappcfh.utils.BasePresenter;
 import com.teamducati.cloneappcfh.utils.BaseView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface NewsContract {
 
     interface View extends BaseView<Presenter> {
 
-        public void showListNewsPromotion(List<NewsPromotion> arrayList);
+        void getListNewsPromotion(List<NewsPromotion> arrayList);
 
-        public void showListNews(List<News> arrayList);
+        void getListNews(List<News> arrayList);
 
-        public void handleSuccess();
+        void getHandleSuccess();
 
-        public void handleError();
+        void getHandleError();
+
     }
 
     interface Presenter extends BasePresenter {
 
-        public void getAllListNewsPromotion();
+        void onAllListNewsPromotion();
 
-        public void getAllListNews();
+        void onAllListNews();
 
 
     }
