@@ -1,6 +1,8 @@
 package com.teamducati.cloneappcfh.screen.account;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.User;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
@@ -40,6 +45,8 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     EditText mEdtPhoneNumber;
     @BindView(R.id.edtGender)
     EditText mEdtGender;
+    @BindView(R.id.imgAvatar)
+    ImageView mImageAvatar;
 
     private Unbinder unbinder;
 
@@ -80,6 +87,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
         mEdtEmail.setText(user.getEmail());
         mEdtPhoneNumber.setText(user.getPhoneNumber());
         mEdtGender.setText(user.getGender());
+        Glide.with(Objects.requireNonNull(getActivity())).load(user.getImgAvatarUrl()).into(mImageAvatar);
     }
 
     @Override
