@@ -11,7 +11,7 @@ public interface AccountContract {
 
         void onLogin(User user);
 
-        void onLogout(User user);
+        void onLogout();
 
         void updateUserProperty(User user);
     }

@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/design_default_color_background"
     tools:context=".screen.account.LoginFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarLogin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -18,8 +19,8 @@
 
         <ImageView
             android:id="@+id/imgUser"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
@@ -34,7 +35,7 @@
             android:layout_marginLeft="16dp"
             android:text="@string/login"
             android:textColor="#EA8025"
-            android:textSize="24sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/imgUser"
             app:layout_constraintLeft_toRightOf="@id/imgUser"
             app:layout_constraintTop_toTopOf="@id/imgUser" />

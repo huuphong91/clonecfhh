@@ -65,6 +65,7 @@ public class LoginFragment extends Fragment implements AccountContract.View {
 
     @Override
     public void showUserDetail(User user) {
+
         ProfileUserFragment profileUserFragment = (ProfileUserFragment) Objects.requireNonNull(getActivity())
                 .getSupportFragmentManager()
                 .findFragmentById(R.id.contentAccountFrame);

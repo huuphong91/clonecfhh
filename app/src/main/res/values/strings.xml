@@ -16,4 +16,5 @@
     <string name="phone_number">Phone Number</string>
     <string name="gender">Gender</string>
     <string name="logout">Log out</string>
+    <string name="btnUpdate">Update</string>
 </resources>

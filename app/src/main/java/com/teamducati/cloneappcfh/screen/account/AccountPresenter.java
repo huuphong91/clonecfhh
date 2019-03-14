@@ -39,7 +39,7 @@ public class AccountPresenter implements AccountContract.Presenter {
         if (username.equals("") || password.equals("")) {
             mAccountView.showLoginFail("please fulfill information");
         } else {
-            List<User> users = new ArrayList<>();
+            List<User> userList = new ArrayList<>();
             DatabaseReference database = FirebaseDatabase.getInstance().getReference();
             DatabaseReference myRef = database;
             Log.d(TAG, "onLogin: đ vô data");
@@ -49,22 +49,19 @@ public class AccountPresenter implements AccountContract.Presenter {
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         Log.d("onDataChange: ", data.getKey());
                         User user = data.getValue(User.class);
-                        users.add(user);
+                        userList.add(user);
                     }
-                    if (!users.isEmpty()) {
-                        for (User user : users) {
-                            if (user.getUserName() == null) {
-                                mAccountView.showLoginFail("this username doesn't exist");
-                            }
-                            if (user.getUserName().equals(user.getUserName()) && user.getPassword().equals(user.getPassword())) {
-                                {
-                                    mAccountView.showUserDetail(user);
-                                }
-                            } else mAccountView.showLoginFail("check your information");
-
+                    if (userList.size() > 0) {
+                        Log.d("onDataChange: ", "data not null");
+                        if (userList.get(0).getUserName().equals(user.getUserName().trim().toLowerCase())
+                                && userList.get(0).getPassword().equals(user.getPassword().trim().toLowerCase())) {
+                            Log.d("onDataChange: ","data match");
+                            mAccountView.showUserDetail(userList.get(0));
+                        } else {
+                            Log.d("onDataChange: ","data not match");
+                            mAccountView.showLoginFail("check your information");
                         }
                     }
-
                 }
 
                 @Override
@@ -73,10 +70,11 @@ public class AccountPresenter implements AccountContract.Presenter {
                 }
             });
         }
+
     }
 
     @Override
-    public void onLogout(User user) {
+    public void onLogout() {
         mAccountView.showLoginScreen();
     }
 

@@ -23,14 +23,23 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class ProfileUserFragment extends Fragment implements AccountContract.View {
-    @BindView(R.id.btn_close) ImageButton mBtnClose;
-    @BindView(R.id.btnLogOut) Button mBtnLogOut;
-    @BindView(R.id.edtFirstName) EditText mEdtFirstName;
-    @BindView(R.id.edtLastName) EditText mEdtLastName;
-    @BindView(R.id.edtBirthDate) EditText mEdtBirthdate;
-    @BindView(R.id.edtEmail) EditText mEdtEmail;
-    @BindView(R.id.edtPhoneNumber) EditText mEdtPhoneNumber;
-    @BindView(R.id.edtGender) EditText mEdtGender;
+
+    @BindView(R.id.btn_close)
+    ImageButton mBtnClose;
+    @BindView(R.id.btnLogOut)
+    Button mBtnLogOut;
+    @BindView(R.id.edtFirstName)
+    EditText mEdtFirstName;
+    @BindView(R.id.edtLastName)
+    EditText mEdtLastName;
+    @BindView(R.id.edtBirthDate)
+    EditText mEdtBirthdate;
+    @BindView(R.id.edtEmail)
+    EditText mEdtEmail;
+    @BindView(R.id.edtPhoneNumber)
+    EditText mEdtPhoneNumber;
+    @BindView(R.id.edtGender)
+    EditText mEdtGender;
 
     private Unbinder unbinder;
 
@@ -53,20 +62,24 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        User user= new User();
         mBtnClose.setOnClickListener(v -> {
-            mPresenter.onLogout(user);
+            mPresenter.onLogout();
         });
+        mBtnLogOut.setOnClickListener(v -> {
+            mPresenter.onLogout();
+        });
+
+//        mEdtFirstName.setOnClickListener(v -> {mPresenter.updateUserProperty();});
     }
 
     @Override
     public void showUserDetail(User user) {
-        if (user != null) {
-            Toast.makeText(getActivity(), user.getFirstName(), Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
-        }
-
+        mEdtFirstName.setText(user.getFirstName());
+        mEdtLastName.setText(user.getLastName());
+        mEdtBirthdate.setText(user.getBirthday());
+        mEdtEmail.setText(user.getEmail());
+        mEdtPhoneNumber.setText(user.getPhoneNumber());
+        mEdtGender.setText(user.getGender());
     }
 
     @Override
