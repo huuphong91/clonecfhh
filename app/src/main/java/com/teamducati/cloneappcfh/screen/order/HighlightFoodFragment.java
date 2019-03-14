@@ -39,7 +39,7 @@ public class HighlightFoodFragment extends Fragment {
 
         HighlightFoodFragment fragment = new HighlightFoodFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.KEY_BUNDLE_FOOD_FRAGMENT, itemProductResponse);
+        bundle.putParcelable(Constants.KEY_BUNDLE_FOOD_FRAGMENT, itemProductResponse);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -51,7 +51,7 @@ public class HighlightFoodFragment extends Fragment {
         Log.d(OrderFragment.TAG, "onAttach: " + HighlightFoodFragment.class.getSimpleName());
 
         if (getArguments() != null) {
-            productResponse = (ItemProductResponse) getArguments().getSerializable(Constants.KEY_BUNDLE_FOOD_FRAGMENT);
+            productResponse = (ItemProductResponse) getArguments().getParcelable(Constants.KEY_BUNDLE_FOOD_FRAGMENT);
         }
     }
 

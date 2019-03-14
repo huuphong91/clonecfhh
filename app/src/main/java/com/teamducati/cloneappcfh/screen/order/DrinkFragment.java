@@ -35,7 +35,7 @@ public class DrinkFragment extends Fragment {
     public static DrinkFragment newInstance(ItemProductResponse itemProductResponse) {
         DrinkFragment fragment = new DrinkFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.KEY_BUNDLE_DRINK_FRAGMENT, itemProductResponse);
+        bundle.putParcelable(Constants.KEY_BUNDLE_DRINK_FRAGMENT, itemProductResponse);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -88,7 +88,7 @@ public class DrinkFragment extends Fragment {
 
         Log.d(OrderFragment.TAG, "onAttach: ");
         if (getArguments() != null) {
-            productResponse = (ItemProductResponse) getArguments().getSerializable(Constants.KEY_BUNDLE_DRINK_FRAGMENT);
+            productResponse = (ItemProductResponse) getArguments().getParcelable(Constants.KEY_BUNDLE_DRINK_FRAGMENT);
         }
     }
 

@@ -17,4 +17,6 @@
     <string name="gender">Gender</string>
     <string name="logout">Log out</string>
     <string name="btnUpdate">Update</string>
+    <string name="giao_hang_den">Giao hàng đến</string>
+    <string name="ship_address">Nhập địa chỉ giao hàng</string>
 </resources>
