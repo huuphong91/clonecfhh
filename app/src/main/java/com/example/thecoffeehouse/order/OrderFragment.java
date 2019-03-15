@@ -6,8 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.thecoffeehouse.R;
+import com.example.thecoffeehouse.data.model.product.DataItem;
+import com.example.thecoffeehouse.order.adapter.OnOrderListItemInteractionListener;
+import com.example.thecoffeehouse.order.detail.DetailDialogFragment;
 import com.example.thecoffeehouse.order.drinks.DrinksFragment;
-import com.example.thecoffeehouse.order.FoodFragment;
+import com.example.thecoffeehouse.order.food.FoodFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
@@ -15,7 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-public class OrderFragment extends Fragment {
+public class OrderFragment extends Fragment implements OnOrderListItemInteractionListener {
 
     private TabLayout mTabLayout;
     private FragmentManager mFragmentManager;
@@ -85,4 +88,8 @@ public class OrderFragment extends Fragment {
                 .commit();
     }
 
+    @Override
+    public void onItemClickListener(DataItem dataItem) {
+        DetailDialogFragment.newInstance(dataItem).show(mFragmentManager, "Detail");
+    }
 }

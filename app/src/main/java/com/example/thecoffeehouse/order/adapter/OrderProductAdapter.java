@@ -16,6 +16,7 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductViewHo
 
     private Context mContext;
     private List<DataItem> mListValues;
+    private OnOrderListItemInteractionListener mListener;
 
     public OrderProductAdapter(Context mContext, List<DataItem> mListValues) {
         this.mContext = mContext;
@@ -26,18 +27,23 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductViewHo
     @Override
     public OrderProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new OrderProductViewHolder(LayoutInflater.from(mContext)
-                .inflate(R.layout.list_product, parent, false), mContext);
+                .inflate(R.layout.list_product, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull OrderProductViewHolder holder, int position) {
         DataItem product = mListValues.get(position);
         holder.bindToViewHolder(product);
+        holder.itemView.setOnClickListener(view -> mListener.onItemClickListener(product));
     }
 
     public void setValues(List<DataItem> values) {
         mListValues = values;
         notifyDataSetChanged();
+    }
+
+    public void setListener(OnOrderListItemInteractionListener mListener) {
+        this.mListener = mListener;
     }
 
     @Override
