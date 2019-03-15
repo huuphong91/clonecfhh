@@ -49,16 +49,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mpvStroreDetail"></androidx.recyclerview.widget.RecyclerView>
 
-    <Spinner
-        android:id="@+id/spnStoreCity"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:layout_marginStart="64dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="64dp"
         android:background="@drawable/boder_item_store_map"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"></Spinner>
+        app:layout_constraintTop_toTopOf="@+id/mpvStroreDetail">
+
+        <Spinner
+            android:id="@+id/spnStoreCity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:gravity="center|left"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></Spinner>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,7 +12,6 @@ public interface StoreContract {
     interface Presenter extends BasePresenter {
         BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId);
         void onGetAllStore();
-
     }
 
     interface View extends BaseView<Presenter> {
