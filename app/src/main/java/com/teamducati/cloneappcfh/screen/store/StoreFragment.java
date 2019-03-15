@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -17,7 +18,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.adapter.StoreAdapter;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StoresItem;
+
 import java.util.List;
+
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,7 +31,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StoreFragment extends Fragment implements StoreContract.View, OnMapReadyCallback {
+public class StoreFragment extends Fragment implements StoreContract.View {
 
     private StoreContract.Presenter mPresenter;
     private SupportMapFragment mapFragment;
@@ -80,39 +83,32 @@ public class StoreFragment extends Fragment implements StoreContract.View, OnMap
         }
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-        }
-
-        mMap.clear(); //clear old markers
-
-        GPSLocation gpsLocation = new GPSLocation(getActivity());
-        Location l = gpsLocation.getLocation();
-        if (l != null) {
-            double lat = l.getLatitude();
-            double lon = l.getLongitude();
-            CameraPosition googlePlex = CameraPosition.builder()
-                    .target(new LatLng(lat, lon))
-                    .zoom(10)
-                    .bearing(0)
-                    .tilt(45)
-                    .build();
-            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(googlePlex));
-            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 10000, null);
-        }
-    }
-
     private void initMap() {
         mapFragment = (SupportMapFragment)
                 getChildFragmentManager().findFragmentById(R.id.mpvStroreDetail);
-        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                mMap = googleMap;
+                mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+                if (ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    mMap.setMyLocationEnabled(true);
+                }
+                mMap.clear(); //clear old markers
+                CameraPosition googlePlex = CameraPosition.builder()
+                        .target(new LatLng(11.219058, 106.869236))
+                        .zoom(10)
+                        .bearing(0)
+                        .tilt(45)
+                        .build();
+                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(googlePlex));
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 5, null);
+
+            }
+        });
     }
 
 }
