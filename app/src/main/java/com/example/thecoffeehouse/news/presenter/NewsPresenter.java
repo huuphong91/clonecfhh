@@ -1,13 +1,13 @@
-package com.example.thecoffeehouse.news;
+package com.example.thecoffeehouse.news.presenter;
 
 import com.example.thecoffeehouse.data.RetrofitInstance;
 import com.example.thecoffeehouse.data.model.RetrofitInterface;
 import com.example.thecoffeehouse.data.model.entity.ResponseNews;
+import com.example.thecoffeehouse.news.viewnews.NewsView;
 
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;

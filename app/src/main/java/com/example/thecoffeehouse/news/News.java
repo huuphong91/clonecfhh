@@ -6,8 +6,7 @@ public class News {
     private String title;
     private String id;
     private String url;
-    public News() {
-    }
+    public News() { }
 
     public String getContent() {
         return content;

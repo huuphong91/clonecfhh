@@ -1,4 +1,4 @@
-package com.example.thecoffeehouse.news;
+package com.example.thecoffeehouse.news.viewnews;
 
 import com.example.thecoffeehouse.data.model.entity.ResponseNews;
 

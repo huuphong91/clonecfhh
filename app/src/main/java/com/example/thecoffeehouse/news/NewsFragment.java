@@ -10,6 +10,12 @@ import android.widget.TextView;
 import com.example.thecoffeehouse.data.model.entity.ResponseForYou;
 import com.example.thecoffeehouse.data.model.entity.ResponseNews;
 import com.example.thecoffeehouse.R;
+import com.example.thecoffeehouse.news.adapter.NewsAdapter;
+import com.example.thecoffeehouse.news.adapter.NewsAdapterNews;
+import com.example.thecoffeehouse.news.presenter.ForYouPresenter;
+import com.example.thecoffeehouse.news.presenter.NewsPresenter;
+import com.example.thecoffeehouse.news.viewnews.ForYouView;
+import com.example.thecoffeehouse.news.viewnews.NewsView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +27,15 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class NewsFragment extends Fragment implements NewsView,ForYouView{
+public class NewsFragment extends Fragment implements NewsView, ForYouView {
     View rootView;
     private NewsAdapter adapter;
     private NewsAdapterNews adapter2;
-    private List<ResponseNews> albumList, albumListVer;
     private TextView mTxtName, mTxtLogin;
     private ImageView mImgAccount, mImgNotification;
-    NewsPresenter newsPresenter;
-    ForYouPresenter forYouPresenter;
+    private NewsPresenter newsPresenter;
+    private ForYouPresenter forYouPresenter;
+
     public static NewsFragment newInstance() {
         NewsFragment fragment = new NewsFragment();
         return fragment;
@@ -43,7 +49,7 @@ public class NewsFragment extends Fragment implements NewsView,ForYouView{
         final RecyclerView recyclerViewNews = (RecyclerView) rootView.findViewById(R.id.news_recycleview);
         List<ResponseNews> listNews= new ArrayList<> ();
         List<ResponseForYou> listForYou = new ArrayList<>();
-       adapter = new NewsAdapter (getContext(),listForYou);
+       adapter = new NewsAdapter (getContext(),listForYou,getFragmentManager());
         adapter2 = new NewsAdapterNews(getContext(),listNews, getFragmentManager());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -85,7 +91,6 @@ public class NewsFragment extends Fragment implements NewsView,ForYouView{
     {
         newsPresenter=new NewsPresenter(NewsFragment.this);
         forYouPresenter=new ForYouPresenter(NewsFragment.this);
-
     }
 
     private void initView(View view) {

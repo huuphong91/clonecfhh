@@ -1,17 +1,19 @@
-package com.example.thecoffeehouse.news;
+package com.example.thecoffeehouse.news.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.data.model.entity.ResponseForYou;
-import com.example.thecoffeehouse.data.model.entity.ResponseNews;
+import com.example.thecoffeehouse.news.webview.WebViewForYou;
+
 import java.util.List;
+
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -19,7 +21,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>{
     private Context mContext;
 
     private List<ResponseForYou> mListNews;
-
+    private FragmentManager manager;
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder  {
@@ -33,9 +35,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>{
         }
     }
 
-    public NewsAdapter(Context mContext, List < ResponseForYou > mListNews) {
+    public NewsAdapter(Context mContext, List < ResponseForYou > mListNews, FragmentManager manager) {
         this.mContext = mContext;
         this.mListNews =mListNews ;
+        this.manager = manager;
     }
         @Override
         public MyViewHolder onCreateViewHolder (ViewGroup parent,int viewType){
@@ -54,7 +57,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>{
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    WebViewForYou.newInstance(album).show(manager, "NewsForyou");
                 }
             });
         }

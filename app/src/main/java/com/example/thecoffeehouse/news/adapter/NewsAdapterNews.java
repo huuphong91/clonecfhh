@@ -1,5 +1,4 @@
-package com.example.thecoffeehouse.news;
-
+package com.example.thecoffeehouse.news.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,13 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.thecoffeehouse.data.model.entity.ResponseForYou;
 import com.example.thecoffeehouse.data.model.entity.ResponseNews;
 import com.bumptech.glide.Glide;
 import com.example.thecoffeehouse.R;
-
+import com.example.thecoffeehouse.news.webview.WebViewNews;
 import java.util.List;
-
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +29,6 @@ public class NewsAdapterNews extends RecyclerView.Adapter<NewsAdapterNews.MyView
             title_for_news = (TextView) view.findViewById(R.id.title_for_news);
         }
     }
-
 
     public NewsAdapterNews(Context mContext, List < ResponseNews > mNewList, FragmentManager manager) {
         this.mContext = mContext;
