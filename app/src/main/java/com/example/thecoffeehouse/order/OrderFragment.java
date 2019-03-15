@@ -41,6 +41,7 @@ public class OrderFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initView(view);
+        addTab(DrinksFragment.newInstance());
     }
 
     private void initView(View view) {

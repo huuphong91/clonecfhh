@@ -49,8 +49,9 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
     private FloatingActionButton btnShowMyLocation;
     private StorePresenter presenter = new StorePresenterIpm(this);
 
-    public static Fragment newInstance() {
-        return new StoreFragment();
+    public static StoreFragment newInstance() {
+        StoreFragment fragment = new StoreFragment();
+        return fragment;
     }
 
     @Nullable

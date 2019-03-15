@@ -14,13 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.ViewPager;
-
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView navigation;
     private FragmentManager mFragmentManager;
+    private NewsFragment newsFragment;
+    private OrderFragment orderFragment;
+    private StoreFragment storeFragment;
+    private ProfileFragment profileFragment;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -28,16 +30,16 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_news:
-                    loadFragment(NewsFragment.newInstance());
+                    loadFragment(newsFragment);
                     return true;
                 case R.id.navigation_order:
-                    loadFragment(OrderFragment.newInstance());
+                    loadFragment(orderFragment);
                     return true;
                 case R.id.navigation_store:
-                    loadFragment(StoreFragment.newInstance());
+                    loadFragment(storeFragment);
                     return true;
                 case R.id.navigation_profile:
-                    loadFragment(ProfileFragment.newInstance());
+                    loadFragment(profileFragment);
                     return true;
             }
             return false;
@@ -49,13 +51,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        initData();
+        loadFragment(newsFragment);
+    }
 
+    private void initData() {
+        newsFragment = NewsFragment.newInstance();
+        orderFragment = OrderFragment.newInstance();
+        storeFragment = StoreFragment.newInstance();
+        profileFragment = ProfileFragment.newInstance();
     }
 
     private void initView() {
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mFragmentManager = getSupportFragmentManager();
+
     }
 
     private void loadFragment(Fragment fragment) {
