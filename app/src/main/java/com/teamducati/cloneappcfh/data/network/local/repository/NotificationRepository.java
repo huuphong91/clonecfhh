@@ -1,7 +1,7 @@
 package com.teamducati.cloneappcfh.data.network.local.repository;
 
 import android.annotation.SuppressLint;
-import android.app.Application;
+import android.content.Context;
 
 import com.teamducati.cloneappcfh.data.network.local.NotificationNewsDatabase;
 import com.teamducati.cloneappcfh.data.network.local.dao.NotificationDao;
@@ -17,7 +17,7 @@ public class NotificationRepository implements NotificationLocalDataSource {
     public NotificationDao mNotificationDao;
     public LiveData<List<Notification>> mAllNotification;
     @SuppressLint("CheckResult")
-    public NotificationRepository(Application application) {
+    public NotificationRepository(Context application) {
         NotificationNewsDatabase db = NotificationNewsDatabase.getDatabase(application);
         mNotificationDao = db.notificationDao();
         mAllNotification = mNotificationDao.getAllNotification();

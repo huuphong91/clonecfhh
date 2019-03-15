@@ -16,30 +16,34 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/img_close_notificaton"
+                android:id="@+id/img_back_web_view"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="16dp"
-                android:src="@drawable/ic_close_grey_700_18dp" />
+                android:src="@drawable/ic_arrow_back_black_24dp" />
 
             <TextView
-                android:id="@+id/txt_title_notificaton"
+                android:id="@+id/txt_title_web_view"
                 style="@style/TextAppearance.AppCompat.Widget.ActionBar.Menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
+                android:paddingLeft="64dp"
+                android:paddingRight="56dp"
                 android:layout_centerVertical="true"
-                android:text="Thông Báo"
+                android:text="Tiêu Đề Trang Web"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:textAllCaps="false" />
 
             <ImageView
+                android:id="@+id/img_launch_web_view"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="16dp"
-                android:src="@drawable/icons_bell_" />
+                android:src="@drawable/ic_launch_black_24dp" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

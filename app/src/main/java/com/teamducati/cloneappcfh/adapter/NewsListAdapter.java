@@ -1,7 +1,7 @@
 package com.teamducati.cloneappcfh.adapter;
 
 import android.content.Context;
-import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +12,18 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.News;
-import com.teamducati.cloneappcfh.screen.news.newsdetails.NewsDetailsActivity;
+import com.teamducati.cloneappcfh.screen.news.newsdetails.NewsDetailsDialogFragment;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsViewHolder> {
 
-    private final LayoutInflater mInflater;
+    private LayoutInflater mInflater;
     private Context context;
     private int position;
     private List<News> mNewss;
@@ -53,8 +54,6 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
                 .load(NewsObj.getImage())
                 .placeholder(R.drawable.common_full_open_on_phone)
                 .into(holder.imgItemImageNews);
-
-
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
@@ -63,11 +62,19 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
                     Toast.makeText(context, "Long Click" + position, Toast.LENGTH_SHORT).show();
 
                 } else {
-                    //onClick
+                    AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                    NewsDetailsDialogFragment dialogFragmentDetails =
+                            new NewsDetailsDialogFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("url", mNewss.get(position).getUrl());
+                    bundle.putString("title", mNewss.get(position).getTitle());
+                    dialogFragmentDetails.setArguments(bundle);
+                    dialogFragmentDetails.show(activity.getSupportFragmentManager(), null);
 
                 }
             }
         });
+
     }
 
     @Override
@@ -100,10 +107,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
         @Override
         public void onClick(View v) {
             itemClickListener.onClick(v, getAdapterPosition(), false);
-            String url_news = mNewss.get(getAdapterPosition()).getUrl();
-            Intent intent = new Intent(context, NewsDetailsActivity.class);
-            intent.putExtra("url_news", url_news);
-            context.startActivity(intent);
+
         }
 
         @Override
@@ -112,6 +116,10 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
             return true;
         }
 
+        public String getUrl() {
+            String url=null;
+            return url;
+        }
     }
 
 
