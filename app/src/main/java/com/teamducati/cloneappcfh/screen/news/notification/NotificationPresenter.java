@@ -1,6 +1,6 @@
 package com.teamducati.cloneappcfh.screen.news.notification;
 
-import android.app.Application;
+import android.content.Context;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.teamducati.cloneappcfh.data.network.local.repository.NotificationRepository;
@@ -20,8 +20,8 @@ public class NotificationPresenter extends FirebaseMessagingService implements N
     private Disposable disposable;
     private NotificationRepository notificationRepository;
     private LifecycleOwner lifecycleOwner;
-    private Application application;
-    public NotificationPresenter(NoticationContract.View mNotificationNews,Application application ,
+    private Context application;
+    public NotificationPresenter(NoticationContract.View mNotificationNews, Context application ,
                                  LifecycleOwner lifecycleOwner) {
         this.mNotificationNews = mNotificationNews;
         mNotificationNews.setPresenter(this);

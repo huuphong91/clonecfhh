@@ -2,14 +2,6 @@ package com.teamducati.cloneappcfh.screen.account;
 
 
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +9,15 @@ import android.widget.FrameLayout;
 
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.User;
-import com.teamducati.cloneappcfh.screen.news.NewsContract;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
 
 import java.util.Objects;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class AccountFragment extends Fragment implements AccountContract.View {
 

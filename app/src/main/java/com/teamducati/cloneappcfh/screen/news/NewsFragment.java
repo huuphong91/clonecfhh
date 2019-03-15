@@ -1,7 +1,6 @@
 package com.teamducati.cloneappcfh.screen.news;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,7 @@ import com.teamducati.cloneappcfh.adapter.NewsPromotionListAdapter;
 import com.teamducati.cloneappcfh.entity.News;
 import com.teamducati.cloneappcfh.entity.NewsPromotion;
 import com.teamducati.cloneappcfh.screen.main.MainViewPager;
-import com.teamducati.cloneappcfh.screen.news.notification.NewsNotificationActivity;
+import com.teamducati.cloneappcfh.screen.news.notification.NewsNotificationDialogFragment;
 
 import java.util.List;
 
@@ -82,9 +81,10 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         imgNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), NewsNotificationActivity.class);
-                //fragment not do use clear top
-                startActivity(intent);
+                NewsNotificationDialogFragment newsNotificationDialogFragment =
+                        new NewsNotificationDialogFragment();
+                newsNotificationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
+
             }
         });
         swipeRefreshLayoutLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
