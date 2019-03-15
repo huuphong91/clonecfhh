@@ -1,4 +1,4 @@
-package com.example.thecoffeehouse.order;
+package com.example.thecoffeehouse.order.food;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,10 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class DrinksFragment extends Fragment {
+public class FoodFragment extends Fragment {
 
-    public static DrinksFragment newInstance(){
-        DrinksFragment fragment = new DrinksFragment();
+    public static FoodFragment newInstance() {
+        FoodFragment fragment = new FoodFragment();
         return fragment;
     }
 
