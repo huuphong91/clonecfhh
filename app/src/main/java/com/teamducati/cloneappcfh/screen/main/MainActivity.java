@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
             case R.id.navigation_store:
                 positionFragment = 2;
                 setCurrentItem(positionFragment);
+                getLocation();
                 return true;
             case R.id.navigation_account:
                 positionFragment = 3;
@@ -136,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
         } else {
             mFusedLocation.getLastLocation().addOnSuccessListener(location -> {
                 if (location != null) {
+                   // mStoreFragment.setLocation(location);
                     new FetchAddressTask(this, this).execute(location);
                 }
             });
