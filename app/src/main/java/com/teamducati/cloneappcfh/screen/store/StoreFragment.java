@@ -2,12 +2,10 @@ package com.teamducati.cloneappcfh.screen.store;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -18,9 +16,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.adapter.StoreAdapter;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StoresItem;
-
 import java.util.List;
-
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -99,16 +95,14 @@ public class StoreFragment extends Fragment implements StoreContract.View {
                 }
                 mMap.clear(); //clear old markers
                 CameraPosition googlePlex = CameraPosition.builder()
-                        .target(new LatLng(11.219058, 106.869236))
-                        .zoom(10)
+                        .target(new LatLng(10.782683, 106.675247))
+                        .zoom(7)
                         .bearing(0)
                         .tilt(45)
                         .build();
                 mMap.moveCamera(CameraUpdateFactory.newCameraPosition(googlePlex));
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 5, null);
-
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);
             }
         });
     }
-
 }
