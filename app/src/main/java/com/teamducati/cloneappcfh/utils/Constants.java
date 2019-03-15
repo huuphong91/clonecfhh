@@ -7,5 +7,10 @@ public class Constants {
 
     public static final String KEY_BUNDLE_FOOD_FRAGMENT = "KEY_BUNDLE_FOOD_FRAGMENT";
     public static final String KEY_BUNDLE_DRINK_FRAGMENT = "KEY_BUNDLE_DRINK_FRAGMENT";
+    public static final String positionShipTitle[] = {"Vị trí hiện tại", "Vị trí tìm kiếm gần đây"};
+
+    public static final String imgPositionShipUrl[] = {"resources_images_icons_ic_curent_location",
+            "resources_images_icons_ic_last_address"};
+
     public static final String KEY_BUNDLE_DETAIL = "KEY_BUNDLE_DETAIL";
 }
