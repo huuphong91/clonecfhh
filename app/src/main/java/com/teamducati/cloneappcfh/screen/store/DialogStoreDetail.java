@@ -1,20 +1,27 @@
 package com.teamducati.cloneappcfh.screen.store;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.teamducati.cloneappcfh.R;
+
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 public class DialogStoreDetail {
 
@@ -51,16 +58,24 @@ public class DialogStoreDetail {
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(final GoogleMap googleMap) {
-//                LatLng posisiabsen = new LatLng(lat, lon); ////your lat lng
-//                googleMap.addMarker(new MarkerOptions()
-//                                .position(posisiabsen)
-//                                .title(name)
-//                                .snippet(address));
-//                googleMap.moveCamera(CameraUpdateFactory.newLatLng(posisiabsen));
-//                googleMap.getUiSettings().setZoomControlsEnabled(true);
-//                googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 10, null);
-                LatLng sydney = new LatLng(lat, lon);
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                if (ContextCompat.checkSelfPermission(context,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    googleMap.setMyLocationEnabled(true);
+                }
+                googleMap.clear(); //clear old markers
+                CameraPosition googlePlex = CameraPosition.builder()
+                        .target(new LatLng(lat, lon))
+                        .zoom(10)
+                        .bearing(0)
+                        .tilt(45)
+                        .build();
+                googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(googlePlex));
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 10000, null);
+                googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(lat, lon))
+                        .title(name));
+                googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
             }
         });
 
