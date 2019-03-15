@@ -10,26 +10,25 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.api_order.DataItem;
+import com.teamducati.cloneappcfh.screen.order.ViewDialogAdd;
+import com.teamducati.cloneappcfh.utils.Utils;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolderOder> {
 
     private Context context;
-    private List<DataItem> productList;
-//    private IItemClickCallback iItemClickCallback;
+    private List<DataItem> dataItemList;
+    private FragmentManager fragmentManager;
 
-    public OrderAdapter(@NonNull Context context) {
+    public OrderAdapter(@NonNull Context context, List<DataItem> values, FragmentManager fragmentManager) {
         this.context = context;
-//        this.iItemClickCallback = iItemClickCallback;
-    }
-
-    public void setValues(List<DataItem> values) {
-        productList = values;
-        notifyDataSetChanged();
+        this.dataItemList = values;
+        this.fragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -41,7 +40,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolderOd
 
     @Override
     public void onBindViewHolder(@NonNull OrderAdapter.ViewHolderOder viewHolderOder, final int position) {
-        DataItem item = productList.get(position);
+        DataItem item = dataItemList.get(viewHolderOder.getAdapterPosition());
         Glide.with(context)
                 .load(item.getImage())
                 .centerCrop()
@@ -50,19 +49,23 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolderOd
 
         viewHolderOder.tvNameDrink.setText(item.getProductName());
         viewHolderOder.tvClassify.setText(item.getVariants().get(0).getVal());
-        viewHolderOder.tvPrice.setText(String.valueOf(item.getBasePrice()));
+        viewHolderOder.tvPrice.setText(Utils.formatMoney(item.getBasePrice()));
 
         Glide.with(context)
                 .load(R.drawable.icon_add)
                 .centerCrop()
                 .placeholder(R.drawable.icon_loading)
                 .into(viewHolderOder.ivAdd);
+
+        viewHolderOder.itemView.setOnClickListener(v -> {
+            ViewDialogAdd.newInstance(item).show(fragmentManager, "Detail");
+        });
     }
 
     @Override
     public int getItemCount() {
-        if (productList != null)
-            return productList.size();
+        if (dataItemList != null)
+            return dataItemList.size();
         return 0;
     }
 

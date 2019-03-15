@@ -56,7 +56,6 @@ public class DrinkFragment extends Fragment {
         rvListDrinks = view.findViewById(R.id.rv_drink);
         getDataItems(9);
         setAdapter();
-        setValues();
     }
 
     @Override
@@ -73,11 +72,9 @@ public class DrinkFragment extends Fragment {
 
         Log.d(OrderFragment.TAG, "setAdapter: ");
 
-        //getDataItems();
         if (fragmentOrderAdapter == null) {
             rvListDrinks.setLayoutManager(new GridLayoutManager(getActivity(), 2, RecyclerView.VERTICAL, false));
-//            fragmentOrderAdapter = new OrderAdapter(getActivity(), dataItems);
-            fragmentOrderAdapter = new OrderAdapter(getActivity());
+            fragmentOrderAdapter = new OrderAdapter(getActivity(), dataItems, getFragmentManager());
             rvListDrinks.setAdapter(fragmentOrderAdapter);
         }
     }
@@ -88,7 +85,7 @@ public class DrinkFragment extends Fragment {
 
         Log.d(OrderFragment.TAG, "onAttach: ");
         if (getArguments() != null) {
-            productResponse = (ItemProductResponse) getArguments().getParcelable(Constants.KEY_BUNDLE_DRINK_FRAGMENT);
+            productResponse = getArguments().getParcelable(Constants.KEY_BUNDLE_DRINK_FRAGMENT);
         }
     }
 
@@ -102,12 +99,5 @@ public class DrinkFragment extends Fragment {
                 dataItems.add(item);
             }
         }
-    }
-
-    public void setValues() {
-
-        Log.d(OrderFragment.TAG, "setValues: ");
-
-        fragmentOrderAdapter.setValues(dataItems);
     }
 }

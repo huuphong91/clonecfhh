@@ -17,7 +17,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -33,20 +32,19 @@ public class OrderFragment extends Fragment implements OrderContract.View {
 
     public static final String TAG = OrderFragment.class.getName();
 
-    @BindView(R.id.toolBarShipLocation)
-    ConstraintLayout mToolBarShipLocation;
     @BindView(R.id.tvShipAddress)
     TextView tvShipAddress;
+    @BindView(R.id.tabs111)
+    TabLayout tabLayout;
+    @BindView(R.id.viewpager111)
+    ViewPager viewPager;
 
     private Unbinder unbinder;
-
     private OrderContract.Presenter mPresenter;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
     private ItemProductResponse itemProductResponse;
 
     public OrderFragment() {
-        // Required empty public constructor
+
     }
 
     @Override
@@ -59,14 +57,7 @@ public class OrderFragment extends Fragment implements OrderContract.View {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getWidgets(view);
-    }
 
-    private void getWidgets(View view) {
-        viewPager = view.findViewById(R.id.viewpager111);
-//        setupViewPager(viewPager);
-
-        tabLayout = view.findViewById(R.id.tabs111);
         tabLayout.setupWithViewPager(viewPager);
 
         mPresenter.onGetAllProductPresenter();
@@ -74,8 +65,8 @@ public class OrderFragment extends Fragment implements OrderContract.View {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager());
-        adapter.addFragment(HighlightFoodFragment.newInstance(itemProductResponse), "Featured Food");
-        adapter.addFragment(DrinkFragment.newInstance(itemProductResponse), "Drinks");
+        adapter.addFragment(HighlightFoodFragment.newInstance(itemProductResponse), "Món nổi bật");
+        adapter.addFragment(DrinkFragment.newInstance(itemProductResponse), "Thức uống");
         viewPager.setAdapter(adapter);
     }
 
