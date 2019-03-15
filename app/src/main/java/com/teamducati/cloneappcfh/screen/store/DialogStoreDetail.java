@@ -52,7 +52,7 @@ public class DialogStoreDetail {
             @Override
             public void onMapReady(final GoogleMap googleMap) {
                 CameraPosition googlePlex = CameraPosition.builder()
-                        .target(new LatLng(10.782683, 106.675247))
+                        .target(new LatLng(lat, lon))
                         .zoom(15)
                         .bearing(0)
                         .tilt(45)
@@ -60,7 +60,7 @@ public class DialogStoreDetail {
                 googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(googlePlex));
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);
                 googleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(10.782683, 106.675247))
+                        .position(new LatLng(lat, lon))
                         .title(name)
                         .snippet(numberPhone));
             }
