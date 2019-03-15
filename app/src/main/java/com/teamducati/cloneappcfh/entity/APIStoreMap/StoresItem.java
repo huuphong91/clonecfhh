@@ -33,4 +33,7 @@ public class StoresItem {
     private String status;
     @SerializedName("longitude")
     private String longitude;
+
+    public StoresItem(StoresItem item) {
+    }
 }

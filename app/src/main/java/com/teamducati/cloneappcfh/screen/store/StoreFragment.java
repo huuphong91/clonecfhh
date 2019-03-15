@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -16,6 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.adapter.StoreAdapter;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StoresItem;
+import java.util.ArrayList;
 import java.util.List;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -34,6 +39,10 @@ public class StoreFragment extends Fragment implements StoreContract.View {
     private List<StoresItem> mApiStores;
     private StoreAdapter mAdapterStore;
     private GoogleMap mMap;
+
+    @BindView(R.id.spnStoreCity)
+    Spinner mListStore;
+
     @BindView(R.id.mRecyclerStrore)
     RecyclerView mRecyclerStrore;
 
@@ -51,6 +60,49 @@ public class StoreFragment extends Fragment implements StoreContract.View {
         initMap();
         mPresenter.onGetAllStore();
         return rootView;
+    }
+
+    private void initStoreCity() {
+        List<String> mStore = new ArrayList<>();
+        for (int i = 0; i < mApiStores.size(); i++) {
+            if (mApiStores.get(i).getAddress().getWard() != null) {
+                mStore.add(mApiStores.get(i).getAddress().getWard());
+            }
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter(getActivity(),
+                android.R.layout.simple_spinner_item, mStore);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+        mListStore.setAdapter(adapter);
+        mListStore.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                // mMap.clear(); //clear old markers
+                CameraPosition googlePlex = CameraPosition.builder()
+
+                        .target(new LatLng(Double.parseDouble(mApiStores.get(i).getLatitude()),
+                                Double.parseDouble(mApiStores.get(i).getLongitude())))
+                        .zoom(15)
+                        .bearing(0)
+                        .tilt(45)
+                        .build();
+                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(googlePlex));
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);
+//                ArrayList<StoresItem> storesPosition = new ArrayList<>();
+//                if (storesPosition != null) {
+//                    storesPosition.add(new StoresItem(mApiStores.get(i)));
+//                    mAdapterStore = new StoreAdapter(getActivity(), storesPosition);
+//                    mRecyclerStrore.setAdapter(mAdapterStore);
+//                    mAdapterStore.notifyDataSetChanged();
+//                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
     }
 
     private void init() {
@@ -77,6 +129,7 @@ public class StoreFragment extends Fragment implements StoreContract.View {
                     .title(mApiStores.get(i).getName())
                     .snippet(mApiStores.get(i).getAddress().getStreet()));
         }
+        initStoreCity();
     }
 
     private void initMap() {
