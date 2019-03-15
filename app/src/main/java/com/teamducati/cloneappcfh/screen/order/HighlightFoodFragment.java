@@ -51,7 +51,7 @@ public class HighlightFoodFragment extends Fragment {
         Log.d(OrderFragment.TAG, "onAttach: " + HighlightFoodFragment.class.getSimpleName());
 
         if (getArguments() != null) {
-            productResponse = (ItemProductResponse) getArguments().getParcelable(Constants.KEY_BUNDLE_FOOD_FRAGMENT);
+            productResponse = getArguments().getParcelable(Constants.KEY_BUNDLE_FOOD_FRAGMENT);
         }
     }
 
@@ -72,7 +72,6 @@ public class HighlightFoodFragment extends Fragment {
         rvListFoods = view.findViewById(R.id.rv_highlight_food);
         getDataItems(9);
         setAdapter();
-        setValues();
     }
 
     @Override
@@ -90,7 +89,7 @@ public class HighlightFoodFragment extends Fragment {
 
         if (fragmentOrderAdapter == null) {
             rvListFoods.setLayoutManager(new GridLayoutManager(getActivity(), 2, RecyclerView.VERTICAL, false));
-            fragmentOrderAdapter = new OrderAdapter(getActivity());
+            fragmentOrderAdapter = new OrderAdapter(getActivity(), dataItems, getFragmentManager());
             rvListFoods.setAdapter(fragmentOrderAdapter);
         }
     }
@@ -98,19 +97,13 @@ public class HighlightFoodFragment extends Fragment {
     private void getDataItems(int categ) {
 
         Log.d(OrderFragment.TAG, "getDataItems: " + HighlightFoodFragment.class.getSimpleName());
-
-        dataItems = new ArrayList<>();
-        for (DataItem item : productResponse.getData()) {
-            if (item.getCategId().get(0) == categ) {
-                dataItems.add(item);
+        if (productResponse != null) {
+            dataItems = new ArrayList<>();
+            for (DataItem item : productResponse.getData()) {
+                if (item.getCategId().get(0) == categ) {
+                    dataItems.add(item);
+                }
             }
         }
-    }
-
-    public void setValues() {
-
-        Log.d(OrderFragment.TAG, "setValues: " + HighlightFoodFragment.class.getSimpleName());
-
-        fragmentOrderAdapter.setValues(dataItems);
     }
 }

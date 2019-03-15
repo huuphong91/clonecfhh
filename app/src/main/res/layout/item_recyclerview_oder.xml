@@ -2,19 +2,19 @@
 
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="180dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="180dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
+            android:src="@mipmap/ic_launcher_round"
             android:id="@+id/iv_drink"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
-            android:src="@drawable/icon_loading"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -39,16 +39,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
-        <View
-            android:id="@+id/v_underline"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_margin="4dp"
-            android:background="#7C413D41"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_classify" />
-
         <TextView
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
@@ -58,7 +48,7 @@
             android:text="50.000 đ"
             android:textColor="#000"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/v_underline" />
+            app:layout_constraintTop_toBottomOf="@id/tv_classify" />
 
         <ImageView
             android:id="@+id/iv_add"
@@ -68,7 +58,7 @@
             android:src="@drawable/icon_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/v_underline" />
+            app:layout_constraintTop_toBottomOf="@id/tv_classify" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
