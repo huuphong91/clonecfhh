@@ -5,21 +5,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.thecoffeehouse.Constant;
 import com.example.thecoffeehouse.R;
-import com.example.thecoffeehouse.main.adapter.ViewPagerAdapter;
+import com.example.thecoffeehouse.order.drinks.DrinksFragment;
+import com.example.thecoffeehouse.order.FoodFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.FragmentManager;
 
 public class OrderFragment extends Fragment {
 
-    private ViewPager mViewPager;
-    private ViewPagerAdapter mAdapter;
     private TabLayout mTabLayout;
+    private FragmentManager mFragmentManager;
 
     public static OrderFragment newInstance() {
         OrderFragment fragment = new OrderFragment();
@@ -45,17 +44,44 @@ public class OrderFragment extends Fragment {
     }
 
     private void initView(View view) {
-        mViewPager = view.findViewById(R.id.order_viewPager);
-        setupViewPager(mViewPager);
-
+        mFragmentManager = getFragmentManager();
         mTabLayout = view.findViewById(R.id.tabLayout);
-        mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.addTab(mTabLayout.newTab().setText("Drinks"));
+        mTabLayout.addTab(mTabLayout.newTab().setText("Food"));
+        mTabLayout.setOnTabSelectedListener(onTabSelectedListener);
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        mAdapter = new ViewPagerAdapter(getFragmentManager());
-        mAdapter.addFragment(DrinksFragment.newInstance(), Constant.TAG_DRINKS);
-        mAdapter.addFragment(FoodFragment.newInstance(), Constant.TAG_FOOD);
-        viewPager.setAdapter(mAdapter);
+    private TabLayout.OnTabSelectedListener onTabSelectedListener = new TabLayout.OnTabSelectedListener() {
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+            int position = tab.getPosition();
+            switch (position) {
+                case 0:
+                    addTab(DrinksFragment.newInstance());
+                    break;
+                case 1:
+                    addTab(FoodFragment.newInstance());
+                    break;
+            }
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+
+        }
+    };
+
+    private void addTab(Fragment fragment) {
+
+        mFragmentManager.beginTransaction()
+                .replace(R.id.order_frame_layout, fragment)
+                .addToBackStack(null)
+                .commit();
     }
+
 }
