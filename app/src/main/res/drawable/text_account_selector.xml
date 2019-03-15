@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/white" android:drawable="@drawable/text_account_active" android:state_pressed="true" />
-    <item android:color="@color/white" android:drawable="@drawable/text_account_active" android:state_focused="true" />
-    <item android:color="@color/colorOrange" android:drawable="@drawable/text_login_background" />
+    <item android:state_pressed="true"
+        android:color="@color/textColorWhite"
+        android:drawable="@drawable/text_account_active"/>
+    <item android:state_focused="true"
+        android:color="@color/textColorWhite"
+        android:drawable="@drawable/text_account_active"/>
+    <item android:color="@color/orange"
+        android:drawable="@drawable/text_login_background"/>
 </selector>

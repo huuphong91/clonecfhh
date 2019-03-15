@@ -12,7 +12,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/white">
+            android:background="@color/textColorWhite">
 
             <ImageView
                 android:id="@+id/news_account_image"
@@ -48,7 +48,7 @@
                 android:padding="5dp"
                 android:paddingStart="@dimen/text_padding"
                 android:paddingEnd="@dimen/text_padding"
-                android:textColor="@color/black"
+                android:textColor="@color/textColorBlack"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/news_account_image"
                 app:layout_constraintTop_toTopOf="parent" />
