@@ -39,6 +39,8 @@
         <!-- [END fcm_default_channel] -->
 
         <!-- [START firebase_service] -->
+        <activity android:name=".screen.news.notification.NewsNotificationActivity"></activity>
+        <activity android:name=".screen.news.newsdetails.NewsDetailsActivity"></activity>
         <activity android:name=".screen.news.NewsWebViewActivity"></activity>
         <activity
             android:name=".screen.main.MainActivity"
