@@ -1,27 +1,28 @@
 package com.example.thecoffeehouse.main;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.example.thecoffeehouse.Constant;
 import com.example.thecoffeehouse.R;
-import com.example.thecoffeehouse.main.adapter.ViewPagerAdapter;
 import com.example.thecoffeehouse.news.NewsFragment;
 import com.example.thecoffeehouse.order.OrderFragment;
 import com.example.thecoffeehouse.profile.ProfileFragment;
-import com.example.thecoffeehouse.store.StoreFragment;
+import com.example.thecoffeehouse.store.views.StoreFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+public class MainActivity extends AppCompatActivity {
 
-    private ViewPager mViewPager;
     private BottomNavigationView navigation;
-    private ViewPagerAdapter mViewPagerAdapter;
-    private MenuItem prevMenuItem;
+    private FragmentManager mFragmentManager;
+    private NewsFragment newsFragment;
+    private OrderFragment orderFragment;
+    private StoreFragment storeFragment;
+    private ProfileFragment profileFragment;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -29,16 +30,16 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_news:
-                    mViewPager.setCurrentItem(0);
+                    loadFragment(newsFragment);
                     return true;
                 case R.id.navigation_order:
-                    mViewPager.setCurrentItem(1);
+                    loadFragment(orderFragment);
                     return true;
                 case R.id.navigation_store:
-                    mViewPager.setCurrentItem(2);
+                    loadFragment(storeFragment);
                     return true;
                 case R.id.navigation_profile:
-                    mViewPager.setCurrentItem(3);
+                    loadFragment(profileFragment);
                     return true;
             }
             return false;
@@ -50,44 +51,29 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        initData();
+        loadFragment(newsFragment);
+    }
 
+    private void initData() {
+        newsFragment = NewsFragment.newInstance();
+        orderFragment = OrderFragment.newInstance();
+        storeFragment = StoreFragment.newInstance();
+        profileFragment = ProfileFragment.newInstance();
     }
 
     private void initView() {
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        mViewPager = findViewById(R.id.viewPager);
-        mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        setupViewPager(mViewPager);
-        mViewPager.setOnPageChangeListener(this);
-    }
-
-    private void setupViewPager(ViewPager viewPager) {
-        mViewPagerAdapter.addFragment(NewsFragment.newInstance(), Constant.NEWS_FRAGMENT);
-        mViewPagerAdapter.addFragment(OrderFragment.newInstance(), Constant.ORDER_FRAGMENT);
-        mViewPagerAdapter.addFragment(StoreFragment.newInstance(), Constant.STORE_FRAGMENT);
-        mViewPagerAdapter.addFragment(ProfileFragment.newInstance(), Constant.PROFILE_FRAGMENT);
-        viewPager.setAdapter(mViewPagerAdapter);
-    }
-
-    @Override
-    public void onPageScrolled(int i, float v, int i1) {
+        mFragmentManager = getSupportFragmentManager();
 
     }
 
-    @Override
-    public void onPageSelected(int position) {
-        if (prevMenuItem != null) {
-            prevMenuItem.setChecked(false);
-        } else {
-            navigation.getMenu().getItem(0).setChecked(false);
-        }
-        navigation.getMenu().getItem(position).setChecked(true);
-        prevMenuItem = navigation.getMenu().getItem(position);
+    private void loadFragment(Fragment fragment) {
+        mFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
-    @Override
-    public void onPageScrollStateChanged(int i) {
-
-    }
 }

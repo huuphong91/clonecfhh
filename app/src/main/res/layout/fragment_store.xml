@@ -5,12 +5,17 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"></Toolbar>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="Cửa hàng"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/black" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_store" />
