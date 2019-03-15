@@ -86,7 +86,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreAdapter
                 dialogStoreDetail.showDialog(context,
                         mApiStores.get(position).getName(),
                         mApiStores.get(position).getImages().get(0),
-                        Double.parseDouble(mApiStores.get(position).getLongitude()),
+                        Double.parseDouble(mApiStores.get(position).getLatitude()),
                         Double.parseDouble(mApiStores.get(position).getLongitude()),
                         mApiStores.get(position).getAddress().getFullAddress(),
                         mApiStores.get(position).getOpeningTime() + " - " +
