@@ -80,7 +80,7 @@
 
             <TextView
                 android:id="@+id/txtAddressStroreDetail"
-                android:layout_width="334dp"
+                android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginRight="10dp"
                 android:gravity="center|left"
@@ -95,7 +95,7 @@
                 android:id="@+id/imageView2"
                 android:layout_width="57dp"
                 android:layout_height="60dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="32dp"
                 app:layout_constraintBottom_toBottomOf="@+id/txtAddressStroreDetail"
                 app:layout_constraintEnd_toStartOf="@+id/txtAddressStroreDetail"
                 app:layout_constraintStart_toStartOf="parent"
@@ -107,7 +107,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="#EEE8DD"
-                android:paddingLeft="20dp"
+                android:paddingLeft="32dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="Chi Tiết"
@@ -137,7 +137,7 @@
                 android:id="@+id/imageView3"
                 android:layout_width="57dp"
                 android:layout_height="60dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="32dp"
                 android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="@+id/txtOpeningClosingTimeStroreDetail"
                 app:layout_constraintEnd_toStartOf="@+id/textView5"
@@ -149,7 +149,7 @@
                 android:id="@+id/imageView4"
                 android:layout_width="57dp"
                 android:layout_height="60dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="32dp"
                 android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="@+id/txtNumberPhoneStroreDetail"
                 app:layout_constraintEnd_toStartOf="@+id/textView3"
@@ -159,9 +159,9 @@
 
             <TextView
                 android:id="@+id/textView5"
-                android:layout_width="334dp"
+                android:layout_width="0dp"
                 android:layout_height="30dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="32dp"
                 android:gravity="center|left"
                 android:text="Giờ mở cửa"
                 android:textColor="#000000"
@@ -173,9 +173,9 @@
 
             <TextView
                 android:id="@+id/txtOpeningClosingTimeStroreDetail"
-                android:layout_width="334dp"
+                android:layout_width="0dp"
                 android:layout_height="30dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="32dp"
                 android:gravity="center|left"
                 android:text="07:00 - 22:00"
                 android:textColor="#000000"
@@ -187,9 +187,9 @@
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="334dp"
+                android:layout_width="0dp"
                 android:layout_height="35dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="32dp"
                 android:gravity="center|left"
                 android:text="Liên hệ"
                 android:textColor="#000000"
@@ -201,9 +201,9 @@
 
             <TextView
                 android:id="@+id/txtNumberPhoneStroreDetail"
-                android:layout_width="334dp"
+                android:layout_width="0dp"
                 android:layout_height="30dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="32dp"
                 android:gravity="center|left"
                 android:text="0358426655"
                 android:textColor="#000000"
