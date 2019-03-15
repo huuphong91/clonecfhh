@@ -1,6 +1,5 @@
 package com.example.thecoffeehouse.order.drinks;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.Toast;
 
 import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.data.model.product.DataItem;
-import com.example.thecoffeehouse.order.adapter.OnOrderListItemInteractionListener;
 import com.example.thecoffeehouse.order.adapter.OrderProductAdapter;
 
 import java.util.ArrayList;
@@ -26,7 +24,6 @@ public class DrinksFragment extends Fragment implements DrinksView {
     private RecyclerView mListProduct;
     private DrinksPresenter orderPresenter;
     private OrderProductAdapter mAdapter;
-    private OnOrderListItemInteractionListener mListener;
 
     public static DrinksFragment newInstance() {
         DrinksFragment fragment = new DrinksFragment();
@@ -57,7 +54,6 @@ public class DrinksFragment extends Fragment implements DrinksView {
         List<DataItem> listProducts = new ArrayList<>();
         mAdapter = new OrderProductAdapter(getContext(), listProducts);
         mListProduct.setAdapter(mAdapter);
-        mAdapter.setListener(mListener);
     }
 
     private void setupMVP() {
@@ -89,13 +85,5 @@ public class DrinksFragment extends Fragment implements DrinksView {
     public void onResume() {
         super.onResume();
         getProduct();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnOrderListItemInteractionListener) {
-            mListener = (OnOrderListItemInteractionListener) context;
-        }
     }
 }

@@ -14,12 +14,14 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/white">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
+                app:civ_border_color="#FFF"
+                app:civ_border_width="1dp"
                 android:id="@+id/news_account_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_margin="@dimen/activity_margin"
-                android:src="@mipmap/ic_person"
+                android:src="@drawable/atv"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

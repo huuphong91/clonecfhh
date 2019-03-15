@@ -3,12 +3,12 @@ package com.example.thecoffeehouse;
 public class Constant {
 
     public static final String USER = "user";
-    public static final String DATA_ITEM = "dataItem";
     public static final String NEWS_FRAGMENT = "newsFragment";
     public static final String ORDER_FRAGMENT = "orderFragment";
     public static final String PROFILE_FRAGMENT = "profileFragment";
     public static final String STORE_FRAGMENT = "storeFragment";
     public static final String LOGIN_FRAGMENT = "loginFragment";
+    public static String FIRST_UPDATE_FRAGMENT = "firstupdateFragment";
     public static final String TAG_DRINKS = "DRINKS";
     public static final String TAG_FOOD = "FOOD";
     public static final String EDIT_PROFILE_FRAGMENT = "editProfileFragment";
