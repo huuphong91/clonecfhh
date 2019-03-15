@@ -1,10 +1,10 @@
-package com.teamducati.cloneappcfh.data.network.local.repository;
+package com.teamducati.cloneappcfh.data.local.repository;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 
-import com.teamducati.cloneappcfh.data.network.local.NotificationNewsDatabase;
-import com.teamducati.cloneappcfh.data.network.local.dao.NotificationDao;
+import com.teamducati.cloneappcfh.data.local.NotificationNewsDatabase;
+import com.teamducati.cloneappcfh.data.local.dao.NotificationDao;
 import com.teamducati.cloneappcfh.entity.Notification;
 
 import java.util.List;

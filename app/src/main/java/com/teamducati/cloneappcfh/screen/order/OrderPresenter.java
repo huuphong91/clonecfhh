@@ -2,7 +2,7 @@ package com.teamducati.cloneappcfh.screen.order;
 
 import android.util.Log;
 
-import com.teamducati.cloneappcfh.data.network.RetrofitConfig;
+import com.teamducati.cloneappcfh.data.network.RetrofitFactory;
 import com.teamducati.cloneappcfh.entity.api_order.ItemProductResponse;
 
 import io.reactivex.Observer;
@@ -27,7 +27,7 @@ public class OrderPresenter implements OrderContract.Presenter {
 
     @Override
     public void onGetAllProductPresenter() {
-        RetrofitConfig.getInstanceRetrofitInterface().getAllProduct()
+        RetrofitFactory.getInstanceRetrofitInterface().getAllProduct()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ItemProductResponse>() {

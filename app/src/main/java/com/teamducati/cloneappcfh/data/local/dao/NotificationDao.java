@@ -1,4 +1,4 @@
-package com.teamducati.cloneappcfh.data.network.local.dao;
+package com.teamducati.cloneappcfh.data.local.dao;
 
 import com.teamducati.cloneappcfh.entity.Notification;
 

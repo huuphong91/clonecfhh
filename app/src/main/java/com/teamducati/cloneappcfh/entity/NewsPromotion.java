@@ -3,7 +3,17 @@ package com.teamducati.cloneappcfh.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class NewsPromotion {
+
     @SerializedName("id")
     @Expose
     private String id;
@@ -40,102 +50,4 @@ public class NewsPromotion {
     @SerializedName("shareUrl")
     @Expose
     private String shareUrl;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public Object getContent() {
-        return content;
-    }
-
-    public void setContent(Object content) {
-        this.content = content;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public Object getAction() {
-        return action;
-    }
-
-    public void setAction(Object action) {
-        this.action = action;
-    }
-
-    public Object getKey() {
-        return key;
-    }
-
-    public void setKey(Object key) {
-        this.key = key;
-    }
-
-    public Object getButton() {
-        return button;
-    }
-
-    public void setButton(Object button) {
-        this.button = button;
-    }
-
-    public Object getDeeplink() {
-        return deeplink;
-    }
-
-    public void setDeeplink(Object deeplink) {
-        this.deeplink = deeplink;
-    }
-
-    public Object getEffects() {
-        return effects;
-    }
-
-    public void setEffects(Object effects) {
-        this.effects = effects;
-    }
-
-    public String getShareUrl() {
-        return shareUrl;
-    }
-
-    public void setShareUrl(String shareUrl) {
-        this.shareUrl = shareUrl;
-    }
-
-
 }

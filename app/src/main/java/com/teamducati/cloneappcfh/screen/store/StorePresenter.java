@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.teamducati.cloneappcfh.data.network.RetrofitConfig;
+import com.teamducati.cloneappcfh.data.network.RetrofitFactory;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StoresItem;
 import java.util.List;
 import androidx.core.content.ContextCompat;
@@ -19,12 +19,12 @@ import io.reactivex.schedulers.Schedulers;
 public class StorePresenter implements StoreContract.Presenter {
 
     private StoreContract.View mStoreView;
-    private RetrofitConfig mRetrofitConfig;
+    private RetrofitFactory mRetrofitFactory;
 
     public StorePresenter(StoreContract.View storeView) {
         this.mStoreView = storeView;
         mStoreView.setPresenter(this);
-        mRetrofitConfig = new RetrofitConfig();
+        mRetrofitFactory = new RetrofitFactory();
     }
 
     @Override
@@ -41,7 +41,7 @@ public class StorePresenter implements StoreContract.Presenter {
 
     @Override
     public void onGetAllStore() {
-        mRetrofitConfig.getInstanceRetrofit().getAllStoreMap()
+        mRetrofitFactory.getInstanceRetrofitInterface().getAllStoreMap()
                 .subscribeOn(Schedulers.io())
                 .flatMap(apiStore -> Observable.fromIterable(apiStore.getStates()))
                 .flatMap(statesItem -> Observable.fromIterable(statesItem.getDistricts()))

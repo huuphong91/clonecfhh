@@ -1,4 +1,4 @@
-package com.teamducati.cloneappcfh.data.network.local.repository;
+package com.teamducati.cloneappcfh.data.local.repository;
 
 /*
  * Copyright (C) 2018 Google Inc.

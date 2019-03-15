@@ -1,7 +1,7 @@
 package com.teamducati.cloneappcfh.screen.news;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
-import com.teamducati.cloneappcfh.data.network.RetrofitConfig;
+import com.teamducati.cloneappcfh.data.network.RetrofitFactory;
 import com.teamducati.cloneappcfh.entity.News;
 import com.teamducati.cloneappcfh.entity.NewsPromotion;
 
@@ -17,18 +17,18 @@ public class NewsPresenter extends FirebaseMessagingService implements NewsContr
     private NewsContract.View mNewsView;
     private CompositeDisposable mCompositeDisposable;
     private Disposable disposable;
-    private RetrofitConfig retrofitConfig;
+    private RetrofitFactory retrofitFactory;
     public NewsPresenter(NewsContract.View newsView) {
         this.mNewsView = newsView;
         mNewsView.setPresenter(this);
         mCompositeDisposable = new CompositeDisposable();
-        retrofitConfig = new RetrofitConfig();
+        retrofitFactory = new RetrofitFactory();
 
     }
 
     @Override
     public void onAllListNewsPromotion() {
-        retrofitConfig.getInstanceRetrofit().getAllNewsPromotion()
+        retrofitFactory.getInstanceRetrofitInterface().getAllNewsPromotion()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<NewsPromotion>>() {
@@ -58,7 +58,7 @@ public class NewsPresenter extends FirebaseMessagingService implements NewsContr
 
     @Override
     public void onAllListNews() {
-        retrofitConfig.getInstanceRetrofit().getAllNews()
+        retrofitFactory.getInstanceRetrofitInterface().getAllNews()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<List<News>>() {

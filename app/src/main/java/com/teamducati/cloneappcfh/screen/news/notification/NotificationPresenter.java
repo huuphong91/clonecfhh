@@ -3,7 +3,7 @@ package com.teamducati.cloneappcfh.screen.news.notification;
 import android.content.Context;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
-import com.teamducati.cloneappcfh.data.network.local.repository.NotificationRepository;
+import com.teamducati.cloneappcfh.data.local.repository.NotificationRepository;
 import com.teamducati.cloneappcfh.entity.Notification;
 
 import java.util.List;

@@ -4,24 +4,13 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class APIStore {
 
-	@SerializedName("states")
-	private List<StatesItem> states;
-
-	public void setStates(List<StatesItem> states){
-		this.states = states;
-	}
-
-	public List<StatesItem> getStates(){
-		return states;
-	}
-
-	@Override
- 	public String toString(){
-		return 
-			"APIStore{" +
-			"states = '" + states + '\'' + 
-			"}";
-		}
+    @SerializedName("states")
+    private List<StatesItem> states;
 }

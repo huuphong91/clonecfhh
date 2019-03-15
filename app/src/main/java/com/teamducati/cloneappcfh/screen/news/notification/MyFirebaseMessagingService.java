@@ -30,7 +30,7 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.teamducati.cloneappcfh.R;
-import com.teamducati.cloneappcfh.data.network.local.repository.NotificationRepository;
+import com.teamducati.cloneappcfh.data.local.repository.NotificationRepository;
 import com.teamducati.cloneappcfh.entity.Notification;
 import com.teamducati.cloneappcfh.screen.main.MainActivity;
 

@@ -1,9 +1,9 @@
-package com.teamducati.cloneappcfh.data.network.local;
+package com.teamducati.cloneappcfh.data.local;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.teamducati.cloneappcfh.data.network.local.dao.NotificationDao;
+import com.teamducati.cloneappcfh.data.local.dao.NotificationDao;
 import com.teamducati.cloneappcfh.entity.Notification;
 
 import java.util.ArrayList;

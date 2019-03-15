@@ -10,7 +10,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 
-public interface RetrofitInterface {
+public interface RetrofitApi {
 
     @GET("v2/news_promotion/")
     Observable<List<NewsPromotion>> getAllNewsPromotion();
