@@ -76,7 +76,7 @@ public class NewsNotificationActivity extends AppCompatActivity implements Notic
     private void initMappingViewId() {
         mRecyclerView = findViewById(R.id.recycler_view_news_notification);
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout_notification);
-        imgCloseNotificaton = findViewById(R.id.img_close_notificaton);
+        imgCloseNotificaton = findViewById(R.id.imgCloseRepickShipLocation);
     }
 
     @Override

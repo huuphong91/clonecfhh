@@ -3,6 +3,7 @@ package com.teamducati.cloneappcfh.screen.main;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -51,11 +52,17 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
     private StoreFragment mStoreFragment;
     private AccountFragment mAccountFragment;
 
+    private boolean isFirstClickOnOrderTab;
+    private boolean isFirstClickOnStoreTab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        isFirstClickOnOrderTab = true;
+        isFirstClickOnStoreTab = true;
 
         mFusedLocation = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(this));
 
@@ -113,12 +120,19 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
             case R.id.navigation_order:
                 positionFragment = 1;
                 setCurrentItem(positionFragment);
-                getLocation();
+                if (isFirstClickOnOrderTab) {
+                    getLocation();
+                    isFirstClickOnOrderTab = false;
+                }
+
                 return true;
             case R.id.navigation_store:
                 positionFragment = 2;
                 setCurrentItem(positionFragment);
-                getLocation();
+                if (isFirstClickOnStoreTab) {
+                    getLocation();
+                    isFirstClickOnStoreTab = false;
+                }
                 return true;
             case R.id.navigation_account:
                 positionFragment = 3;
