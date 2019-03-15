@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class Address {
 
+    private String positionShipTitle;
     @SerializedName("country")
     private String country;
     @SerializedName("street")
