@@ -1,10 +1,9 @@
 package com.example.thecoffeehouse.data.model.product;
 
-import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
-public class DataItem implements Serializable {
+public class DataItem{
 
 	@SerializedName("categ_id")
 	private List<Integer> categId;

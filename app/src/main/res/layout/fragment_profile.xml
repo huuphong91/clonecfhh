@@ -8,11 +8,37 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <Toolbar
+        <androidx.appcompat.widget.Toolbar
+            android:background="@color/colorOrange"
+            android:id="@+id/frag_profile_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"></Toolbar>
+            android:layout_height="?attr/actionBarSize">
+            <RelativeLayout
+                android:id="@+id/frag_profile_tb_login"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/frag_profile_image"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/img_user_white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="#FFFF"
+                    android:textSize="20sp"
+                    android:text="Đăng nhập"
+                    android:layout_toRightOf="@+id/frag_profile_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_profile"
         android:id="@+id/content_profile"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!--#6E6D6D-->
