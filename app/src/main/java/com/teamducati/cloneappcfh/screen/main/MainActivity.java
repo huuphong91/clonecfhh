@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
             return;
         }
 
-        // Setup Places Client
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), apiKey);
         }
