@@ -17,6 +17,8 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -34,6 +36,8 @@ public class OrderFragment extends Fragment implements OrderContract.View {
 
     @BindView(R.id.tvShipAddress)
     TextView tvShipAddress;
+    @BindView(R.id.toolBarShipLocation)
+    ConstraintLayout mToolBarShipLocation;
     @BindView(R.id.tabs111)
     TabLayout tabLayout;
     @BindView(R.id.viewpager111)
@@ -61,6 +65,11 @@ public class OrderFragment extends Fragment implements OrderContract.View {
         tabLayout.setupWithViewPager(viewPager);
 
         mPresenter.onGetAllProductPresenter();
+
+        mToolBarShipLocation.setOnClickListener(v -> {
+            DialogFragment dialogFragment = RepickShipAddressDialog.newInstance();
+            dialogFragment.show(getChildFragmentManager(), "tag");
+        });
     }
 
     private void setupViewPager(ViewPager viewPager) {
