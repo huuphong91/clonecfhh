@@ -20,4 +20,5 @@
     <string name="giao_hang_den">Giao hàng đến</string>
     <string name="ship_address">Nhập địa chỉ giao hàng</string>
     <string name="address_to_ship">Địa chỉ giao hàng</string>
+    <string name="error_api_key">No API key defined in gradle.properties</string>
 </resources>
