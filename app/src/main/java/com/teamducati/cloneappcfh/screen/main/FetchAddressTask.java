@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-class FetchAddressTask extends AsyncTask<Location, Void, String> {
+public class FetchAddressTask extends AsyncTask<Location, Void, String> {
 
     @SuppressLint("StaticFieldLeak")
     private Context mContext;
@@ -64,7 +64,7 @@ class FetchAddressTask extends AsyncTask<Location, Void, String> {
         super.onPostExecute(lastLocation);
     }
 
-    interface OnTaskCompleted {
+    public interface OnTaskCompleted {
         void onTaskCompleted(String result);
     }
 }

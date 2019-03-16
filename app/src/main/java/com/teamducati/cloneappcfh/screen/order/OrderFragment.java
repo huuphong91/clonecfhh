@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.libraries.places.api.Places;
 import com.google.android.material.tabs.TabLayout;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.api_order.ItemProductResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +32,7 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OrderFragment extends Fragment implements OrderContract.View {
+public class OrderFragment extends Fragment implements OrderContract.View, RepickShipAddressDialog.OnClickItem {
 
     public static final String TAG = OrderFragment.class.getName();
 
@@ -46,6 +48,8 @@ public class OrderFragment extends Fragment implements OrderContract.View {
     private Unbinder unbinder;
     private OrderContract.Presenter mPresenter;
     private ItemProductResponse itemProductResponse;
+
+    private DialogFragment dialogFragment = RepickShipAddressDialog.newInstance();
 
     public OrderFragment() {
 
@@ -66,10 +70,12 @@ public class OrderFragment extends Fragment implements OrderContract.View {
 
         mPresenter.onGetAllProductPresenter();
 
+        ((RepickShipAddressDialog)dialogFragment).setOnClickItem(this);
+
         mToolBarShipLocation.setOnClickListener(v -> {
-            DialogFragment dialogFragment = RepickShipAddressDialog.newInstance();
             dialogFragment.show(getChildFragmentManager(), "tag");
         });
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -93,6 +99,11 @@ public class OrderFragment extends Fragment implements OrderContract.View {
     @Override
     public void setPresenter(OrderContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Override
+    public void onClickItem(String address) {
+        tvShipAddress.setText(address);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -126,6 +137,7 @@ public class OrderFragment extends Fragment implements OrderContract.View {
 
     public void setLocation(String address) {
         tvShipAddress.setText(address);
+        ((RepickShipAddressDialog)dialogFragment).setLocation(address);
     }
 
     @Override

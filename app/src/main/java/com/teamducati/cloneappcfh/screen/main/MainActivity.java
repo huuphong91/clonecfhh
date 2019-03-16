@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
@@ -63,6 +64,18 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
 
         isFirstClickOnOrderTab = true;
         isFirstClickOnStoreTab = true;
+
+        String apiKey = getString(R.string.places_api_key);
+
+        if (apiKey.equals("")) {
+            Toast.makeText(this, getString(R.string.error_api_key), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Setup Places Client
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
 
         mFusedLocation = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(this));
 
@@ -142,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
         return false;
     };
 
-    private void getLocation() {
+    public void getLocation() {
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]
@@ -156,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
                 }
             });
         }
-        mOrderFragment.setLocation("Loading...");
     }
 
     private void setCurrentItem(int position) {
