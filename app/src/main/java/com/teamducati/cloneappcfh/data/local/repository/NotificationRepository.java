@@ -2,6 +2,8 @@ package com.teamducati.cloneappcfh.data.local.repository;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.util.Log;
 
 import com.teamducati.cloneappcfh.data.local.NotificationNewsDatabase;
 import com.teamducati.cloneappcfh.data.local.dao.NotificationDao;
@@ -9,6 +11,7 @@ import com.teamducati.cloneappcfh.entity.Notification;
 
 import java.util.List;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.LiveData;
 import io.reactivex.Completable;
 import io.reactivex.schedulers.Schedulers;
@@ -35,6 +38,7 @@ public class NotificationRepository implements NotificationLocalDataSource {
                 .subscribe(() -> {
                     //Do nothing
         });
+
 //        new insertAsyncTask(mNotificationDao).execute(notification);
     }
 

@@ -5,18 +5,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/custom_bottom_line_notifications"
     android:gravity="center_horizontal">
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="6dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="6dp"
-        android:padding="6dp"
-        cardview:cardElevation="4dp"
-        cardview:cardCornerRadius="5dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,9 +18,8 @@
                 android:id="@+id/img_news_item_ring_notification"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-
                 android:layout_marginRight="6dp"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="4dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/resources_images_icons_ic_stars_yellow_24px"/>
             <TextView
@@ -47,8 +38,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txt_news_item_tilte_notification"
                 android:layout_marginLeft="8dp"
+                android:paddingRight="16dp"
                 android:layout_toRightOf="@+id/img_news_item_ring_notification"
                 android:text="Content"
+                android:lineSpacingExtra="6dp"
                 android:textSize="12sp"
                 android:textColor="#333333" />
 
@@ -63,5 +56,5 @@
                 android:textSize="12sp"
                 android:textColor="#333333"/>
         </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+
 </RelativeLayout>
