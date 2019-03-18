@@ -1,6 +1,7 @@
 package com.teamducati.cloneappcfh.screen.news;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,13 +13,14 @@ import android.widget.ViewFlipper;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.teamducati.cloneappcfh.R;
-import com.teamducati.cloneappcfh.screen.news.adapter.NewsListAdapter;
-import com.teamducati.cloneappcfh.screen.news.adapter.NewsPromotionListAdapter;
 import com.teamducati.cloneappcfh.entity.News;
 import com.teamducati.cloneappcfh.entity.NewsPromotion;
 import com.teamducati.cloneappcfh.entity.User;
 import com.teamducati.cloneappcfh.screen.main.MainViewPager;
+import com.teamducati.cloneappcfh.screen.news.adapter.NewsListAdapter;
+import com.teamducati.cloneappcfh.screen.news.adapter.NewsPromotionListAdapter;
 import com.teamducati.cloneappcfh.screen.news.notification.NewsNotificationDialogFragment;
+import com.teamducati.cloneappcfh.screen.news.notificationsdetails.NotificationDetailsDialogFragment;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
 
 import java.util.List;
@@ -70,6 +72,7 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         view = inflater.inflate(R.layout.fragment_news, container, false);
         initMappingViewId();
         initEvent();
+        initShowDialogNotification();
         initUI();
         return view;
     }
@@ -79,6 +82,7 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         initRecyclerViewNews();
         initRecyclerViewNewsPromotion();
     }
+
 
     private void initEvent() {
         mainViewPager = new MainViewPager(getActivity(), null);
@@ -116,7 +120,19 @@ public class NewsFragment extends Fragment implements NewsContract.View {
             }
         });
     }
+    private void initShowDialogNotification() {
+        Intent intent = getActivity().getIntent();
+        if (intent.getStringExtra("firebase_notification") != null) {
+            NotificationDetailsDialogFragment newsNotificationDialogFragment =
+                    new NotificationDetailsDialogFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("data_notification", intent.getStringExtra("firebase_notification"));
+            newsNotificationDialogFragment.setArguments(bundle);
+            newsNotificationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
+        } else {
 
+        }
+    }
     private void initActionBar() {
         //ActivityUtils.removeAllDataObject(getActivity());
         userObj = new User();
