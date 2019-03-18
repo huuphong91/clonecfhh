@@ -54,3 +54,6 @@ captures/
 # Backup files
 *~
 .*.swp
+app/google-services.json
+.idea/assetWizardSettings.xml
+.idea/render.experimental.xml
