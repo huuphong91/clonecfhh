@@ -1,5 +1,6 @@
 package com.example.thecoffeehouse.main;
 
+import android.accounts.Account;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -10,11 +11,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.thecoffeehouse.R;
+import com.example.thecoffeehouse.data.model.product.DataItem;
 import com.example.thecoffeehouse.news.NewsFragment;
 import com.example.thecoffeehouse.order.OrderFragment;
+import com.example.thecoffeehouse.order.adapter.OnOrderListItemInteractionListener;
+import com.example.thecoffeehouse.order.detail.DetailDialogFragment;
 import com.example.thecoffeehouse.profile.ProfileFragment;
 import com.example.thecoffeehouse.store.views.StoreFragment;
-import com.facebook.accountkit.Account;
 import com.facebook.accountkit.AccountKit;
 import com.facebook.accountkit.AccountKitCallback;
 import com.facebook.accountkit.AccountKitError;
@@ -34,7 +37,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnOrderListItemInteractionListener {
 
     private BottomNavigationView navigation;
     private FragmentManager mFragmentManager;
@@ -122,25 +125,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void checkLogged() {
-        AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
-            @Override
-            public void onSuccess(final Account account) {
-                numberPhone = "0" + account.getPhoneNumber().getPhoneNumber();
-                Toast.makeText(MainActivity.this, "Logged", Toast.LENGTH_SHORT).show();
-                loadUser();
-            }
-
-            @Override
-            public void onError(AccountKitError accountKitError) {
-                mUser = null;
-                Toast.makeText(MainActivity.this, "Chua Login", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    private void checkLogged() {
+//        AccountKit.getCurrentAccount(new AccountKitCallback<Account> () {
+//            @Override
+//            public void onSuccess(final Account account) {
+//                numberPhone = "0" + account.getPhoneNumber();
+//                Toast.makeText(MainActivity.this, "Logged", Toast.LENGTH_SHORT).show();
+//                loadUser();
+//            }
+//
+//            @Override
+//            public void onError(AccountKitError accountKitError) {
+//                mUser = null;
+//                Toast.makeText(MainActivity.this, "Chua Login", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     private void loadUser() {
-        mDataRef.child(numberPhone).addValueEventListener(new ValueEventListener() {
+        mDataRef.child(numberPhone).addValueEventListener(new ValueEventListener () {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getChildrenCount() != 0) {
@@ -157,4 +160,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onItemClickListener(DataItem dataItem) {
+        DetailDialogFragment.newInstance (dataItem).show (mFragmentManager,"data");
+    }
 }

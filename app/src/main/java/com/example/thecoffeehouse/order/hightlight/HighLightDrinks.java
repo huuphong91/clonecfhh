@@ -1,4 +1,4 @@
-package com.example.thecoffeehouse.order.drinks;
+package com.example.thecoffeehouse.order.hightlight;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +11,10 @@ import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.data.model.product.DataItem;
 import com.example.thecoffeehouse.order.adapter.OnOrderListItemInteractionListener;
 import com.example.thecoffeehouse.order.adapter.OrderProductAdapter;
+import com.example.thecoffeehouse.order.drinks.DrinksFragment;
+import com.example.thecoffeehouse.order.drinks.DrinksPresenter;
+import com.example.thecoffeehouse.order.drinks.DrinksPresenterImp;
+import com.example.thecoffeehouse.order.drinks.DrinksView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +25,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class DrinksFragment extends Fragment implements DrinksView {
+public class HighLightDrinks extends Fragment implements HighLightDrinksView {
 
     private RecyclerView mListProduct;
-    private DrinksPresenter orderPresenter;
+    private HighLightPresenter orderPresenter;
     private OrderProductAdapter mAdapter;
     private OnOrderListItemInteractionListener mListener;
 
-    public static DrinksFragment newInstance() {
-        DrinksFragment fragment = new DrinksFragment ();
+    public static HighLightDrinks newInstance() {
+        HighLightDrinks fragment = new HighLightDrinks ();
         return fragment;
     }
 
@@ -69,7 +73,7 @@ public class DrinksFragment extends Fragment implements DrinksView {
     }
 
     private void setupMVP() {
-        orderPresenter = new DrinksPresenter (this);
+        orderPresenter = new HighLightPresenter (this);
     }
 
     @Override
@@ -82,7 +86,7 @@ public class DrinksFragment extends Fragment implements DrinksView {
         List<DataItem> list = new ArrayList<> ();
         if (orderResponse != null) {
             for (DataItem item : orderResponse) {
-                if (item.getCategId ().get (0) != 9) {
+                if (item.getCategId ().get (0) == 9) {
                     list.add (item);
                 }
             }

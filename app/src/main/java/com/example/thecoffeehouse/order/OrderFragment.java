@@ -4,14 +4,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.order.drinks.DrinksFragment;
-import com.example.thecoffeehouse.order.food.FoodFragment;
+import com.example.thecoffeehouse.order.hightlight.HighLightDrinks;
+import com.example.thecoffeehouse.order.search.SearchDialogFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -20,7 +23,9 @@ public class OrderFragment extends Fragment {
     private TabLayout mTabLayout;
     private FragmentManager mFragmentManager;
     private DrinksFragment drinksFragment;
-    private FoodFragment foodFragment;
+    private HighLightDrinks highLightDrinks;
+    private ImageView imgViewSearch;
+    public ConstraintLayout constraintLayout;
 
     public static OrderFragment newInstance() {
         OrderFragment fragment = new OrderFragment();
@@ -43,16 +48,29 @@ public class OrderFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initView(view);
+        initEvent();
         addTab(drinksFragment);
+    }
+
+    private void initEvent() {
+        imgViewSearch.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick(View v) {
+                SearchDialogFragment.newInstance ().show (mFragmentManager,"data");
+            }
+        });
+        constraintLayout.setVisibility (View.GONE);
     }
 
     private void initView(View view) {
         mFragmentManager = getFragmentManager();
         mTabLayout = view.findViewById(R.id.tabLayout);
+        imgViewSearch= view.findViewById (R.id.order_action_search);
+        constraintLayout=view.findViewById (R.id.layout_display_cart);
         mTabLayout.addTab(mTabLayout.newTab().setText("Drinks"));
         mTabLayout.addTab(mTabLayout.newTab().setText("Food"));
         mTabLayout.setOnTabSelectedListener(onTabSelectedListener);
-        foodFragment = FoodFragment.newInstance();
+        highLightDrinks = HighLightDrinks.newInstance();
         drinksFragment = DrinksFragment.newInstance();
     }
 
@@ -65,14 +83,13 @@ public class OrderFragment extends Fragment {
                     addTab(drinksFragment);
                     break;
                 case 1:
-                    addTab(foodFragment);
+                    addTab(highLightDrinks);
                     break;
             }
         }
 
         @Override
         public void onTabUnselected(TabLayout.Tab tab) {
-
         }
 
         @Override
