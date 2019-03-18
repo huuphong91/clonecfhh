@@ -3,11 +3,14 @@ package com.teamducati.cloneappcfh.screen.main;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.adapter.MainFragmentsPagerAdapter;
 import com.teamducati.cloneappcfh.screen.account.AccountFragment;
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
     BottomNavigationView mNavigationView;
     @BindView(R.id.viewPager)
     MainViewPager mViewPager;
+
     private FusedLocationProviderClient mFusedLocation;
 
     private NewsPresenter mNewsPresenter;
@@ -48,37 +52,29 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
     private OrderFragment mOrderFragment;
     private StoreFragment mStoreFragment;
     private AccountFragment mAccountFragment;
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = item -> {
-        int positionFragment;
-        switch (item.getItemId()) {
-            case R.id.navigation_news:
-                positionFragment = 0;
-                setCurrentItem(positionFragment);
-                return true;
-            case R.id.navigation_order:
-                positionFragment = 1;
-                setCurrentItem(positionFragment);
-                getLocation();
-                return true;
-            case R.id.navigation_store:
-                positionFragment = 2;
-                setCurrentItem(positionFragment);
-                getLocation();
-                return true;
-            case R.id.navigation_account:
-                positionFragment = 3;
-                setCurrentItem(positionFragment);
-                return true;
-        }
-        return false;
-    };
+
+    private boolean isFirstClickOnOrderTab;
+    private boolean isFirstClickOnStoreTab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        isFirstClickOnOrderTab = true;
+        isFirstClickOnStoreTab = true;
+
+        String apiKey = getString(R.string.places_api_key);
+
+        if (apiKey.equals("")) {
+            Toast.makeText(this, getString(R.string.error_api_key), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
 
         mFusedLocation = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(this));
         initData();
@@ -129,7 +125,40 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
         mViewPager.setAdapter(mFragmentsPagerAdapter);
     }
 
-    private void getLocation() {
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = item -> {
+        int positionFragment;
+        switch (item.getItemId()) {
+            case R.id.navigation_news:
+                positionFragment = 0;
+                setCurrentItem(positionFragment);
+                return true;
+            case R.id.navigation_order:
+                positionFragment = 1;
+                setCurrentItem(positionFragment);
+                if (isFirstClickOnOrderTab) {
+                    getLocation();
+                    isFirstClickOnOrderTab = false;
+                }
+
+                return true;
+            case R.id.navigation_store:
+                positionFragment = 2;
+                setCurrentItem(positionFragment);
+                if (isFirstClickOnStoreTab) {
+                    getLocation();
+                    isFirstClickOnStoreTab = false;
+                }
+                return true;
+            case R.id.navigation_account:
+                positionFragment = 3;
+                setCurrentItem(positionFragment);
+                return true;
+        }
+        return false;
+    };
+
+    public void getLocation() {
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]
@@ -143,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
                 }
             });
         }
-        mOrderFragment.setLocation("Loading...");
     }
 
     private void setCurrentItem(int position) {

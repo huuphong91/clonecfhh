@@ -10,6 +10,8 @@ import lombok.Setter;
 public class Address {
 
     private String positionShipTitle;
+    private String imgUrl;
+
     @SerializedName("country")
     private String country;
     @SerializedName("street")

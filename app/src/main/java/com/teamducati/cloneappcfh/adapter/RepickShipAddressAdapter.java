@@ -1,11 +1,14 @@
 package com.teamducati.cloneappcfh.adapter;
 
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.Address;
 import com.teamducati.cloneappcfh.utils.Constants;
@@ -21,7 +24,14 @@ public class RepickShipAddressAdapter extends RecyclerView.Adapter<RecyclerView.
     private static final int POSITION_ADDRESS_TYPE = 1;
     private static final int SHIP_ADDRESS_RESULT_TYPE = 2;
 
-    private List<Address> mAddressList = new ArrayList<>();
+    private List<Address> mAddressList;
+
+    private OnClickListener mListener;
+
+    public RepickShipAddressAdapter(OnClickListener listener) {
+        this.mAddressList = new ArrayList<>();
+        this.mListener = listener;
+    }
 
     @NonNull
     @Override
@@ -47,8 +57,7 @@ public class RepickShipAddressAdapter extends RecyclerView.Adapter<RecyclerView.
         int itemType = getItemViewType(position);
         switch (itemType) {
             case POSITION_ADDRESS_TYPE:
-                ((PositionAddressViewHolder)holder).tvPositionTitle.setText(mAddressList.get(position).getPositionShipTitle());
-                ((PositionAddressViewHolder)holder).tvPositionAddress.setText(mAddressList.get(position).getFullAddress());
+                ((PositionAddressViewHolder) holder).bindPositionAddress(position);
                 break;
             case SHIP_ADDRESS_RESULT_TYPE:
                 ((ShipAddressResultViewHolder) holder).tvShipAddressResult.setText(mAddressList.get(position).getFullAddress());
@@ -60,7 +69,7 @@ public class RepickShipAddressAdapter extends RecyclerView.Adapter<RecyclerView.
     public int getItemViewType(int position) {
         if (mAddressList.get(position).getPositionShipTitle() != null) {
             return POSITION_ADDRESS_TYPE;
-        } else{
+        } else {
             return SHIP_ADDRESS_RESULT_TYPE;
         }
     }
@@ -70,30 +79,61 @@ public class RepickShipAddressAdapter extends RecyclerView.Adapter<RecyclerView.
         return mAddressList.size();
     }
 
-    public void displayPositionShipTitle() {
+    public void displayPositionShipTitle(String currentAddress) {
+        mAddressList.clear();
         for (int i = 0; i < Constants.positionShipTitle.length; i++) {
             Address address = new Address();
-            address.setPositionShipTitle(Constants.positionShipTitle[i]);
+            if (i == 0) {
+                address.setPositionShipTitle(Constants.positionShipTitle[0]);
+                address.setImgUrl(Constants.imgPositionShipUrl[0]);
+                address.setFullAddress(currentAddress);
+            } else {
+                address.setPositionShipTitle(Constants.positionShipTitle[i]);
+                address.setImgUrl(Constants.imgPositionShipUrl[i]);
+            }
+
             mAddressList.add(address);
         }
         notifyDataSetChanged();
     }
 
-    public void displayShipAddressResult(List<Address> results) {
-        mAddressList = results;
+    public void displayShipAddressResults(List<String> results) {
+        mAddressList.clear();
+        for (int i = 0; i < results.size(); i++) {
+            Address address = new Address();
+            address.setFullAddress(results.get(i));
+            mAddressList.add(address);
+        }
+        notifyDataSetChanged();
     }
 
     class PositionAddressViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvPositionTitle;
-        TextView tvPositionAddress;
-        ImageView imgPositionShip;
+        private TextView tvPositionTitle;
+        private TextView tvPositionAddress;
+        private ImageView imgPositionShip;
 
         PositionAddressViewHolder(@NonNull View itemView) {
             super(itemView);
             tvPositionAddress = itemView.findViewById(R.id.tvPositionAddress);
             tvPositionTitle = itemView.findViewById(R.id.tvPositionTitle);
             imgPositionShip = itemView.findViewById(R.id.imgPositionShip);
+            itemView.setOnClickListener(v -> {
+                mListener.onCurrentLocationClick();
+            });
+        }
+
+        void bindPositionAddress(int position) {
+            tvPositionTitle.setText(mAddressList
+                    .get(position)
+                    .getPositionShipTitle());
+            tvPositionAddress.setText(mAddressList
+                    .get(position)
+                    .getFullAddress());
+            Uri path = Uri.parse("android.resource://com.teamducati.cloneappcfh/drawable/" + mAddressList.get(position).getImgUrl());
+            Glide.with(itemView.getContext())
+                    .load(path)
+                    .into(imgPositionShip);
         }
     }
 
@@ -104,8 +144,17 @@ public class RepickShipAddressAdapter extends RecyclerView.Adapter<RecyclerView.
         ShipAddressResultViewHolder(@NonNull View itemView) {
             super(itemView);
             tvShipAddressResult = itemView.findViewById(R.id.tvShipAddressResult);
+            itemView.setOnClickListener(v -> {
+                mListener.onPickLocationClick(mAddressList.get(getAdapterPosition()).getFullAddress());
+            });
         }
     }
 
+    public interface OnClickListener {
+        void onCurrentLocationClick();
 
+        void onRecentLocationCLick();
+
+        void onPickLocationClick(String address);
+    }
 }
