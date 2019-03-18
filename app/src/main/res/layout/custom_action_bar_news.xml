@@ -4,17 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="56dp"
     xmlns:cardview="http://schemas.android.com/apk/res-auto"
-    android:background="@android:color/white">
-
-    <androidx.cardview.widget.CardView
-        cardview:cardCornerRadius="5dp"
-        cardview:cardElevation="2dp"
-        android:layout_width="match_parent"
-        android:layout_height="56dp">
-
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    android:background="@drawable/custom_bottom_line_action_bar">
 
             <ImageView
                 android:id="@+id/img_news_person"
@@ -27,23 +17,22 @@
             <Button
                 android:id="@+id/btn_login"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="32dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="16dp"
                 android:layout_toRightOf="@id/img_news_person"
                 android:background="@drawable/custom_button"
                 android:text="Đăng Nhập"
+                android:textSize="10dp"
                 android:textAllCaps="false"
                 android:textColor="@drawable/custom_button_selector" />
 
             <ImageView
-                android:id="@+id/img_news_notification"
+                android:id="@+id/img_news_notification_sign_out"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="16dp"
-                android:src="@drawable/icons_bell_" />
+                android:src="@drawable/ic_notifications_grey_800_24dp" />
         </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-</RelativeLayout>

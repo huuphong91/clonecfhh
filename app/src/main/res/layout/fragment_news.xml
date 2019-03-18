@@ -5,7 +5,22 @@
     android:layout_height="match_parent"
     tools:context=".screen.news.NewsFragment">
 
-    <include layout="@layout/custom_action_bar_news" />
+    <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/view_flipper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/include_action_bar_news_sign_in"
+            layout="@layout/custom_action_bar_news_login" />
+
+        <include
+            android:id="@+id/include_action_bar_news_sign_out"
+            layout="@layout/custom_action_bar_news" />
+
+    </ViewFlipper>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,7 +48,8 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="4dp"
-                        android:text="Dành Cho Bạn" />
+                        android:text="Dành Cho Bạn"
+                        android:textColor="@android:color/black" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_news_promotion"
@@ -46,7 +62,8 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="4dp"
                         android:layout_marginBottom="4dp"
-                        android:text="Tin Tức" />
+                        android:text="Tin Tức"
+                        android:textColor="@android:color/black" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_news"

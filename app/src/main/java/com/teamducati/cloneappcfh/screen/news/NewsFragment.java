@@ -2,11 +2,13 @@ package com.teamducati.cloneappcfh.screen.news;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ViewFlipper;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.teamducati.cloneappcfh.R;
@@ -14,8 +16,10 @@ import com.teamducati.cloneappcfh.adapter.NewsListAdapter;
 import com.teamducati.cloneappcfh.adapter.NewsPromotionListAdapter;
 import com.teamducati.cloneappcfh.entity.News;
 import com.teamducati.cloneappcfh.entity.NewsPromotion;
+import com.teamducati.cloneappcfh.entity.User;
 import com.teamducati.cloneappcfh.screen.main.MainViewPager;
 import com.teamducati.cloneappcfh.screen.news.notification.NewsNotificationDialogFragment;
+import com.teamducati.cloneappcfh.utils.ActivityUtils;
 
 import java.util.List;
 
@@ -42,13 +46,19 @@ public class NewsFragment extends Fragment implements NewsContract.View {
 
     private MainViewPager mainViewPager;
 
-    private ImageView imgNotification;
+    private ImageView imgNotificationSignOut;
+
+    private ImageView imgNotificationSignIn;
 
     private Button btnLogin;
 
     private SwipeRefreshLayout swipeRefreshLayoutLayout;
 
     private BottomNavigationView bottomNavigationView;
+
+    private ViewFlipper mViewLayoutActionBar;
+
+    private User userObj;
 
     public NewsFragment() {
         // Required empty public constructor
@@ -65,6 +75,7 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     }
 
     private void initUI() {
+        initActionBar();
         initRecyclerViewNews();
         initRecyclerViewNewsPromotion();
     }
@@ -78,7 +89,16 @@ public class NewsFragment extends Fragment implements NewsContract.View {
                 bottomNavigationView.setSelectedItemId(R.id.navigation_account);
             }
         });
-        imgNotification.setOnClickListener(new View.OnClickListener() {
+        imgNotificationSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NewsNotificationDialogFragment newsNotificationDialogFragment =
+                        new NewsNotificationDialogFragment();
+                newsNotificationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
+
+            }
+        });
+        imgNotificationSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NewsNotificationDialogFragment newsNotificationDialogFragment =
@@ -95,6 +115,19 @@ public class NewsFragment extends Fragment implements NewsContract.View {
                 swipeRefreshLayoutLayout.setRefreshing(false);
             }
         });
+    }
+
+    private void initActionBar() {
+        //ActivityUtils.removeAllDataObject(getActivity());
+        userObj = new User();
+        userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
+        if (!(userObj == null)) {
+            Log.d("Data", userObj.toString());
+            mViewLayoutActionBar.setDisplayedChild(0);
+        } else {
+            Log.d("Data", "null data");
+            mViewLayoutActionBar.setDisplayedChild(1);
+        }
     }
 
     public void initRecyclerViewNewsPromotion() {
@@ -128,11 +161,13 @@ public class NewsFragment extends Fragment implements NewsContract.View {
 
         mRecyclerViewNewsPromotion = view.findViewById(R.id.recycler_view_news_promotion);
         mRecyclerViewNews = view.findViewById(R.id.recycler_view_news);
-        imgNotification = view.findViewById(R.id.img_news_notification);
+        imgNotificationSignIn = view.findViewById(R.id.img_news_notification_sign_in);
+        imgNotificationSignOut = view.findViewById(R.id.img_news_notification_sign_out);
         btnLogin = view.findViewById(R.id.btn_login);
         swipeRefreshLayoutLayout = view.findViewById(R.id.swipe_refresh_layout_news);
         //bottomNavigation
         bottomNavigationView = getActivity().findViewById(R.id.navigation);
+        mViewLayoutActionBar = view.findViewById(R.id.view_flipper);
     }
 
     @Override
