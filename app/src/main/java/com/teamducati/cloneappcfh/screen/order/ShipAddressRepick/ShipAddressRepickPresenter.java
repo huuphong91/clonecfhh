@@ -15,7 +15,7 @@ public class ShipAddressRepickPresenter implements ShipAddressRepickContract.Pre
 
     private List<String> addressList = new ArrayList<>();
 
-    public ShipAddressRepickPresenter(ShipAddressRepickContract.View mView) {
+    ShipAddressRepickPresenter(ShipAddressRepickContract.View mView) {
         this.mView = mView;
         mView.setPresenter(this);
     }
@@ -31,10 +31,8 @@ public class ShipAddressRepickPresenter implements ShipAddressRepickContract.Pre
     }
 
     @Override
-    public void loadShipAddressGooglePlaces(String input,
-                                            FindAutocompletePredictionsRequest.Builder builder,
+    public void loadShipAddressGooglePlaces(FindAutocompletePredictionsRequest.Builder builder,
                                             PlacesClient placesClient) {
-        builder.setQuery(input);
         Task<FindAutocompletePredictionsResponse> task =
                 placesClient.findAutocompletePredictions(builder.build());
         task.addOnSuccessListener(response -> {
@@ -42,7 +40,7 @@ public class ShipAddressRepickPresenter implements ShipAddressRepickContract.Pre
                     response.getAutocompletePredictions()) {
                 addressList.add(String.valueOf(autocompletePrediction.getFullText(null)));
             }
+            mView.showShipAddressResults(addressList);
         });
-        mView.showShipAddressResults(addressList);
     }
 }

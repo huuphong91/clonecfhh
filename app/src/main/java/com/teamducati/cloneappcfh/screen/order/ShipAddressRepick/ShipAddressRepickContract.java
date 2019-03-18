@@ -9,17 +9,17 @@ import java.util.List;
 
 public interface ShipAddressRepickContract {
     interface Presenter extends BasePresenter {
+
         void loadPositionShipAddressType();
 
-        void loadShipAddressGooglePlaces(String input,
-                                         FindAutocompletePredictionsRequest.Builder builder,
+        void loadShipAddressGooglePlaces(FindAutocompletePredictionsRequest.Builder builder,
                                          PlacesClient placesClient);
     }
 
     interface View extends BaseView<Presenter> {
+
         void showPositionShipAddressTypes();
 
         void showShipAddressResults(List<String> addressList);
     }
-
 }

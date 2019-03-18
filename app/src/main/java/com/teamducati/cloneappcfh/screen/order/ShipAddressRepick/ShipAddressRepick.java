@@ -46,6 +46,7 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
     private String mAddress = null;
 
     private PlacesClient placesClient;
+
     private FindAutocompletePredictionsRequest.Builder requestBuilder;
 
     public static ShipAddressRepick newInstance() {
@@ -58,7 +59,9 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
         setStyle(DialogFragment.STYLE_NORMAL, R.style.RepickShipAddressFullScreen);
 
         mPresenter = new ShipAddressRepickPresenter(this);
+
         placesClient = Places.createClient(Objects.requireNonNull(getActivity()));
+
         requestBuilder = FindAutocompletePredictionsRequest.builder()
                 .setCountry("vn");
 
@@ -108,7 +111,8 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
             public void afterTextChanged(Editable s) {
                 String input = s.toString().trim();
                 if ((!input.equals("")) && (input.length() != 0)) {
-                    mPresenter.loadShipAddressGooglePlaces(input, requestBuilder, placesClient);
+                    requestBuilder.setQuery(input);
+                    mPresenter.loadShipAddressGooglePlaces(requestBuilder, placesClient);
                 } else {
                     mPresenter.loadPositionShipAddressType();
                 }
@@ -139,11 +143,6 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
     }
 
     @Override
-    public void setPresenter(ShipAddressRepickContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
-
-    @Override
     public void showPositionShipAddressTypes() {
         repickShipAddressAdapter.displayPositionShipTitle(mAddress);
     }
@@ -154,12 +153,17 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
         addressList.clear();
     }
 
-    public interface OnClickItem {
-        void onClickItem(String address);
+    @Override
+    public void setPresenter(ShipAddressRepickContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 
     public void setOnClickItem(OnClickItem listener) {
         mListener = listener;
+    }
+
+    public interface OnClickItem {
+        void onClickItem(String address);
     }
 
     @Override
