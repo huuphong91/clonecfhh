@@ -31,9 +31,9 @@
     </Toolbar>
 
     <ScrollView
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
@@ -271,7 +271,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
             <TextView
-                android:id="@+id/tv_cost"
+                android:id="@+id/tv_price_cart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="200dp"
@@ -284,7 +284,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/edt_note_for_shop" />
 
             <TextView
-                android:id="@+id/tv_total"
+                android:id="@+id/tv_total_cart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="200dp"
@@ -293,16 +293,17 @@
                 android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView18"
-                app:layout_constraintTop_toBottomOf="@+id/tv_cost" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_price_cart" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
     <include
         android:id="@+id/book_cart"
         layout="@layout/book_cart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent" />
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
