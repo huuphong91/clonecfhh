@@ -1,7 +1,7 @@
 package com.teamducati.cloneappcfh.screen.account;
 
+import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -9,7 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teamducati.cloneappcfh.entity.User;
-import com.teamducati.cloneappcfh.utils.Constants;
+import com.teamducati.cloneappcfh.utils.ActivityUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +20,11 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class AccountPresenter implements AccountContract.Presenter {
 
+    private Context context;
+
     private AccountContract.View mAccountView;
 
-    public AccountPresenter(AccountContract.View accountView) {
+    public AccountPresenter(Context context, AccountContract.View accountView) {
         this.mAccountView = accountView;
         mAccountView.setPresenter(this);
     }
@@ -55,10 +57,11 @@ public class AccountPresenter implements AccountContract.Presenter {
                         Log.d("onDataChange: ", "data not null");
                         if (userList.get(0).getUserName().equals(user.getUserName().trim().toLowerCase())
                                 && userList.get(0).getPassword().equals(user.getPassword().trim().toLowerCase())) {
-                            Log.d("onDataChange: ","data match");
+                            Log.d("onDataChange: ", "data match");
                             mAccountView.showUserDetail(userList.get(0));
+                            ActivityUtils.setDataObject(context, userList.get(0));
                         } else {
-                            Log.d("onDataChange: ","data not match");
+                            Log.d("onDataChange: ", "data not match");
                             mAccountView.showLoginFail("check your information");
                         }
                     }
@@ -76,6 +79,7 @@ public class AccountPresenter implements AccountContract.Presenter {
     @Override
     public void onLogout() {
         mAccountView.showLoginScreen();
+        ActivityUtils.removeAllDataObject(context);
     }
 
     @Override

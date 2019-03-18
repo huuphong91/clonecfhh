@@ -7,10 +7,10 @@
         android:radius="30dp"/>
     <!-- Padding, in this case, around the button's text  -->
     <padding
-        android:left="20dp"
-        android:right="20dp"
-        android:top="10dp"
-        android:bottom="10dp"
+        android:left="4dp"
+        android:right="4dp"
+        android:top="4dp"
+        android:bottom="4dp"
         />
     <solid
         android:color="@android:color/white"/>

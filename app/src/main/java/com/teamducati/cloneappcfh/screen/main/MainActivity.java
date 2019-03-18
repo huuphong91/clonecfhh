@@ -3,16 +3,11 @@ package com.teamducati.cloneappcfh.screen.main;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.adapter.MainFragmentsPagerAdapter;
 import com.teamducati.cloneappcfh.screen.account.AccountFragment;
@@ -23,21 +18,23 @@ import com.teamducati.cloneappcfh.screen.order.OrderFragment;
 import com.teamducati.cloneappcfh.screen.order.OrderPresenter;
 import com.teamducati.cloneappcfh.screen.store.StoreFragment;
 import com.teamducati.cloneappcfh.screen.store.StorePresenter;
+import com.teamducati.cloneappcfh.utils.ActivityUtils;
 
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements FetchAddressTask.OnTaskCompleted {
 
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
     @BindView(R.id.navigation)
     BottomNavigationView mNavigationView;
     @BindView(R.id.viewPager)
     MainViewPager mViewPager;
-
-    private static final int REQUEST_LOCATION_PERMISSION = 1;
     private FusedLocationProviderClient mFusedLocation;
 
     private NewsPresenter mNewsPresenter;
@@ -51,9 +48,31 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
     private OrderFragment mOrderFragment;
     private StoreFragment mStoreFragment;
     private AccountFragment mAccountFragment;
-
-    private boolean isFirstClickOnOrderTab;
-    private boolean isFirstClickOnStoreTab;
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = item -> {
+        int positionFragment;
+        switch (item.getItemId()) {
+            case R.id.navigation_news:
+                positionFragment = 0;
+                setCurrentItem(positionFragment);
+                return true;
+            case R.id.navigation_order:
+                positionFragment = 1;
+                setCurrentItem(positionFragment);
+                getLocation();
+                return true;
+            case R.id.navigation_store:
+                positionFragment = 2;
+                setCurrentItem(positionFragment);
+                getLocation();
+                return true;
+            case R.id.navigation_account:
+                positionFragment = 3;
+                setCurrentItem(positionFragment);
+                return true;
+        }
+        return false;
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +80,13 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        isFirstClickOnOrderTab = true;
-        isFirstClickOnStoreTab = true;
-
         mFusedLocation = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(this));
-
+        initData();
         initUI();
+    }
+
+    private void initData() {
+        ActivityUtils.createDataObject(this);
     }
 
     private void initUI() {
@@ -98,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
         mNewsPresenter = new NewsPresenter(mNewsFragment);
         mOrderPresenter = new OrderPresenter(mOrderFragment);
         mStorePresenter = new StorePresenter(mStoreFragment);
-        mAccountPresenter = new AccountPresenter(mAccountFragment);
+        mAccountPresenter = new AccountPresenter(this, mAccountFragment);
     }
 
     private void addFragmentToPagerAdapter() {
@@ -109,39 +129,6 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
         mViewPager.setAdapter(mFragmentsPagerAdapter);
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = item -> {
-        int positionFragment;
-        switch (item.getItemId()) {
-            case R.id.navigation_news:
-                positionFragment = 0;
-                setCurrentItem(positionFragment);
-                return true;
-            case R.id.navigation_order:
-                positionFragment = 1;
-                setCurrentItem(positionFragment);
-                if (isFirstClickOnOrderTab) {
-                    getLocation();
-                    isFirstClickOnOrderTab = false;
-                }
-
-                return true;
-            case R.id.navigation_store:
-                positionFragment = 2;
-                setCurrentItem(positionFragment);
-                if (isFirstClickOnStoreTab) {
-                    getLocation();
-                    isFirstClickOnStoreTab = false;
-                }
-                return true;
-            case R.id.navigation_account:
-                positionFragment = 3;
-                setCurrentItem(positionFragment);
-                return true;
-        }
-        return false;
-    };
-
     private void getLocation() {
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -151,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
         } else {
             mFusedLocation.getLastLocation().addOnSuccessListener(location -> {
                 if (location != null) {
-                   // mStoreFragment.setLocation(location);
+                    // mStoreFragment.setLocation(location);
                     new FetchAddressTask(this, this).execute(location);
                 }
             });

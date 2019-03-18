@@ -1,27 +1,17 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="56dp"
     xmlns:cardview="http://schemas.android.com/tools"
-    android:background="@android:color/white">
-
-    <androidx.cardview.widget.CardView
-        cardview:cardCornerRadius="5dp"
-        cardview:cardElevation="2dp"
-        android:layout_width="match_parent"
-        android:layout_height="56dp">
-
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    android:background="@drawable/custom_bottom_line_action_bar">
 
             <ImageView
-                android:id="@+id/imgCloseRepickShipLocation"
+                android:id="@+id/img_close_notificaton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="16dp"
-                android:src="@drawable/ic_close_grey_700_18dp" />
+                android:src="@drawable/ic_close_grey_800_24dp" />
 
             <TextView
                 android:id="@+id/txt_title_notificaton"
@@ -39,8 +29,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="16dp"
-                android:src="@drawable/icons_bell_" />
+                android:src="@drawable/ic_notifications_grey_800_24dp" />
 
         </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-</RelativeLayout>
+

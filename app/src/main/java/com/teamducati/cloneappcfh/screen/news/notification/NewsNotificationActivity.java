@@ -24,6 +24,8 @@ public class NewsNotificationActivity extends AppCompatActivity implements Notic
     private NotificationListAdapter mNotificationListAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ImageView imgCloseNotificaton;
+    private View mViewLayoutSignIn;
+    private View mViewLayoutSignOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +78,8 @@ public class NewsNotificationActivity extends AppCompatActivity implements Notic
     private void initMappingViewId() {
         mRecyclerView = findViewById(R.id.recycler_view_news_notification);
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout_notification);
-        imgCloseNotificaton = findViewById(R.id.imgCloseRepickShipLocation);
+        imgCloseNotificaton = findViewById(R.id.img_close_notificaton);
+
     }
 
     @Override
