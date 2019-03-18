@@ -13,8 +13,8 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.teamducati.cloneappcfh.R;
-import com.teamducati.cloneappcfh.adapter.RepickShipAddressAdapter;
 import com.teamducati.cloneappcfh.screen.main.MainActivity;
+import com.teamducati.cloneappcfh.screen.order.adapter.RepickShipAddressAdapter;
 
 import java.util.List;
 import java.util.Objects;

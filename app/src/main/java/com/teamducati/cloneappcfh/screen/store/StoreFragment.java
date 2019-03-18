@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -18,8 +17,9 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.teamducati.cloneappcfh.R;
-import com.teamducati.cloneappcfh.adapter.StoreAdapter;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StoresItem;
+import com.teamducati.cloneappcfh.screen.store.adapter.StoreAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 import androidx.core.content.ContextCompat;

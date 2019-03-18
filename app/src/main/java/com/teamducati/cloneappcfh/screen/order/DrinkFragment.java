@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.teamducati.cloneappcfh.R;
-import com.teamducati.cloneappcfh.adapter.OrderAdapter;
+import com.teamducati.cloneappcfh.screen.order.adapter.OrderAdapter;
 import com.teamducati.cloneappcfh.entity.api_order.DataItem;
 import com.teamducati.cloneappcfh.entity.api_order.ItemProductResponse;
 import com.teamducati.cloneappcfh.utils.Constants;

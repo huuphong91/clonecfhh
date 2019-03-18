@@ -3,7 +3,6 @@ package com.teamducati.cloneappcfh.screen.main;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -12,7 +11,6 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.teamducati.cloneappcfh.R;
-import com.teamducati.cloneappcfh.adapter.MainFragmentsPagerAdapter;
 import com.teamducati.cloneappcfh.screen.account.AccountFragment;
 import com.teamducati.cloneappcfh.screen.account.AccountPresenter;
 import com.teamducati.cloneappcfh.screen.news.NewsFragment;
