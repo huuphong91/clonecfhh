@@ -85,7 +85,7 @@ public class NewsNotificationDialogFragment extends DialogFragment implements No
     private void initMappingViewId() {
         mRecyclerView = view.findViewById(R.id.recycler_view_news_notification);
         mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_notification);
-        imgCloseNotificaton = view.findViewById(R.id.imgCloseRepickShipLocation);
+        imgCloseNotificaton = view.findViewById(R.id.img_close_notificaton);
     }
 
     @Override
