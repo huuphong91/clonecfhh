@@ -10,5 +10,5 @@
     <string name="fb_app_id">2082594551830252</string>
     <string name="account_kit_client_token">6e40bce01a734393dabbf1d7d7090fdb</string>
     <string name="ak_login_protocol_scheme">ak6e40bce01a734393dabbf1d7d7090fdb</string>
-
+    <string name="action_open_news"></string>
 </resources>

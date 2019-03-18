@@ -1,11 +1,8 @@
 package com.example.thecoffeehouse.main;
 
-import android.app.ProgressDialog;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -35,7 +32,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.ViewPager;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -44,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager mFragmentManager;
     private DatabaseReference mDataRef;
     private String numberPhone;
+    private NewsFragment newsFragment;
+    private OrderFragment orderFragment;
+    private StoreFragment storeFragment;
+    private ProfileFragment profileFragment;
 
     private com.example.thecoffeehouse.user.User mUser;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -53,16 +53,16 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_news:
-                    loadFragment(NewsFragment.newInstance());
+                    loadFragment(newsFragment);
                     return true;
                 case R.id.navigation_order:
-                    loadFragment(OrderFragment.newInstance());
+                    loadFragment(orderFragment);
                     return true;
                 case R.id.navigation_store:
-                    loadFragment(StoreFragment.newInstance());
+                    loadFragment(storeFragment);
                     return true;
                 case R.id.navigation_profile:
-                    loadFragment(ProfileFragment.newInstance());
+                    loadFragment(profileFragment);
                     return true;
             }
             return false;
@@ -74,6 +74,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        createFragment();
+        loadFragment(newsFragment);
+    }
+
+    private void createFragment() {
+        newsFragment = NewsFragment.newInstance();
+        orderFragment = OrderFragment.newInstance();
+        storeFragment = StoreFragment.newInstance();
+        profileFragment = ProfileFragment.newInstance();
     }
 
     private void initView() {
@@ -90,16 +99,17 @@ public class MainActivity extends AppCompatActivity {
                 .addToBackStack(null)
                 .commit();
     }
-    private void printHashKey(){
-        try{
+
+    private void printHashKey() {
+        try {
             PackageInfo info = getPackageManager()
                     .getPackageInfo("com.example.thecoffeehouse",
                             PackageManager.GET_SIGNATURES);
-            for(Signature signature : info.signatures){
+            for (Signature signature : info.signatures) {
                 MessageDigest messageDigest = MessageDigest.getInstance("SHA");
-                Log.d("KEYHASH: ", Base64.encodeToString(messageDigest.digest(),Base64.DEFAULT));
+                Log.d("KEYHASH: ", Base64.encodeToString(messageDigest.digest(), Base64.DEFAULT));
             }
-        }catch (PackageManager.NameNotFoundException e) {
+        } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -112,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void checkLogged(){
+    private void checkLogged() {
         AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
             @Override
             public void onSuccess(final Account account) {
@@ -129,17 +139,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void loadUser(){
+    private void loadUser() {
         mDataRef.child(numberPhone).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getChildrenCount() != 0){
+                if (dataSnapshot.getChildrenCount() != 0) {
                     Toast.makeText(MainActivity.this, "Lay DC", Toast.LENGTH_SHORT).show();
                     mUser = dataSnapshot.getValue(com.example.thecoffeehouse.user.User.class);
-                }
-                else {
+                } else {
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(MainActivity.this, "LOI", Toast.LENGTH_SHORT).show();

@@ -19,6 +19,8 @@ public class OrderFragment extends Fragment {
 
     private TabLayout mTabLayout;
     private FragmentManager mFragmentManager;
+    private DrinksFragment drinksFragment;
+    private FoodFragment foodFragment;
 
     public static OrderFragment newInstance() {
         OrderFragment fragment = new OrderFragment();
@@ -41,6 +43,7 @@ public class OrderFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initView(view);
+        addTab(drinksFragment);
     }
 
     private void initView(View view) {
@@ -49,6 +52,8 @@ public class OrderFragment extends Fragment {
         mTabLayout.addTab(mTabLayout.newTab().setText("Drinks"));
         mTabLayout.addTab(mTabLayout.newTab().setText("Food"));
         mTabLayout.setOnTabSelectedListener(onTabSelectedListener);
+        foodFragment = FoodFragment.newInstance();
+        drinksFragment = DrinksFragment.newInstance();
     }
 
     private TabLayout.OnTabSelectedListener onTabSelectedListener = new TabLayout.OnTabSelectedListener() {
@@ -57,10 +62,10 @@ public class OrderFragment extends Fragment {
             int position = tab.getPosition();
             switch (position) {
                 case 0:
-                    addTab(DrinksFragment.newInstance());
+                    addTab(drinksFragment);
                     break;
                 case 1:
-                    addTab(FoodFragment.newInstance());
+                    addTab(foodFragment);
                     break;
             }
         }
