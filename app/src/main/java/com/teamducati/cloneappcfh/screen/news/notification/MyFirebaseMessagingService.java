@@ -38,14 +38,17 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.core.app.NotificationCompat;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-public class MyFirebaseMessagingService extends FirebaseMessagingService {
+public class MyFirebaseMessagingService extends FirebaseMessagingService implements NoticationContract.View {
 
     private static final String TAG = "MyFirebaseMsgService";
     List<Notification> notificationList;
     NotificationRepository notificationRepository;
+    NoticationContract.Presenter mPresenter;
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
@@ -62,10 +65,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
         }
         if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            notificationRepository=new NotificationRepository(getApplication());
-            notificationRepository.insert(new Notification(remoteMessage.getNotification().getTitle(),
+            mPresenter = new NotificationPresenter(this,getApplicationContext(), (LifecycleOwner) getApplicationContext());
+            mPresenter.onInsertListNotification(new Notification(remoteMessage.getNotification().getTitle(),
                     remoteMessage.getNotification().getBody(),new Date().toString()));
+
         }
 
     }
@@ -120,5 +123,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
+    @Override
+    public void getListNotification(List<Notification> arrayList) {
+
+    }
+
+    @Override
+    public void setPresenter(NoticationContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 }

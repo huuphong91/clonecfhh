@@ -13,11 +13,12 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class NewsPresenter extends FirebaseMessagingService implements NewsContract.Presenter  {
+public class NewsPresenter extends FirebaseMessagingService implements NewsContract.Presenter {
     private NewsContract.View mNewsView;
     private CompositeDisposable mCompositeDisposable;
     private Disposable disposable;
     private RetrofitFactory retrofitFactory;
+
     public NewsPresenter(NewsContract.View newsView) {
         this.mNewsView = newsView;
         mNewsView.setPresenter(this);
