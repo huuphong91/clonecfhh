@@ -1,6 +1,5 @@
-package com.teamducati.cloneappcfh.screen.order;
+package com.teamducati.cloneappcfh.screen.order.ShipAddressRepick;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,18 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.AutocompletePrediction;
+
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.adapter.RepickShipAddressAdapter;
-import com.teamducati.cloneappcfh.screen.main.FetchAddressTask;
 import com.teamducati.cloneappcfh.screen.main.MainActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,13 +24,22 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
-public class RepickShipAddressDialog extends DialogFragment implements RepickShipAddressAdapter.OnClickListener {
+public class ShipAddressRepick extends DialogFragment implements ShipAddressRepickContract.View, RepickShipAddressAdapter.OnClickListener {
+
+    @BindView(R.id.edtRepickShipLocation)
+    EditText edtRepickShipLocation;
+    @BindView(R.id.rvRepickShipAddress)
+    RecyclerView rvRepickShipAddress;
+
+    private Unbinder unbinder;
 
     private OnClickItem mListener;
 
-    private EditText edtRepickShipLocation;
-    private RecyclerView rvRepickShipAddress;
+    private ShipAddressRepickContract.Presenter mPresenter;
 
     private RepickShipAddressAdapter repickShipAddressAdapter;
 
@@ -44,10 +48,8 @@ public class RepickShipAddressDialog extends DialogFragment implements RepickShi
     private PlacesClient placesClient;
     private FindAutocompletePredictionsRequest.Builder requestBuilder;
 
-    private List<String> addressList = new ArrayList<>();
-
-    static RepickShipAddressDialog newInstance() {
-        return new RepickShipAddressDialog();
+    public static ShipAddressRepick newInstance() {
+        return new ShipAddressRepick();
     }
 
     @Override
@@ -55,6 +57,7 @@ public class RepickShipAddressDialog extends DialogFragment implements RepickShi
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.RepickShipAddressFullScreen);
 
+        mPresenter = new ShipAddressRepickPresenter(this);
         placesClient = Places.createClient(Objects.requireNonNull(getActivity()));
         requestBuilder = FindAutocompletePredictionsRequest.builder()
                 .setCountry("vn");
@@ -65,14 +68,21 @@ public class RepickShipAddressDialog extends DialogFragment implements RepickShi
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.layout_repick_ship_location, container, false);
-        edtRepickShipLocation = view.findViewById(R.id.edtRepickShipLocation);
-        rvRepickShipAddress = view.findViewById(R.id.rvRepickShipAddress);
+
+        unbinder = ButterKnife.bind(this, view);
+
+        initRecycleView();
+
+        return view;
+    }
+
+    private void initRecycleView() {
         rvRepickShipAddress.setLayoutManager(new LinearLayoutManager(getActivity()));
         repickShipAddressAdapter = new RepickShipAddressAdapter(this);
         rvRepickShipAddress.setHasFixedSize(true);
         rvRepickShipAddress.setAdapter(repickShipAddressAdapter);
-        return view;
     }
 
     @Override
@@ -80,7 +90,7 @@ public class RepickShipAddressDialog extends DialogFragment implements RepickShi
         super.onViewCreated(view, savedInstanceState);
 
         if (mAddress != null) {
-            repickShipAddressAdapter.displayPositionShipTitle(mAddress);
+            mPresenter.loadPositionShipAddressType();
         }
 
         edtRepickShipLocation.addTextChangedListener(new TextWatcher() {
@@ -98,19 +108,9 @@ public class RepickShipAddressDialog extends DialogFragment implements RepickShi
             public void afterTextChanged(Editable s) {
                 String input = s.toString().trim();
                 if ((!input.equals("")) && (input.length() != 0)) {
-                    requestBuilder.setQuery(input);
-                    Task<FindAutocompletePredictionsResponse> task =
-                            placesClient.findAutocompletePredictions(requestBuilder.build());
-                    task.addOnSuccessListener(response -> {
-                        for (AutocompletePrediction autocompletePrediction :
-                                response.getAutocompletePredictions()) {
-                            addressList.add(String.valueOf(autocompletePrediction.getFullText(null)));
-                        }
-                        repickShipAddressAdapter.displayShipAddressResults(addressList);
-                        addressList.clear();
-                    });
+                    mPresenter.loadShipAddressGooglePlaces(input, requestBuilder, placesClient);
                 } else {
-                    repickShipAddressAdapter.displayPositionShipTitle(mAddress);
+                    mPresenter.loadPositionShipAddressType();
                 }
             }
         });
@@ -138,6 +138,22 @@ public class RepickShipAddressDialog extends DialogFragment implements RepickShi
         dismiss();
     }
 
+    @Override
+    public void setPresenter(ShipAddressRepickContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public void showPositionShipAddressTypes() {
+        repickShipAddressAdapter.displayPositionShipTitle(mAddress);
+    }
+
+    @Override
+    public void showShipAddressResults(List<String> addressList) {
+        repickShipAddressAdapter.displayShipAddressResults(addressList);
+        addressList.clear();
+    }
+
     public interface OnClickItem {
         void onClickItem(String address);
     }
@@ -146,4 +162,9 @@ public class RepickShipAddressDialog extends DialogFragment implements RepickShi
         mListener = listener;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+    }
 }
