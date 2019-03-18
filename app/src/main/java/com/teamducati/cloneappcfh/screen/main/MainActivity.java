@@ -11,9 +11,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.adapter.MainFragmentsPagerAdapter;
 import com.teamducati.cloneappcfh.screen.account.AccountFragment;
@@ -24,21 +21,24 @@ import com.teamducati.cloneappcfh.screen.order.OrderFragment;
 import com.teamducati.cloneappcfh.screen.order.OrderPresenter;
 import com.teamducati.cloneappcfh.screen.store.StoreFragment;
 import com.teamducati.cloneappcfh.screen.store.StorePresenter;
+import com.teamducati.cloneappcfh.utils.ActivityUtils;
 
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements FetchAddressTask.OnTaskCompleted {
 
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
     @BindView(R.id.navigation)
     BottomNavigationView mNavigationView;
     @BindView(R.id.viewPager)
     MainViewPager mViewPager;
 
-    private static final int REQUEST_LOCATION_PERMISSION = 1;
     private FusedLocationProviderClient mFusedLocation;
 
     private NewsPresenter mNewsPresenter;
@@ -77,8 +77,12 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
         }
 
         mFusedLocation = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(this));
-
+        initData();
         initUI();
+    }
+
+    private void initData() {
+        ActivityUtils.createDataObject(this);
     }
 
     private void initUI() {
@@ -110,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
         mNewsPresenter = new NewsPresenter(mNewsFragment);
         mOrderPresenter = new OrderPresenter(mOrderFragment);
         mStorePresenter = new StorePresenter(mStoreFragment);
-        mAccountPresenter = new AccountPresenter(mAccountFragment);
+        mAccountPresenter = new AccountPresenter(this, mAccountFragment);
     }
 
     private void addFragmentToPagerAdapter() {
@@ -163,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
         } else {
             mFusedLocation.getLastLocation().addOnSuccessListener(location -> {
                 if (location != null) {
-                   // mStoreFragment.setLocation(location);
+                    // mStoreFragment.setLocation(location);
                     new FetchAddressTask(this, this).execute(location);
                 }
             });
