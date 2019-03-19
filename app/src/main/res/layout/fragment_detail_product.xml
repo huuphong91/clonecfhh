@@ -91,50 +91,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
-            android:padding="5dp"
+            android:padding="10dp"
             android:text="Size"
             android:textColor="@color/colorBlack"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view2" />
-
-        <TextView
-            android:id="@+id/btn_small"
-            style="@style/TextAppearance.MaterialComponents.Body2"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="Nhỏ"
-            android:textColor="@color/colorBlack"
-            app:layout_constraintBaseline_toBaselineOf="@id/textView9"
-            app:layout_constraintStart_toEndOf="@id/textView9" />
-
-        <TextView
-            android:id="@+id/btn_normal"
-            style="@style/TextAppearance.MaterialComponents.Body2"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="Vừa"
-            android:textColor="@color/colorBlack"
-            app:layout_constraintBaseline_toBaselineOf="@id/textView9"
-            app:layout_constraintStart_toEndOf="@id/btn_small" />
-
-        <TextView
-            android:id="@+id/btn_big"
-            style="@style/TextAppearance.MaterialComponents.Body2"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="Lớn"
-            android:textColor="@color/colorBlack"
-            app:layout_constraintBaseline_toBaselineOf="@id/textView9"
-            app:layout_constraintStart_toEndOf="@id/btn_normal" />
 
         <TextView
             android:id="@+id/textView11"
@@ -214,5 +175,69 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/img_btn_increase" />
+
+        <RadioGroup
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/textView9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView9"
+            app:layout_constraintTop_toTopOf="@+id/textView9">
+
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/fab_margin"
+                android:background="@drawable/btn_radio_background_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="5dp"
+                android:text="Nho"
+                android:textColor="@drawable/btn_radio_background_selector" />
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/fab_margin"
+                android:background="@drawable/btn_radio_background_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="5dp"
+                android:text="Vua"
+                android:textColor="@drawable/btn_radio_background_selector" />
+
+            <RadioButton
+                android:id="@+id/radioButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/fab_margin"
+                android:background="@drawable/btn_radio_background_selector"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingTop="5dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="5dp"
+                android:text="Lon"
+                android:textColor="@drawable/btn_radio_background_selector" />
+        </RadioGroup>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
