@@ -5,4 +5,5 @@
 
     <dimen name="margin_left_10dp">10dp</dimen>
     <dimen name="margin_8dp">10dp</dimen>
+    <dimen name="margin_12dp">12dp</dimen>
 </resources>

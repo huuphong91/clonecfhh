@@ -2,6 +2,7 @@ package com.teamducati.cloneappcfh.screen.order;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.api_order.DataItem;
+import com.teamducati.cloneappcfh.entity.api_order.VariantsItem;
 import com.teamducati.cloneappcfh.utils.Constants;
 import com.teamducati.cloneappcfh.utils.Utils;
+import com.teamducati.cloneappcfh.utils.eventsbus.EventsBusCart;
+
+import org.greenrobot.eventbus.EventBus;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,15 +50,16 @@ public class ViewDialogAdd extends DialogFragment implements View.OnClickListene
     TextView tvNumberProduct;
     @BindView(R.id.iv_plus)
     ImageView ivPlus;
-    @BindView(R.id.btn_like)
-    Button btnLike;
     @BindView(R.id.btn_add)
     Button btnAdd;
+    @BindView(R.id.iv_delete)
+    ImageView ivDelete;
 
-    private static int numberProduct = 1;
+    private static int numberProduct;
     private static int money;
 
     private DataItem dataItem;
+    private boolean firstClick;
 
     public ViewDialogAdd() {
 
@@ -88,12 +94,15 @@ public class ViewDialogAdd extends DialogFragment implements View.OnClickListene
         ButterKnife.bind(this, view);
 
         setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme);
-
-        setTitle();
+        bindingData();
         setEvents();
     }
 
-    public void setTitle() {
+    public void bindingData() {
+        setVisible();
+        firstClick = true;
+        numberProduct = 1;
+
         Glide.with(getActivity())
                 .load(dataItem.getImage())
                 .centerCrop()
@@ -108,37 +117,90 @@ public class ViewDialogAdd extends DialogFragment implements View.OnClickListene
     }
 
     private void setEvents() {
+        tvSeeMore.setOnClickListener(this);
+        tvDescription.setOnClickListener(this);
         ivMinus.setOnClickListener(this);
         ivPlus.setOnClickListener(this);
         btnSmall.setOnClickListener(this);
         btnNormal.setOnClickListener(this);
         btnLarge.setOnClickListener(this);
-        btnLike.setOnClickListener(this);
         btnAdd.setOnClickListener(this);
+        ivDelete.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_description:
+            case R.id.tv_see_more:
+                getFullDescription();
+                break;
             case R.id.iv_minus:
                 numberProduct = numberProduct > 1 ? --numberProduct : 1;
                 tvNumberProduct.setText(String.valueOf(numberProduct));
+                tvPrice.setText(" + " + Utils.formatMoney(numberProduct * money));
                 break;
             case R.id.iv_plus:
-                tvNumberProduct.setText(String.valueOf(++numberProduct));
+                ++numberProduct;
+                tvNumberProduct.setText(String.valueOf(numberProduct));
+                tvPrice.setText(" + " + Utils.formatMoney(numberProduct * money));
                 break;
             case R.id.btn_small:
-                money = dataItem.getPrice();
-                tvPrice.setText(String.valueOf(money));
+                getMoney("Nhỏ");
+                tvPrice.setText(" + " + Utils.formatMoney(money * numberProduct));
                 break;
             case R.id.btn_normal:
-                money = dataItem.getPrice();
-                tvPrice.setText(String.valueOf(money));
+                getMoney("Vừa");
+                tvPrice.setText(" + " + Utils.formatMoney(money * numberProduct));
                 break;
             case R.id.btn_large:
-                money = dataItem.getPrice();
-                tvPrice.setText(String.valueOf(money));
+                getMoney("Lớn");
+                tvPrice.setText(" + " + Utils.formatMoney(money * numberProduct));
                 break;
+            case R.id.btn_add:
+                EventBus.getDefault().post(new EventsBusCart(dataItem, numberProduct, money));
+                dismiss();
+                break;
+            case R.id.iv_delete:
+                dismiss();
+                break;
+        }
+    }
+
+    private void getMoney(String size) {
+        for (VariantsItem variantsItem : dataItem.getVariants()) {
+            if (size.equals(variantsItem.getVal())) {
+                money = variantsItem.getPrice();
+                break;
+            }
+        }
+    }
+
+    private void setVisible() {
+        switch (dataItem.getVariants().size()) {
+            case 1:
+                btnSmall.setVisibility(View.GONE);
+                btnLarge.setVisibility(View.GONE);
+                break;
+            case 2:
+                btnLarge.setVisibility(View.GONE);
+                break;
+            case 3:
+                break;
+        }
+    }
+
+    private void getFullDescription() {
+        if (firstClick) {
+            firstClick = false;
+            tvDescription.setEllipsize(null);
+            tvDescription.setMaxLines(30);
+            tvSeeMore.setVisibility(View.GONE);
+        } else {
+            firstClick = true;
+            tvDescription.setEllipsize(TextUtils.TruncateAt.END);
+            tvDescription.setMaxLines(3);
+            tvSeeMore.setVisibility(View.VISIBLE);
         }
     }
 }
