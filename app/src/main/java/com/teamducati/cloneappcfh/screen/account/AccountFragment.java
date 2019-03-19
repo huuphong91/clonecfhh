@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.User;
@@ -29,16 +30,13 @@ public class AccountFragment extends Fragment implements AccountContract.View {
     private ProfileUserFragment profileUserFragment;
     private AccountContract.Presenter mPresenter;
 
-
     public AccountFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
@@ -47,9 +45,6 @@ public class AccountFragment extends Fragment implements AccountContract.View {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        profileUserFragment = (ProfileUserFragment) Objects.requireNonNull(getActivity())
-                .getSupportFragmentManager()
-                .findFragmentById(R.id.contentAccountFrame);
         if (profileUserFragment == null) {
             profileUserFragment = ProfileUserFragment.newInstance();
             ActivityUtils.addFragmentToActivity(getActivity().getSupportFragmentManager(), profileUserFragment, R.id.contentAccountFrame);
@@ -63,6 +58,7 @@ public class AccountFragment extends Fragment implements AccountContract.View {
             ActivityUtils.addFragmentToActivity(getActivity().getSupportFragmentManager(), loginFragment, R.id.contentAccountFrame);
             loginFragment.setPresenter(mPresenter);
         }
+
     }
 
     @Override
@@ -79,12 +75,12 @@ public class AccountFragment extends Fragment implements AccountContract.View {
 
     @Override
     public void showUpdateUserPropertySuccess() {
-
+        profileUserFragment.showUpdateUserPropertySuccess();
     }
 
     @Override
     public void showUpdateUserPropertyFail() {
-
+        Toast.makeText(getActivity(), "Updated fail", Toast.LENGTH_SHORT).show();
     }
 
     @Override
