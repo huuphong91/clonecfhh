@@ -12,8 +12,8 @@ import android.widget.ViewFlipper;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.teamducati.cloneappcfh.R;
-import com.teamducati.cloneappcfh.adapter.NewsListAdapter;
-import com.teamducati.cloneappcfh.adapter.NewsPromotionListAdapter;
+import com.teamducati.cloneappcfh.screen.news.adapter.NewsListAdapter;
+import com.teamducati.cloneappcfh.screen.news.adapter.NewsPromotionListAdapter;
 import com.teamducati.cloneappcfh.entity.News;
 import com.teamducati.cloneappcfh.entity.NewsPromotion;
 import com.teamducati.cloneappcfh.entity.User;

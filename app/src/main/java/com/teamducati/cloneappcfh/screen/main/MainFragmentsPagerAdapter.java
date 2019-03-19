@@ -1,4 +1,4 @@
-package com.teamducati.cloneappcfh.adapter;
+package com.teamducati.cloneappcfh.screen.main;
 
 import java.util.ArrayList;
 import java.util.List;

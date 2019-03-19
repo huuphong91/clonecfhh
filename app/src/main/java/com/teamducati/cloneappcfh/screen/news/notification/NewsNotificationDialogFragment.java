@@ -11,7 +11,7 @@ import android.view.Window;
 import android.widget.ImageView;
 
 import com.teamducati.cloneappcfh.R;
-import com.teamducati.cloneappcfh.adapter.NotificationListAdapter;
+import com.teamducati.cloneappcfh.screen.news.adapter.NotificationListAdapter;
 import com.teamducati.cloneappcfh.entity.Notification;
 
 import java.util.List;
