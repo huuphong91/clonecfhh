@@ -1,15 +1,10 @@
 package com.teamducati.cloneappcfh.screen.store;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.teamducati.cloneappcfh.data.network.RetrofitFactory;
+import com.teamducati.cloneappcfh.entity.APIStoreMap.APIStore;
+import com.teamducati.cloneappcfh.entity.APIStoreMap.StatesItem;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StoresItem;
 import java.util.List;
-import androidx.core.content.ContextCompat;
 import io.reactivex.Observable;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -25,18 +20,6 @@ public class StorePresenter implements StoreContract.Presenter {
         this.mStoreView = storeView;
         mStoreView.setPresenter(this);
         mRetrofitFactory = new RetrofitFactory();
-    }
-
-    @Override
-    public BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
-        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
-        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(),
-                vectorDrawable.getIntrinsicHeight());
-        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
-                vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        vectorDrawable.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     @Override
@@ -57,6 +40,31 @@ public class StorePresenter implements StoreContract.Presenter {
                     @Override
                     public void onSuccess(List<StoresItem> value) {
                         mStoreView.showListStore(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void onGetAllProvince() {
+        mRetrofitFactory.getInstanceRetrofitInterface().getAllStoreMap()
+                .subscribeOn(Schedulers.io())
+                .flatMap(apiStore -> Observable.fromIterable(apiStore.getStates()))
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<StatesItem>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(List<StatesItem> statesItems) {
+                        mStoreView.showListProvince(statesItems);
                     }
 
                     @Override

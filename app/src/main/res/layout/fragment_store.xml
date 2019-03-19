@@ -31,7 +31,7 @@
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        map:layout_constraintBottom_toTopOf="@+id/mRecyclerStrore"
+        map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintHorizontal_bias="0.0"
         map:layout_constraintStart_toStartOf="parent"
@@ -42,34 +42,68 @@
         android:id="@+id/mRecyclerStrore"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mpvStroreDetail"></androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
+        android:id="@+id/lnlChooseStore"
+        android:orientation="horizontal"
+        android:weightSum="10"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="64dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="64dp"
+        android:tag="0"
         android:background="@drawable/boder_item_store_map"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/mpvStroreDetail">
 
-        <Spinner
-            android:id="@+id/spnStoreCity"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/txtChooseStore"
+            android:layout_width="0dp"
+            android:layout_weight="8.5"
             android:layout_height="match_parent"
-            android:paddingLeft="10dp"
-            android:gravity="center|left"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></Spinner>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:text="Bạn muốn đến cửa hàng nào"
+            android:textSize="15sp"
+            android:textColor="#000"
+            android:gravity="center"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/imgUpDown"
+                android:layout_width="wrap_content"
+                android:scaleType="matrix"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_down"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lnlListStore"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:visibility="gone"
+        android:background="#ffff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lnlChooseStore">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mRcvListStrore"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
