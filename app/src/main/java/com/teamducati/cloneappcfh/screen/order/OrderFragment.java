@@ -1,6 +1,7 @@
 package com.teamducati.cloneappcfh.screen.order;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,15 @@ import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.teamducati.cloneappcfh.R;
+import com.teamducati.cloneappcfh.entity.api_order.DataItem;
 import com.teamducati.cloneappcfh.entity.api_order.ItemProductResponse;
+import com.teamducati.cloneappcfh.utils.Constants;
+import com.teamducati.cloneappcfh.utils.Utils;
+import com.teamducati.cloneappcfh.utils.eventsbus.EventsBusCart;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import com.teamducati.cloneappcfh.screen.order.ShipAddressRepick.ShipAddressRepick;
 
 import java.util.ArrayList;
@@ -20,6 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -43,15 +53,30 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
     TabLayout tabLayout;
     @BindView(R.id.viewpager111)
     ViewPager viewPager;
+    @BindView(R.id.csl_cart)
+    ConstraintLayout constraintLayoutCart;
+    @BindView(R.id.tv_number_product_in_cart)
+    TextView tvNumberProduct;
+    @BindView(R.id.tv_price_in_cart)
+    TextView tvPrice;
 
     private Unbinder unbinder;
     private OrderContract.Presenter mPresenter;
     private ItemProductResponse itemProductResponse;
+    private SharedPreferences sp;
+    private static int numberProductInCartCurrent;
+    private static int priceProductInCartCurrent;
 
     private DialogFragment dialogFragment = ShipAddressRepick.newInstance();
 
     public OrderFragment() {
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -75,6 +100,8 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
             dialogFragment.show(getChildFragmentManager(), "tag");
         });
 
+        numberProductInCartCurrent = -1;
+        priceProductInCartCurrent = -1;
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -82,6 +109,19 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
         adapter.addFragment(HighlightFoodFragment.newInstance(itemProductResponse), "Món nổi bật");
         adapter.addFragment(DrinkFragment.newInstance(itemProductResponse), "Thức uống");
         viewPager.setAdapter(adapter);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventsBusCart event) {
+        constraintLayoutCart.setVisibility(View.VISIBLE);
+        tvNumberProduct.setText(String.valueOf(event.numberProduct));
+        tvPrice.setText(Utils.formatMoney(event.price * event.numberProduct));
+
+
+        //        sp = Utils.getSharedPreferences(this.getActivity(), sp);
+//        SharedPreferences.Editor editor = sp.edit();
+//        Gson gson = new Gson();
+//        String productGson = new Gson().toString();
     }
 
     @Override
@@ -137,6 +177,26 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
     public void setLocation(String address) {
         tvShipAddress.setText(address);
         ((ShipAddressRepick)dialogFragment).setLocation(address);
+    }
+
+    public void writeSharedPreferences(String objectGson) {
+        SharedPreferences sharedPreferences = Utils.getSharedPreferencesInstance(this.getActivity());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(Constants.KEY_PRODUCT_SHARED_PREF, objectGson);
+    }
+
+    public void readSharedPreferences() {
+        SharedPreferences sharedPreferences = Utils.getSharedPreferencesInstance(this.getActivity());
+        String productPref = sharedPreferences.getString(Constants.KEY_PRODUCT_SHARED_PREF, "");
+        if (!"".equals(productPref)) {
+            DataItem dataItem = Utils.getGsonInstance().fromJson(productPref, DataItem.class);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
