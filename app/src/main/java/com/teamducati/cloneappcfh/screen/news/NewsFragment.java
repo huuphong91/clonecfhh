@@ -122,11 +122,13 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     }
     private void initShowDialogNotification() {
         Intent intent = getActivity().getIntent();
-        if (intent.getStringExtra("firebase_notification") != null) {
+        if (intent.getStringExtra("firebase_id") != null) {
             NotificationDetailsDialogFragment newsNotificationDialogFragment =
                     new NotificationDetailsDialogFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("data_notification", intent.getStringExtra("firebase_notification"));
+            bundle.putString("title_notification", intent.getStringExtra("firebase_title"));
+            bundle.putString("content_notification", intent.getStringExtra("firebase_content"));
+            bundle.putString("image_notification", intent.getStringExtra("firebase_url"));
             newsNotificationDialogFragment.setArguments(bundle);
             newsNotificationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
         } else {

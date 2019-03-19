@@ -95,8 +95,9 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                     NotificationDetailsDialogFragment newsNotificationDialogFragment =
                             new NotificationDetailsDialogFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putString("data_notification",
-                            mNotification.get(position).getContent());
+                    bundle.putString("title_notification",NotificationObj.getTilte());
+                    bundle.putString("content_notification", NotificationObj.getContent());
+                    bundle.putString("image_notification", NotificationObj.getUrl());
                     newsNotificationDialogFragment.setArguments(bundle);
                     newsNotificationDialogFragment.show(activity.getSupportFragmentManager(), null);
 

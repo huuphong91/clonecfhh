@@ -15,7 +15,7 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 
-@Database(entities = {Notification.class}, version = 2, exportSchema = false)
+@Database(entities = {Notification.class}, version = 3, exportSchema = false)
 public abstract class NotificationNewsDatabase extends RoomDatabase {
 
     private static NotificationNewsDatabase INSTANCE;
