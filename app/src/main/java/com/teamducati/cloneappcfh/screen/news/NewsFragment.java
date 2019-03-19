@@ -153,7 +153,6 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         mRecyclerViewNewsPromotion.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerViewNewsPromotion.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        //  mRecyclerView.setLayoutManager(layoutManager);
     }
 
     public void initRecyclerViewNews() {
@@ -176,7 +175,6 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     }
 
     private void initMappingViewId() {
-
         mRecyclerViewNewsPromotion = view.findViewById(R.id.recycler_view_news_promotion);
         mRecyclerViewNews = view.findViewById(R.id.recycler_view_news);
         imgNotificationSignIn = view.findViewById(R.id.img_news_notification_sign_in);
@@ -201,7 +199,6 @@ public class NewsFragment extends Fragment implements NewsContract.View {
                 swipeRefreshLayoutLayout.setRefreshing(false);
             }
         });
-
     }
 
     @Override

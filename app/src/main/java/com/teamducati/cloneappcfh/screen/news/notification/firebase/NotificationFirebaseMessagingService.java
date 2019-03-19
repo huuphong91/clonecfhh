@@ -23,21 +23,16 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.teamducati.cloneappcfh.R;
-import com.teamducati.cloneappcfh.data.local.repository.NotificationRepository;
 import com.teamducati.cloneappcfh.entity.Notification;
 import com.teamducati.cloneappcfh.screen.main.MainActivity;
 import com.teamducati.cloneappcfh.screen.news.notification.NoticationContract;
@@ -45,9 +40,8 @@ import com.teamducati.cloneappcfh.screen.news.notification.NotificationPresenter
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
@@ -55,10 +49,9 @@ import androidx.work.WorkManager;
 public class NotificationFirebaseMessagingService extends FirebaseMessagingService implements NoticationContract.View {
 
     private static final String TAG = "MyFirebaseMsgService";
-    List<Notification> notificationList;
-    NotificationRepository notificationRepository;
-    NoticationContract.Presenter mPresenter;
-    Bitmap bitmapImage;
+    private NoticationContract.Presenter mPresenter;
+    ImageView imageView;
+    private Bitmap bitmapImage;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -113,36 +106,37 @@ public class NotificationFirebaseMessagingService extends FirebaseMessagingServi
         // TODO: Implement this method to send token to your app server.
     }
 
+
     private void sendNotification(String messageBody, String titleMessege, String url) {
         Intent intent = new Intent(this, MainActivity.class);
         sendDataNotification(intent, titleMessege, messageBody, url);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
-        Glide.with(this)
-                .asBitmap()
-                .load(url)
-                .into(new CustomTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        bitmapImage=resource;
-                    }
-
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-
-                    }
-                });
         String channelId = "default_notification_channel_id";
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background);
+
+        try {
+            Bitmap bitmapImageUrl = Glide.with(this)
+                    .asBitmap()
+                    .load(url)
+                    .submit()
+                    .get();
+            bitmapImage = Bitmap.createScaledBitmap(bitmapImageUrl,
+                    (int) (bitmapImageUrl.getWidth() * 0.5),
+                    (int) (bitmapImageUrl.getHeight() * 0.5), true);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setLargeIcon(largeIcon)
+                        .setLargeIcon(bitmapImage)
                         .setContentTitle(titleMessege)
                         .setStyle(new NotificationCompat.BigPictureStyle()
-                                .bigPicture(largeIcon)
+                                .bigPicture(bitmapImage)
                                 .bigLargeIcon(null))
                         .setContentText(messageBody)
                         .setAutoCancel(true)
@@ -150,7 +144,7 @@ public class NotificationFirebaseMessagingService extends FirebaseMessagingServi
                         .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -160,6 +154,7 @@ public class NotificationFirebaseMessagingService extends FirebaseMessagingServi
             notificationManager.createNotificationChannel(channel);
         }
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
     }
 
     public void sendDataNotification(Intent intent, String title, String content, String url) {
