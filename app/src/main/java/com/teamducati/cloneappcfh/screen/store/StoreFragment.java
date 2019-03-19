@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -17,11 +17,14 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.teamducati.cloneappcfh.R;
+import com.teamducati.cloneappcfh.entity.APIStoreMap.StatesItem;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StoresItem;
-import com.teamducati.cloneappcfh.screen.store.adapter.StoreAdapter;
-
-import java.util.ArrayList;
+import com.teamducati.cloneappcfh.utils.eventsbus.EventBusStore;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,14 +40,31 @@ public class StoreFragment extends Fragment implements StoreContract.View {
     private StoreContract.Presenter mPresenter;
     private SupportMapFragment mapFragment;
     private List<StoresItem> mApiStores;
+    private List<StatesItem> mStatesItems;
     private StoreAdapter mAdapterStore;
     private GoogleMap mMap;
+    private ProvinceAdapter mProvinceAdapter;
 
-    @BindView(R.id.spnStoreCity)
-    Spinner mListStore;
+    //////////
+    private int positionStoreSelected;
+
+    @BindView(R.id.lnlChooseStore)
+    LinearLayout mChooseStore;
+
+    @BindView(R.id.lnlListStore)
+    LinearLayout mListStore;
+
+    @BindView(R.id.txtChooseStore)
+    TextView mStore;
 
     @BindView(R.id.mRecyclerStrore)
     RecyclerView mRecyclerStrore;
+
+    @BindView(R.id.mRcvListStrore)
+    RecyclerView mRcvListStrore;
+
+    @BindView(R.id.imgUpDown)
+    ImageView mUpDown;
 
     public StoreFragment() {
         // Required empty public constructor
@@ -59,62 +79,61 @@ public class StoreFragment extends Fragment implements StoreContract.View {
         init();
         initMap();
         mPresenter.onGetAllStore();
+        mPresenter.onGetAllProvince();
+        EventBus.getDefault().register(this);
         return rootView;
     }
 
-    private void initStoreCity() {
-        List<String> mStore = new ArrayList<>();
-        for (int i = 0; i < mApiStores.size(); i++) {
-            if (mApiStores.get(i).getAddress().getWard() != null) {
-                mStore.add(mApiStores.get(i).getAddress().getWard());
-            }
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter(getActivity(),
-                android.R.layout.simple_spinner_item, mStore);
-        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
-        mListStore.setAdapter(adapter);
-        mListStore.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                // mMap.clear(); //clear old markers
-                CameraPosition googlePlex = CameraPosition.builder()
-
-                        .target(new LatLng(Double.parseDouble(mApiStores.get(i).getLatitude()),
-                                Double.parseDouble(mApiStores.get(i).getLongitude())))
-                        .zoom(15)
-                        .bearing(0)
-                        .tilt(45)
-                        .build();
-                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(googlePlex));
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);
-//                ArrayList<StoresItem> storesPosition = new ArrayList<>();
-//                if (storesPosition != null) {
-//                    storesPosition.add(new StoresItem(mApiStores.get(i)));
-//                    mAdapterStore = new StoreAdapter(getActivity(), storesPosition);
-//                    mRecyclerStrore.setAdapter(mAdapterStore);
-//                    mAdapterStore.notifyDataSetChanged();
-//                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-    }
-
     private void init() {
-        // mRecyclerStrore.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerStrore.setHasFixedSize(true);
         mRecyclerStrore.setLayoutManager(new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.HORIZONTAL, false));
+        mRcvListStrore.setHasFixedSize(true);
+        LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
+        mRcvListStrore.setLayoutManager(linearLayout);
     }
 
     @Override
     public void setPresenter(StoreContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventBusStore event) {
+        positionStoreSelected = event.position;
+        //Toast.makeText(getActivity(), "" + positionStoreSelected, Toast.LENGTH_SHORT).show();
+        CameraPosition googlePlex = CameraPosition.builder()
+                .target(new LatLng(event.lat, event.lon))
+                .zoom(15)
+                .bearing(0)
+                .tilt(45)
+                .build();
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(googlePlex));
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);
+        showListStore(event.storesItems);
+        HideShow();
+    }
+
+    private void HideShow() {
+        if (mChooseStore.getTag().equals("0")) {
+            mChooseStore.setTag("1");
+            mUpDown.setImageDrawable(getResources().getDrawable(R.drawable.icon_up));
+            mListStore.setVisibility(View.VISIBLE);
+            mRecyclerStrore.setVisibility(View.GONE);
+        } else {
+            mChooseStore.setTag("0");
+            mUpDown.setImageDrawable(getResources().getDrawable(R.drawable.icon_down));
+            mListStore.setVisibility(View.GONE);
+            mRecyclerStrore.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mStore.setOnClickListener(v -> {
+            HideShow();
+        });
     }
 
     @Override
@@ -129,7 +148,14 @@ public class StoreFragment extends Fragment implements StoreContract.View {
                     .title(mApiStores.get(i).getName())
                     .snippet(mApiStores.get(i).getAddress().getStreet()));
         }
-        initStoreCity();
+        // initStoreCity();
+    }
+
+    @Override
+    public void showListProvince(List<StatesItem> arrayList) {
+        this.mStatesItems = arrayList;
+        mProvinceAdapter = new ProvinceAdapter(getActivity(), arrayList);
+        mRcvListStrore.setAdapter(mProvinceAdapter);
     }
 
     private void initMap() {
@@ -157,5 +183,11 @@ public class StoreFragment extends Fragment implements StoreContract.View {
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);
             }
         });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 }
