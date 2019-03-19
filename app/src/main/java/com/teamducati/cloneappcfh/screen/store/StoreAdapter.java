@@ -1,4 +1,4 @@
-package com.teamducati.cloneappcfh.screen.store.adapter;
+package com.teamducati.cloneappcfh.screen.store;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,12 +10,9 @@ import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StoresItem;
 import com.teamducati.cloneappcfh.screen.news.adapter.ItemClickListener;
-import com.teamducati.cloneappcfh.screen.store.DialogStoreDetail;
-
 import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.ButterKnife;
 
 public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreAdapterViewHolder> {
 
@@ -30,8 +27,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreAdapter
         mInflater = LayoutInflater.from(context);
     }
 
-    class StoreAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
-            View.OnLongClickListener {
+    class StoreAdapterViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgStoreMap;
         private TextView txtNameStoreMap;
         private TextView txtAddress;
@@ -39,27 +35,9 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreAdapter
 
         private StoreAdapterViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
             imgStoreMap = itemView.findViewById(R.id.imgStoreMap);
             txtNameStoreMap = itemView.findViewById(R.id.txtNameStoreMap);
             txtAddress = itemView.findViewById(R.id.txtAddress);
-
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
-        }
-
-        public void setItemClickListener(ItemClickListener itemClickListener) {
-            this.itemClickListener = itemClickListener;
-        }
-
-        @Override
-        public void onClick(View v) {
-
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-            return false;
         }
     }
 
@@ -96,7 +74,6 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreAdapter
                         mApiStores.get(position).getPhone());
             }
         });
-
     }
 
     @Override

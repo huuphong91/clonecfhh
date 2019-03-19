@@ -33,13 +33,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolderOd
 
     @NonNull
     @Override
-    public OrderAdapter.ViewHolderOder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
+    public ViewHolderOder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
         View v = LayoutInflater.from(context).inflate(R.layout.item_recyclerview_oder, viewGroup, false);
         return new ViewHolderOder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrderAdapter.ViewHolderOder viewHolderOder, final int position) {
+    public void onBindViewHolder(@NonNull ViewHolderOder viewHolderOder, final int position) {
         DataItem item = dataItemList.get(viewHolderOder.getAdapterPosition());
         Glide.with(context)
                 .load(item.getImage())
@@ -48,7 +48,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolderOd
                 .into(viewHolderOder.ivDrink);
 
         viewHolderOder.tvNameDrink.setText(item.getProductName());
-        viewHolderOder.tvClassify.setText(item.getVariants().get(0).getVal());
+        if ("Nhỏ".equals(item.getVariants().get(0).getVal())) {
+            viewHolderOder.tvClassify.setText(item.getVariants().get(0).getVal());
+        }
         viewHolderOder.tvPrice.setText(Utils.formatMoney(item.getBasePrice()));
 
         Glide.with(context)

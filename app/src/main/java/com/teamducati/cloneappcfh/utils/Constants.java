@@ -14,5 +14,7 @@ public class Constants {
 
     public static final String KEY_BUNDLE_DETAIL = "KEY_BUNDLE_DETAIL";
     public static final String SHARED_PREFERENCES_NAME = "SHARED_PREFERENCES_DATA";
-}
 
+    public static final String SHARED_PREFERENCES_CART_NAME = "SHARED_PREFERENCES_CART_NAME";
+    public static final String KEY_PRODUCT_SHARED_PREF = "SHARED_PREFERENCES_CART_NAME";
+}
