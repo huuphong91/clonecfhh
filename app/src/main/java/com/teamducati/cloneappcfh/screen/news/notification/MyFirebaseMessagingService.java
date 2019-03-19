@@ -38,7 +38,6 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.core.app.NotificationCompat;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
@@ -65,7 +64,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService impleme
             }
         }
         if (remoteMessage.getNotification() != null) {
-            mPresenter = new NotificationPresenter(this,getApplicationContext(), (LifecycleOwner) getApplicationContext());
+            mPresenter = new NotificationPresenter(this,getApplicationContext());
             mPresenter.onInsertListNotification(new Notification(remoteMessage.getNotification().getTitle(),
                     remoteMessage.getNotification().getBody(),new Date().toString()));
 
