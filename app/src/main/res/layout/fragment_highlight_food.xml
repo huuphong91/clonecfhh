@@ -8,9 +8,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_highlight_food"
         android:layout_width="match_parent"
-        android:layout_margin="8dp"
-        android:layout_height="match_parent">
-
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent"
+        android:background="#39160C0C"
+        android:clipToPadding="false"
+        android:paddingBottom="56dp"></androidx.recyclerview.widget.RecyclerView>
 
 </FrameLayout>

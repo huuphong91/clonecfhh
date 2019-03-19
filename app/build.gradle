@@ -83,4 +83,6 @@ dependencies {
     //RxJava support for Room
     implementation "androidx.room:room-rxjava2:$room_version"
     implementation 'com.google.android.libraries.places:places:1.0.0'
+    //Events Bus
+    implementation 'org.greenrobot:eventbus:3.1.1'
 }

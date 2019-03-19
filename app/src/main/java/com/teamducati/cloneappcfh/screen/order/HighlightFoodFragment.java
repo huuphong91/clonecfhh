@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.teamducati.cloneappcfh.R;
-import com.teamducati.cloneappcfh.screen.order.adapter.OrderAdapter;
 import com.teamducati.cloneappcfh.entity.api_order.DataItem;
 import com.teamducati.cloneappcfh.entity.api_order.ItemProductResponse;
+import com.teamducati.cloneappcfh.screen.order.adapter.OrderAdapter;
 import com.teamducati.cloneappcfh.utils.Constants;
 
 import java.util.ArrayList;
@@ -34,7 +34,6 @@ public class HighlightFoodFragment extends Fragment {
     }
 
     public static HighlightFoodFragment newInstance(ItemProductResponse itemProductResponse) {
-
         Log.d(OrderFragment.TAG, "newInstance: " + HighlightFoodFragment.class.getSimpleName());
 
         HighlightFoodFragment fragment = new HighlightFoodFragment();
@@ -47,7 +46,6 @@ public class HighlightFoodFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
         Log.d(OrderFragment.TAG, "onAttach: " + HighlightFoodFragment.class.getSimpleName());
 
         if (getArguments() != null) {
@@ -66,7 +64,6 @@ public class HighlightFoodFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         Log.d(OrderFragment.TAG, "onViewCreated: " + HighlightFoodFragment.class.getSimpleName());
 
         rvListFoods = view.findViewById(R.id.rv_highlight_food);
@@ -77,14 +74,12 @@ public class HighlightFoodFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         Log.d(OrderFragment.TAG, "onCreateView: " + HighlightFoodFragment.class.getSimpleName());
 
         return inflater.inflate(R.layout.fragment_highlight_food, container, false);
     }
 
     private void setAdapter() {
-
         Log.d(OrderFragment.TAG, "setAdapter: " + HighlightFoodFragment.class.getSimpleName());
 
         if (fragmentOrderAdapter == null) {
@@ -95,7 +90,6 @@ public class HighlightFoodFragment extends Fragment {
     }
 
     private void getDataItems(int categ) {
-
         Log.d(OrderFragment.TAG, "getDataItems: " + HighlightFoodFragment.class.getSimpleName());
         if (productResponse != null) {
             dataItems = new ArrayList<>();

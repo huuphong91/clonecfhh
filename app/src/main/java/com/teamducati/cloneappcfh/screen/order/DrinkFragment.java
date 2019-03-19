@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.teamducati.cloneappcfh.R;
-import com.teamducati.cloneappcfh.screen.order.adapter.OrderAdapter;
 import com.teamducati.cloneappcfh.entity.api_order.DataItem;
 import com.teamducati.cloneappcfh.entity.api_order.ItemProductResponse;
+import com.teamducati.cloneappcfh.screen.order.adapter.OrderAdapter;
 import com.teamducati.cloneappcfh.utils.Constants;
 
 import java.util.ArrayList;
@@ -43,14 +43,12 @@ public class DrinkFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Log.d(OrderFragment.TAG, "onCreate: ");
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         Log.d(OrderFragment.TAG, "onViewCreated: ");
 
         rvListDrinks = view.findViewById(R.id.rv_drink);
@@ -61,7 +59,6 @@ public class DrinkFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         Log.d(OrderFragment.TAG, "onCreateView: ");
 
         return inflater.inflate(R.layout.fragment_drink, container, false);
@@ -69,7 +66,6 @@ public class DrinkFragment extends Fragment {
     }
 
     private void setAdapter() {
-
         Log.d(OrderFragment.TAG, "setAdapter: ");
 
         if (fragmentOrderAdapter == null) {
@@ -82,7 +78,6 @@ public class DrinkFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
         Log.d(OrderFragment.TAG, "onAttach: ");
         if (getArguments() != null) {
             productResponse = getArguments().getParcelable(Constants.KEY_BUNDLE_DRINK_FRAGMENT);
@@ -90,7 +85,6 @@ public class DrinkFragment extends Fragment {
     }
 
     private void getDataItems(int categ) {
-
         Log.d(OrderFragment.TAG, "getDataItems: ");
 
         dataItems = new ArrayList<>();

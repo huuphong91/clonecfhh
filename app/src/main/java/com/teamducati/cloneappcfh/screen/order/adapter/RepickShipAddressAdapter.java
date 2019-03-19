@@ -59,7 +59,8 @@ public class RepickShipAddressAdapter extends RecyclerView.Adapter<RecyclerView.
                 ((PositionAddressViewHolder) holder).bindPositionAddress(position);
                 break;
             case SHIP_ADDRESS_RESULT_TYPE:
-                ((ShipAddressResultViewHolder) holder).tvShipAddressResult.setText(mAddressList.get(position).getFullAddress());
+                ((ShipAddressResultViewHolder) holder).tvShipAddressResult.
+                        setText(mAddressList.get(position).getFullAddress());
                 break;
         }
     }
