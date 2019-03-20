@@ -143,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
                     getLocation(R.id.navigation_order);
                     isFirstClickOnOrderTab = false;
                 }
-
                 return true;
             case R.id.navigation_store:
                 positionFragment = 2;
