@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,20 +16,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.User;
-import com.teamducati.cloneappcfh.screen.main.MainActivity;
+import com.teamducati.cloneappcfh.utils.ActivityUtils;
 import com.teamducati.cloneappcfh.utils.Constants;
 
 import java.io.IOException;
-import java.util.Objects;
-import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -66,8 +57,9 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     private Unbinder unbinder;
     private AccountContract.Presenter mPresenter;
     private Uri filePath;
-    private FirebaseStorage storage;
-    private StorageReference storageReference;
+    private User userObj;
+//    private FirebaseStorage storage;
+//    private StorageReference storageReference;
 
     public ProfileUserFragment() {
     }
@@ -80,7 +72,16 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile_user, container, false);
         unbinder = ButterKnife.bind(this, view);
+        initData();
         return view;
+    }
+
+    private void initData() {
+        userObj = new User();
+        userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
+        if (!(userObj == null)) {
+            showUserDetail(userObj);
+        }
     }
 
     @Override
@@ -96,6 +97,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     }
 
     private void setEventsClick() {
+        mBtnClose.setVisibility(View.GONE);
         mBtnClose.setOnClickListener(this);
         mBtnLogOut.setOnClickListener(this);
         mEdtFirstName.setOnClickListener(this);
@@ -117,7 +119,13 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
         mEdtGender.setText(user.getGender());
         Glide.with(getActivity())
                 .load(user.getImgAvatarUrl()).into(mImageAvatar);
-        this.user = user;
+        this.user = userObj;
+
+    }
+
+    @Override
+    public void restartViewAccount() {
+
     }
 
     @Override
@@ -217,21 +225,21 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
-            ref.putFile(filePath)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        progressDialog.dismiss();
-                        Toast.makeText(getActivity(), "Uploaded", Toast.LENGTH_SHORT).show();
-                    })
-                    .addOnFailureListener(e -> {
-                        progressDialog.dismiss();
-                        Toast.makeText(getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    })
-                    .addOnProgressListener(taskSnapshot -> {
-                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
-                                .getTotalByteCount());
-                        progressDialog.setMessage("Uploaded " + (int) progress + "%");
-                    });
+//            StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+//            ref.putFile(filePath)
+//                    .addOnSuccessListener(taskSnapshot -> {
+//                        progressDialog.dismiss();
+//                        Toast.makeText(getActivity(), "Uploaded", Toast.LENGTH_SHORT).show();
+//                    })
+//                    .addOnFailureListener(e -> {
+//                        progressDialog.dismiss();
+//                        Toast.makeText(getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    })
+//                    .addOnProgressListener(taskSnapshot -> {
+//                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
+//                                .getTotalByteCount());
+//                        progressDialog.setMessage("Uploaded " + (int) progress + "%");
+//                    });
         }
     }
 }

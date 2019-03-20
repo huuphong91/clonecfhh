@@ -24,14 +24,23 @@ public class AccountPresenter implements AccountContract.Presenter {
 
     private AccountContract.View mAccountView;
 
+    private User userObj;
+
     public AccountPresenter(Context context, AccountContract.View accountView) {
+        this.context=context;
         this.mAccountView = accountView;
         mAccountView.setPresenter(this);
+        userObj=new User();
     }
 
     @Override
     public void start() {
-
+        userObj = ActivityUtils.getDataObject(context, userObj.getClass());
+        if (!(userObj==null)) {
+            mAccountView.showLoginScreen();
+        } else {
+            mAccountView.showUserDetail(userObj);
+        }
     }
 
     @Override
@@ -58,8 +67,8 @@ public class AccountPresenter implements AccountContract.Presenter {
                         if (userList.get(0).getUserName().equals(user.getUserName().trim().toLowerCase())
                                 && userList.get(0).getPassword().equals(user.getPassword().trim().toLowerCase())) {
                             Log.d("onDataChange: ", "data match");
-                            mAccountView.showUserDetail(userList.get(0));
                             ActivityUtils.setDataObject(context, userList.get(0));
+                            mAccountView.restartViewAccount();
                         } else {
                             Log.d("onDataChange: ", "data not match");
                             mAccountView.showLoginFail("check your information");
@@ -78,7 +87,7 @@ public class AccountPresenter implements AccountContract.Presenter {
 
     @Override
     public void onLogout() {
-        mAccountView.showLoginScreen();
+        mAccountView.restartViewAccount();
         ActivityUtils.removeAllDataObject(context);
     }
 

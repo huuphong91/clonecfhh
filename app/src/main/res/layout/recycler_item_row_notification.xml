@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
-    android:background="@drawable/custom_bottom_line_notifications"
     android:gravity="center_horizontal">
 
         <RelativeLayout
@@ -51,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txt_news_item_content_notification"
                 android:layout_toRightOf="@+id/img_news_item_ring_notification"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="Date"

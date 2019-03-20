@@ -102,5 +102,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.google.firebase:firebase-storage:9.2.1'
     implementation 'com.google.firebase:firebase-auth:9.2.1'
+    //CircleImageView
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

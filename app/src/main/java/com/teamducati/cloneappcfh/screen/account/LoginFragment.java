@@ -10,9 +10,6 @@ import android.widget.Toast;
 
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.User;
-import com.teamducati.cloneappcfh.utils.ActivityUtils;
-
-import java.util.Objects;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -65,12 +62,11 @@ public class LoginFragment extends Fragment implements AccountContract.View {
     @Override
     public void showUserDetail(User user) {
 
-        ProfileUserFragment profileUserFragment = (ProfileUserFragment) Objects.requireNonNull(getActivity())
-                .getSupportFragmentManager()
-                .findFragmentById(R.id.contentAccountFrame);
-        if (profileUserFragment != null) {
-            ActivityUtils.chooseFragmentWannaDisplay(getActivity().getSupportFragmentManager(), profileUserFragment, R.id.contentAccountFrame);
-        }
+    }
+
+    @Override
+    public void restartViewAccount() {
+
     }
 
     @Override

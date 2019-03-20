@@ -70,6 +70,9 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     public NewsFragment() {
         // Required empty public constructor
     }
+    public static NewsFragment newInstance() {
+        return new NewsFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

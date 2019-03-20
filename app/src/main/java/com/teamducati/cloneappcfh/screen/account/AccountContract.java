@@ -19,6 +19,8 @@ public interface AccountContract {
 
         void showUserDetail(User user);
 
+        void restartViewAccount();
+
         void showLoginFail(String whyFail);
 
         void showUpdateUserPropertySuccess();

@@ -3,7 +3,6 @@ package com.teamducati.cloneappcfh.screen.account;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.User;
+import com.teamducati.cloneappcfh.utils.ActivityUtils;
 import com.teamducati.cloneappcfh.utils.Constants;
 
 import androidx.annotation.NonNull;
@@ -29,7 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class DialogUpdate extends DialogFragment {
+public class DialogUpdate extends DialogFragment implements AccountContract.View {
 
     @BindView(R.id.edtPropertyDialog)
     EditText mEdtPropertyDialog;
@@ -44,6 +44,7 @@ public class DialogUpdate extends DialogFragment {
     private Unbinder unbinder;
     private User user;
     private String title;
+    private ProfileUserFragment profileUserFragment;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -89,6 +90,7 @@ public class DialogUpdate extends DialogFragment {
             updateProperty(title);
             updateUserProperty(user);
             dismiss();
+
         });
     }
 
@@ -145,8 +147,10 @@ public class DialogUpdate extends DialogFragment {
         myRef.orderByChild("User").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    myRef.child("User").setValue(user);
+                myRef.child("User").setValue(user);
+                ActivityUtils.setDataObject(getActivity(), user);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -159,5 +163,35 @@ public class DialogUpdate extends DialogFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void showUserDetail(User user) {
+
+    }
+
+    @Override
+    public void restartViewAccount() {
+
+    }
+
+    @Override
+    public void showLoginFail(String whyFail) {
+
+    }
+
+    @Override
+    public void showUpdateUserPropertySuccess() {
+
+    }
+
+    @Override
+    public void showUpdateUserPropertyFail() {
+
+    }
+
+    @Override
+    public void showLoginScreen() {
+
     }
 }
