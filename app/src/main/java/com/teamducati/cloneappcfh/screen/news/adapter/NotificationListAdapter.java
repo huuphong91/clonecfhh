@@ -1,6 +1,7 @@
 package com.teamducati.cloneappcfh.screen.news.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,12 @@ import android.widget.Toast;
 
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.Notification;
+import com.teamducati.cloneappcfh.screen.news.notificationsdetails.NotificationDetailsDialogFragment;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -45,18 +48,14 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             txtItemTilteNotification = itemView.findViewById(R.id.txt_news_item_tilte_notification);
             txtItemContentNotification = itemView.findViewById(R.id.txt_news_item_content_notification);
             txtItemDateNotification = itemView.findViewById(R.id.txt_news_item_date_notification);
-            //itemView.setOnClickListener(this);
-           // itemView.setOnLongClickListener(this);
+            itemView.setOnClickListener(this);
+            //itemView.setOnLongClickListener(this);
         }
 
         public void setItemClickListener(ItemClickListener itemClickListener) {
             this.itemClickListener = itemClickListener;
         }
 
-        @Override
-        public void onClick(View v) {
-
-        }
 
         @Override
         public boolean onLongClick(View v) {
@@ -65,6 +64,10 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             return true;
         }
 
+        @Override
+        public void onClick(View view) {
+            itemClickListener.onClick(view, getAdapterPosition(), false);
+        }
     }
 
 
@@ -88,7 +91,15 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                     Toast.makeText(context, "Long Click" + position, Toast.LENGTH_SHORT).show();
 
                 } else {
-                    //onClick
+                    AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                    NotificationDetailsDialogFragment newsNotificationDialogFragment =
+                            new NotificationDetailsDialogFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("title_notification",NotificationObj.getTilte());
+                    bundle.putString("content_notification", NotificationObj.getContent());
+                    bundle.putString("image_notification", NotificationObj.getUrl());
+                    newsNotificationDialogFragment.setArguments(bundle);
+                    newsNotificationDialogFragment.show(activity.getSupportFragmentManager(), null);
 
                 }
             }

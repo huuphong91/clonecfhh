@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,22 +15,31 @@ import com.teamducati.cloneappcfh.entity.api_order.DataItem;
 import com.teamducati.cloneappcfh.screen.order.ViewDialogAdd;
 import com.teamducati.cloneappcfh.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolderOder> {
+public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolderOder> implements Filterable {
 
     private Context context;
-    private List<DataItem> dataItemList;
+    private List<DataItem> dataItemList, filterList;
     private FragmentManager fragmentManager;
+    private CustomFilter mFilter;
 
     public OrderAdapter(@NonNull Context context, List<DataItem> values, FragmentManager fragmentManager) {
         this.context = context;
         this.dataItemList = values;
+        this.filterList = values;
         this.fragmentManager = fragmentManager;
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (mFilter == null) mFilter = new CustomFilter();
+        return mFilter;
     }
 
     @NonNull
@@ -71,6 +82,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolderOd
         return 0;
     }
 
+
     public class ViewHolderOder extends RecyclerView.ViewHolder {
 
         private ImageView ivDrink;
@@ -87,6 +99,38 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolderOd
             tvClassify = itemView.findViewById(R.id.tv_classify);
             tvPrice = itemView.findViewById(R.id.tv_price);
             ivAdd = itemView.findViewById(R.id.iv_add);
+        }
+    }
+
+    class CustomFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults filterResults = new FilterResults();
+                //when constraint not null
+                if (constraint != null && constraint.length() > 0) {
+                    List<DataItem> list = new ArrayList<>();
+                    constraint = constraint.toString().toLowerCase();
+                    for (DataItem dataItem : filterList) {
+                        if (dataItem.getProductName().toLowerCase().contains(constraint)) {
+                            list.add(dataItem);
+                        }
+                    }
+
+                    filterResults.count = list.size();
+                    filterResults.values = list;
+
+                } else {
+                    filterResults.count = filterList.size();
+                    filterResults.values = filterList;
+                }
+
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            dataItemList = (ArrayList<DataItem>) results.values;
+            notifyDataSetChanged();
         }
     }
 }

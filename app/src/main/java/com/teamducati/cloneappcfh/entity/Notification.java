@@ -22,10 +22,13 @@ public class Notification implements Serializable {
     private String content;
     @ColumnInfo(name = "date")
     private String date;
+    @ColumnInfo(name = "url")
+    private String url;
 
-    public Notification(String tilte, String content, String date) {
+    public Notification(String tilte, String content, String date,String url) {
         this.tilte = tilte;
         this.content = content;
         this.date = date;
+        this.url = url;
     }
 }

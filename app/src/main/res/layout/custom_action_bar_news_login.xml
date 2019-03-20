@@ -7,8 +7,9 @@
 
     <ImageView
         android:id="@+id/img_news_person"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:padding="6dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="16dp"
         android:src="@drawable/ic_person_grey_700_24dp" />
@@ -17,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/img_news_person"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="4dp"
         android:layout_marginTop="4dp"
         android:text="Cao Trinh"/>
 
@@ -27,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_name_news_login"
         android:layout_toRightOf="@id/img_news_person"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="4dp"
         android:drawableRight="@drawable/resources_images_icons_ic_stars_yellow_resize"
         android:layout_marginTop="4dp"
         android:text="• 0 "/>

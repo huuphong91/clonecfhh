@@ -24,8 +24,6 @@ public class NewsNotificationActivity extends AppCompatActivity implements Notic
     private NotificationListAdapter mNotificationListAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ImageView imgCloseNotificaton;
-    private View mViewLayoutSignIn;
-    private View mViewLayoutSignOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

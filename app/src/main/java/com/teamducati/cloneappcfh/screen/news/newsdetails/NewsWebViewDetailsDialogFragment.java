@@ -17,7 +17,7 @@ import com.teamducati.cloneappcfh.R;
 
 import androidx.fragment.app.DialogFragment;
 
-public class NewsDetailsDialogFragment extends DialogFragment {
+public class NewsWebViewDetailsDialogFragment extends DialogFragment {
     private WebView webViewNews;
     private ImageView imgBackWebView;
     private TextView txtTitleWebView;

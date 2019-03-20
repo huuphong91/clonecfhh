@@ -6,13 +6,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.api_order.DataItem;
 import com.teamducati.cloneappcfh.entity.api_order.ItemProductResponse;
+import com.teamducati.cloneappcfh.screen.order.ShipAddressRepick.ShipAddressRepick;
+import com.teamducati.cloneappcfh.screen.order.ordersearch.OrderSearchDialogFragment;
 import com.teamducati.cloneappcfh.utils.Constants;
 import com.teamducati.cloneappcfh.utils.Utils;
 import com.teamducati.cloneappcfh.utils.eventsbus.EventsBusCart;
@@ -20,7 +24,6 @@ import com.teamducati.cloneappcfh.utils.eventsbus.EventsBusCart;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import com.teamducati.cloneappcfh.screen.order.ShipAddressRepick.ShipAddressRepick;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -44,7 +46,8 @@ import butterknife.Unbinder;
 public class OrderFragment extends Fragment implements OrderContract.View, ShipAddressRepick.OnClickItem {
 
     public static final String TAG = OrderFragment.class.getName();
-
+    private static int numberProductInCartCurrent;
+    private static int priceProductInCartCurrent;
     @BindView(R.id.tvShipAddress)
     TextView tvShipAddress;
     @BindView(R.id.toolBarShipLocation)
@@ -59,14 +62,18 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
     TextView tvNumberProduct;
     @BindView(R.id.tv_price_in_cart)
     TextView tvPrice;
-
+    @BindView(R.id.imageView)
+    ImageView imageView;
+    @BindView(R.id.textView)
+    TextView textView;
+    @BindView(R.id.imgSearchProduct)
+    ImageView imgSearchProduct;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
     private Unbinder unbinder;
     private OrderContract.Presenter mPresenter;
     private ItemProductResponse itemProductResponse;
     private SharedPreferences sp;
-    private static int numberProductInCartCurrent;
-    private static int priceProductInCartCurrent;
-
     private DialogFragment dialogFragment = ShipAddressRepick.newInstance();
 
     public OrderFragment() {
@@ -94,10 +101,16 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
 
         mPresenter.onGetAllProductPresenter();
 
-        ((ShipAddressRepick)dialogFragment).setOnClickItem(this);
+        ((ShipAddressRepick) dialogFragment).setOnClickItem(this);
 
         mToolBarShipLocation.setOnClickListener(v -> {
             dialogFragment.show(getChildFragmentManager(), "tag");
+        });
+        imgSearchProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OrderSearchDialogFragment.newInstance(itemProductResponse).show(getFragmentManager(), "");
+            }
         });
 
         numberProductInCartCurrent = -1;
@@ -145,6 +158,38 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
         tvShipAddress.setText(address);
     }
 
+
+    public void setLocation(String address) {
+        tvShipAddress.setText(address);
+        ((ShipAddressRepick) dialogFragment).setLocation(address);
+    }
+
+    public void writeSharedPreferences(String objectGson) {
+        SharedPreferences sharedPreferences = Utils.getSharedPreferencesInstance(this.getActivity());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(Constants.KEY_PRODUCT_SHARED_PREF, objectGson);
+    }
+
+    public void readSharedPreferences() {
+        SharedPreferences sharedPreferences = Utils.getSharedPreferencesInstance(this.getActivity());
+        String productPref = sharedPreferences.getString(Constants.KEY_PRODUCT_SHARED_PREF, "");
+        if (!"".equals(productPref)) {
+            DataItem dataItem = Utils.getGsonInstance().fromJson(productPref, DataItem.class);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+    }
+
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -172,36 +217,5 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
-    }
-
-    public void setLocation(String address) {
-        tvShipAddress.setText(address);
-        ((ShipAddressRepick)dialogFragment).setLocation(address);
-    }
-
-    public void writeSharedPreferences(String objectGson) {
-        SharedPreferences sharedPreferences = Utils.getSharedPreferencesInstance(this.getActivity());
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(Constants.KEY_PRODUCT_SHARED_PREF, objectGson);
-    }
-
-    public void readSharedPreferences() {
-        SharedPreferences sharedPreferences = Utils.getSharedPreferencesInstance(this.getActivity());
-        String productPref = sharedPreferences.getString(Constants.KEY_PRODUCT_SHARED_PREF, "");
-        if (!"".equals(productPref)) {
-            DataItem dataItem = Utils.getGsonInstance().fromJson(productPref, DataItem.class);
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
     }
 }
