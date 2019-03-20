@@ -11,6 +11,7 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.teamducati.cloneappcfh.R;
+import com.teamducati.cloneappcfh.entity.APIStoreMap.Address;
 import com.teamducati.cloneappcfh.screen.account.AccountFragment;
 import com.teamducati.cloneappcfh.screen.account.AccountPresenter;
 import com.teamducati.cloneappcfh.screen.news.NewsFragment;
@@ -21,6 +22,10 @@ import com.teamducati.cloneappcfh.screen.store.StoreFragment;
 import com.teamducati.cloneappcfh.screen.store.StorePresenter;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -29,7 +34,7 @@ import androidx.core.app.ActivityCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements FetchAddressTask.OnTaskCompleted {
+public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     @BindView(R.id.navigation)
@@ -166,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
             mFusedLocation.getLastLocation().addOnSuccessListener(location -> {
                 if (location != null) {
                     // mStoreFragment.setLocation(location);
-                    new FetchAddressTask(this, this).execute(location);
+                    new FetchAddressTask(this).execute(location);
                 }
             });
         }
@@ -191,10 +196,5 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
                 }
                 break;
         }
-    }
-
-    @Override
-    public void onTaskCompleted(String result) {
-        mOrderFragment.setLocation(result);
     }
 }

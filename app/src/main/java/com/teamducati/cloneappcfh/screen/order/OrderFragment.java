@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.teamducati.cloneappcfh.R;
+import com.teamducati.cloneappcfh.entity.APIStoreMap.Address;
 import com.teamducati.cloneappcfh.entity.api_order.DataItem;
 import com.teamducati.cloneappcfh.entity.api_order.ItemProductResponse;
 import com.teamducati.cloneappcfh.screen.order.ShipAddressRepick.ShipAddressRepick;
@@ -106,12 +107,7 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
         mToolBarShipLocation.setOnClickListener(v -> {
             dialogFragment.show(getChildFragmentManager(), "tag");
         });
-        imgSearchProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OrderSearchDialogFragment.newInstance(itemProductResponse).show(getFragmentManager(), "");
-            }
-        });
+        imgSearchProduct.setOnClickListener(v -> OrderSearchDialogFragment.newInstance(itemProductResponse).show(getFragmentManager(), ""));
 
         numberProductInCartCurrent = -1;
         priceProductInCartCurrent = -1;
@@ -155,6 +151,11 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
 //        String productGson = new Gson().toString();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(Address event) {
+        tvShipAddress.setText(event.getFullAddress());
+    }
+
     @Override
     public void onGetAllProductView(ItemProductResponse itemListProductResponse) {
         this.itemProductResponse = itemListProductResponse;
@@ -174,12 +175,6 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
     @Override
     public void onClickItem(String address) {
         tvShipAddress.setText(address);
-    }
-
-
-    public void setLocation(String address) {
-        tvShipAddress.setText(address);
-        ((ShipAddressRepick) dialogFragment).setLocation(address);
     }
 
     public void writeSharedPreferences(String objectGson) {
