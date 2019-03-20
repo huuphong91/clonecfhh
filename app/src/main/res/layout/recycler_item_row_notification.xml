@@ -6,17 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal">
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="6dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="6dp"
-        android:padding="6dp"
-        cardview:cardElevation="4dp"
-        cardview:cardCornerRadius="5dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,11 +16,10 @@
                 android:id="@+id/img_news_item_ring_notification"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-
                 android:layout_marginRight="6dp"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="4dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/resources_images_icons_ic_stars_yellow_24px"/>
+                android:src="@drawable/resources_images_icons_gift"/>
             <TextView
                 android:id="@+id/txt_news_item_tilte_notification"
                 android:layout_width="wrap_content"
@@ -47,8 +36,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txt_news_item_tilte_notification"
                 android:layout_marginLeft="8dp"
+                android:paddingRight="16dp"
                 android:layout_toRightOf="@+id/img_news_item_ring_notification"
                 android:text="Content"
+                android:lineSpacingExtra="6dp"
                 android:textSize="12sp"
                 android:textColor="#333333" />
 
@@ -58,10 +49,20 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txt_news_item_content_notification"
                 android:layout_toRightOf="@+id/img_news_item_ring_notification"
+                android:layout_marginTop="8dp"
                 android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="Date"
                 android:textSize="12sp"
                 android:textColor="#333333"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/txt_news_item_date_notification"
+                android:background="@android:color/darker_gray">
+
+            </View>
+
         </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+
 </RelativeLayout>

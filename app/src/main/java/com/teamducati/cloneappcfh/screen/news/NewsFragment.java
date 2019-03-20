@@ -1,6 +1,7 @@
 package com.teamducati.cloneappcfh.screen.news;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,17 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.teamducati.cloneappcfh.R;
-import com.teamducati.cloneappcfh.screen.news.adapter.NewsListAdapter;
-import com.teamducati.cloneappcfh.screen.news.adapter.NewsPromotionListAdapter;
 import com.teamducati.cloneappcfh.entity.News;
 import com.teamducati.cloneappcfh.entity.NewsPromotion;
 import com.teamducati.cloneappcfh.entity.User;
 import com.teamducati.cloneappcfh.screen.main.MainViewPager;
+import com.teamducati.cloneappcfh.screen.news.adapter.NewsListAdapter;
+import com.teamducati.cloneappcfh.screen.news.adapter.NewsPromotionListAdapter;
 import com.teamducati.cloneappcfh.screen.news.notification.NewsNotificationDialogFragment;
+import com.teamducati.cloneappcfh.screen.news.notificationsdetails.NotificationDetailsDialogFragment;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
 
 import java.util.List;
@@ -59,6 +64,8 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     private ViewFlipper mViewLayoutActionBar;
 
     private User userObj;
+    private TextView mTxtNameNewsLogin;
+    private ImageView mImgNewsPerson;
 
     public NewsFragment() {
         // Required empty public constructor
@@ -70,6 +77,7 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         view = inflater.inflate(R.layout.fragment_news, container, false);
         initMappingViewId();
         initEvent();
+        initShowStartupDialogNotification();
         initUI();
         return view;
     }
@@ -78,6 +86,20 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         initActionBar();
         initRecyclerViewNews();
         initRecyclerViewNewsPromotion();
+    }
+
+    public void initRecyclerViewNewsPromotion() {
+        mRecyclerViewNewsPromotion = (RecyclerView) view.findViewById(R.id.recycler_view_news_promotion);
+        mRecyclerViewNewsPromotion.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerViewNewsPromotion.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+    }
+
+    public void initRecyclerViewNews() {
+        mRecyclerViewNews = (RecyclerView) view.findViewById(R.id.recycler_view_news);
+        mRecyclerViewNews.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerViewNews.setLayoutManager(layoutManager);
     }
 
     private void initEvent() {
@@ -123,6 +145,11 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
         if (!(userObj == null)) {
             Log.d("Data", userObj.toString());
+            mTxtNameNewsLogin.setText(userObj.getFirstName());
+            Glide.with(getContext())
+                    .load(userObj.getImgAvatarUrl())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(mImgNewsPerson);
             mViewLayoutActionBar.setDisplayedChild(0);
         } else {
             Log.d("Data", "null data");
@@ -130,19 +157,20 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         }
     }
 
-    public void initRecyclerViewNewsPromotion() {
-        mRecyclerViewNewsPromotion = (RecyclerView) view.findViewById(R.id.recycler_view_news_promotion);
-        mRecyclerViewNewsPromotion.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerViewNewsPromotion.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        //  mRecyclerView.setLayoutManager(layoutManager);
-    }
+    private void initShowStartupDialogNotification() {
+        Intent intent = getActivity().getIntent();
+        if (intent.getStringExtra("firebase_id") != null) {
+            NotificationDetailsDialogFragment newsNotificationDialogFragment =
+                    new NotificationDetailsDialogFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("title_notification", intent.getStringExtra("firebase_title"));
+            bundle.putString("content_notification", intent.getStringExtra("firebase_content"));
+            bundle.putString("image_notification", intent.getStringExtra("firebase_url"));
+            newsNotificationDialogFragment.setArguments(bundle);
+            newsNotificationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
+        } else {
 
-    public void initRecyclerViewNews() {
-        mRecyclerViewNews = (RecyclerView) view.findViewById(R.id.recycler_view_news);
-        mRecyclerViewNews.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerViewNews.setLayoutManager(layoutManager);
+        }
     }
 
     @Override
@@ -158,7 +186,6 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     }
 
     private void initMappingViewId() {
-
         mRecyclerViewNewsPromotion = view.findViewById(R.id.recycler_view_news_promotion);
         mRecyclerViewNews = view.findViewById(R.id.recycler_view_news);
         imgNotificationSignIn = view.findViewById(R.id.img_news_notification_sign_in);
@@ -168,6 +195,8 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         //bottomNavigation
         bottomNavigationView = getActivity().findViewById(R.id.navigation);
         mViewLayoutActionBar = view.findViewById(R.id.view_flipper);
+        mTxtNameNewsLogin = view.findViewById(R.id.txt_name_news_login);
+        mImgNewsPerson = view.findViewById(R.id.img_news_person);
     }
 
     @Override
@@ -183,7 +212,6 @@ public class NewsFragment extends Fragment implements NewsContract.View {
                 swipeRefreshLayoutLayout.setRefreshing(false);
             }
         });
-
     }
 
     @Override

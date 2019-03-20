@@ -63,6 +63,7 @@ public class ActivityUtils {
         mSharedPreferencesEditor = mSharedPreferences.edit();
         mSharedPreferencesEditor.clear();
         mSharedPreferencesEditor.commit();
+        
     }
 
 

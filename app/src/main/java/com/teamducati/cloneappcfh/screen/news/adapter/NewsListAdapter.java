@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.News;
-import com.teamducati.cloneappcfh.screen.news.newsdetails.NewsDetailsDialogFragment;
+import com.teamducati.cloneappcfh.screen.news.newsdetails.NewsWebViewDetailsDialogFragment;
 
 import java.util.List;
 
@@ -63,8 +63,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
 
                 } else {
                     AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                    NewsDetailsDialogFragment dialogFragmentDetails =
-                            new NewsDetailsDialogFragment();
+                    NewsWebViewDetailsDialogFragment dialogFragmentDetails =
+                            new NewsWebViewDetailsDialogFragment();
                     Bundle bundle = new Bundle();
                     bundle.putString("url", mNewss.get(position).getUrl());
                     bundle.putString("title", mNewss.get(position).getTitle());
