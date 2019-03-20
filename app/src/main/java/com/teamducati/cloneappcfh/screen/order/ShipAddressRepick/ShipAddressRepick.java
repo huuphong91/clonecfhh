@@ -13,8 +13,13 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.teamducati.cloneappcfh.R;
+import com.teamducati.cloneappcfh.entity.APIStoreMap.Address;
 import com.teamducati.cloneappcfh.screen.main.MainActivity;
 import com.teamducati.cloneappcfh.screen.order.adapter.RepickShipAddressAdapter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 import java.util.Objects;
@@ -64,8 +69,6 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
 
         requestBuilder = FindAutocompletePredictionsRequest.builder()
                 .setCountry("vn");
-
-        ((MainActivity) Objects.requireNonNull(getActivity())).getLocation();
     }
 
     @Nullable
@@ -121,12 +124,12 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
     }
 
     public void setLocation(String address) {
-        mAddress = address;
+            mAddress = address;
     }
 
     @Override
     public void onCurrentLocationClick() {
-        ((MainActivity) Objects.requireNonNull(getActivity())).getLocation();
+        ((MainActivity) Objects.requireNonNull(getActivity())).getLocation(R.id.navigation_order);
         dismiss();
     }
 

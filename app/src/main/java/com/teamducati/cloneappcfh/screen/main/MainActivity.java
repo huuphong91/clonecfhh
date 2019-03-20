@@ -140,16 +140,15 @@ public class MainActivity extends AppCompatActivity {
                 positionFragment = 1;
                 setCurrentItem(positionFragment);
                 if (isFirstClickOnOrderTab) {
-                    getLocation();
+                    getLocation(R.id.navigation_order);
                     isFirstClickOnOrderTab = false;
                 }
-
                 return true;
             case R.id.navigation_store:
                 positionFragment = 2;
                 setCurrentItem(positionFragment);
                 if (isFirstClickOnStoreTab) {
-                    getLocation();
+                    getLocation(R.id.navigation_store);
                     isFirstClickOnStoreTab = false;
                 }
                 return true;
@@ -161,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         return false;
     };
 
-    public void getLocation() {
+    public void getLocation(int itemId) {
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]
@@ -169,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     REQUEST_LOCATION_PERMISSION);
         } else {
             mFusedLocation.getLastLocation().addOnSuccessListener(location -> {
-                if (location != null) {
+                if (location != null && itemId == R.id.navigation_order) {
                     // mStoreFragment.setLocation(location);
                     new FetchAddressTask(this).execute(location);
                 }
@@ -188,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getLocation();
+                    getLocation(R.id.navigation_order);
                 } else {
                     Toast.makeText(this,
                             "Denied",

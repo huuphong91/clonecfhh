@@ -76,21 +76,18 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
     private ItemProductResponse itemProductResponse;
     private SharedPreferences sp;
     private DialogFragment dialogFragment = ShipAddressRepick.newInstance();
+    private String mAddressIsTyped = null;
+    private String mAddressCurrent = null;
 
     public OrderFragment() {
 
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order, container, false);
         unbinder = ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -106,8 +103,13 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
 
         mToolBarShipLocation.setOnClickListener(v -> {
             dialogFragment.show(getChildFragmentManager(), "tag");
+            if (mAddressCurrent != null) {
+                ((ShipAddressRepick) dialogFragment).setLocation(mAddressCurrent);
+            }
         });
-        imgSearchProduct.setOnClickListener(v -> OrderSearchDialogFragment.newInstance(itemProductResponse).show(getFragmentManager(), ""));
+
+        imgSearchProduct.setOnClickListener(v ->
+                OrderSearchDialogFragment.newInstance(itemProductResponse).show(getFragmentManager(), ""));
 
         numberProductInCartCurrent = -1;
         priceProductInCartCurrent = -1;
@@ -116,7 +118,7 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mSortProduct.setOnClickListener(view->{
+        mSortProduct.setOnClickListener(view -> {
 
             DialogCategoreOrder order = new DialogCategoreOrder();
             order.showDialog(getActivity());
@@ -151,9 +153,10 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
 //        String productGson = new Gson().toString();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(Address event) {
-        tvShipAddress.setText(event.getFullAddress());
+    @Subscribe
+    public void onEvent(Address event) {
+            mAddressCurrent = event.getFullAddress();
+            tvShipAddress.setText(mAddressCurrent);
     }
 
     @Override
@@ -174,7 +177,8 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
 
     @Override
     public void onClickItem(String address) {
-        tvShipAddress.setText(address);
+        mAddressIsTyped = address;
+        tvShipAddress.setText(mAddressIsTyped);
     }
 
     public void writeSharedPreferences(String objectGson) {
@@ -188,6 +192,14 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
         String productPref = sharedPreferences.getString(Constants.KEY_PRODUCT_SHARED_PREF, "");
         if (!"".equals(productPref)) {
             DataItem dataItem = Utils.getGsonInstance().fromJson(productPref, DataItem.class);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
     }
 
