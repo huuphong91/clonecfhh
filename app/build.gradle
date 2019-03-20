@@ -41,6 +41,10 @@ android {
     configurations {
         all*.exclude group: 'com.google.guava', module: 'listenablefuture'
     }
+
+    dataBinding{
+        enabled = true
+    }
 }
 
 dependencies {
@@ -91,18 +95,24 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
 
     def room_version = "2.1.0-alpha05"
+
     implementation "androidx.room:room-runtime:$room_version"
+
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
     //RxJava support for Room
     implementation "androidx.room:room-rxjava2:$room_version"
-
-    //Google places
     implementation 'com.google.android.libraries.places:places:1.0.0'
-
     //Events Bus
     implementation 'org.greenrobot:eventbus:3.1.1'
 
-    //Circle Image
+    //Circle Image View
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    //     AndroidX libraries use this lightweight import for Lifecycle
+    implementation "androidx.lifecycle:lifecycle-runtime:2.0.0"
+
+    // alternately - if using Java8, use the following instead of lifecycle-compiler
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.0.0"
+
 }
