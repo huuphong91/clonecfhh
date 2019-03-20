@@ -7,6 +7,9 @@ public class Constants {
 
     public static final String KEY_BUNDLE_FOOD_FRAGMENT = "KEY_BUNDLE_FOOD_FRAGMENT";
     public static final String KEY_BUNDLE_DRINK_FRAGMENT = "KEY_BUNDLE_DRINK_FRAGMENT";
+    public static final String KEY_BUNDLE_SEARCH_FRAGMENT = "KEY_BUNDLE_SEARCH_FRAGMENT";
+    public static final String KEY_BUNDLE_UPDATE_USER = "KEY_BUNDLE_UPDATE_USER";
+    public static final String KEY_BUNDLE_TITLE_UPDATE_USER = "KEY_BUNDLE_TITLE_UPDATE_USER";
     public static final String positionShipTitle[] = {"Vị trí hiện tại", "Vị trí tìm kiếm gần đây"};
 
     public static final String imgPositionShipUrl[] = {"resources_images_icons_ic_curent_location",
@@ -17,4 +20,5 @@ public class Constants {
 
     public static final String SHARED_PREFERENCES_CART_NAME = "SHARED_PREFERENCES_CART_NAME";
     public static final String KEY_PRODUCT_SHARED_PREF = "SHARED_PREFERENCES_CART_NAME";
+    public static final int PICK_IMAGE = 1;
 }

@@ -9,8 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.News;
@@ -61,6 +64,8 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     private ViewFlipper mViewLayoutActionBar;
 
     private User userObj;
+    private TextView mTxtNameNewsLogin;
+    private ImageView mImgNewsPerson;
 
     public NewsFragment() {
         // Required empty public constructor
@@ -72,7 +77,7 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         view = inflater.inflate(R.layout.fragment_news, container, false);
         initMappingViewId();
         initEvent();
-        initShowDialogNotification();
+        initShowStartupDialogNotification();
         initUI();
         return view;
     }
@@ -83,6 +88,19 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         initRecyclerViewNewsPromotion();
     }
 
+    public void initRecyclerViewNewsPromotion() {
+        mRecyclerViewNewsPromotion = (RecyclerView) view.findViewById(R.id.recycler_view_news_promotion);
+        mRecyclerViewNewsPromotion.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerViewNewsPromotion.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+    }
+
+    public void initRecyclerViewNews() {
+        mRecyclerViewNews = (RecyclerView) view.findViewById(R.id.recycler_view_news);
+        mRecyclerViewNews.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerViewNews.setLayoutManager(layoutManager);
+    }
 
     private void initEvent() {
         mainViewPager = new MainViewPager(getActivity(), null);
@@ -120,7 +138,26 @@ public class NewsFragment extends Fragment implements NewsContract.View {
             }
         });
     }
-    private void initShowDialogNotification() {
+
+    private void initActionBar() {
+        //ActivityUtils.removeAllDataObject(getActivity());
+        userObj = new User();
+        userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
+        if (!(userObj == null)) {
+            Log.d("Data", userObj.toString());
+            mTxtNameNewsLogin.setText(userObj.getFirstName());
+            Glide.with(getContext())
+                    .load(userObj.getImgAvatarUrl())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(mImgNewsPerson);
+            mViewLayoutActionBar.setDisplayedChild(0);
+        } else {
+            Log.d("Data", "null data");
+            mViewLayoutActionBar.setDisplayedChild(1);
+        }
+    }
+
+    private void initShowStartupDialogNotification() {
         Intent intent = getActivity().getIntent();
         if (intent.getStringExtra("firebase_id") != null) {
             NotificationDetailsDialogFragment newsNotificationDialogFragment =
@@ -134,32 +171,6 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         } else {
 
         }
-    }
-    private void initActionBar() {
-        //ActivityUtils.removeAllDataObject(getActivity());
-        userObj = new User();
-        userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
-        if (!(userObj == null)) {
-            Log.d("Data", userObj.toString());
-            mViewLayoutActionBar.setDisplayedChild(0);
-        } else {
-            Log.d("Data", "null data");
-            mViewLayoutActionBar.setDisplayedChild(1);
-        }
-    }
-
-    public void initRecyclerViewNewsPromotion() {
-        mRecyclerViewNewsPromotion = (RecyclerView) view.findViewById(R.id.recycler_view_news_promotion);
-        mRecyclerViewNewsPromotion.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerViewNewsPromotion.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-    }
-
-    public void initRecyclerViewNews() {
-        mRecyclerViewNews = (RecyclerView) view.findViewById(R.id.recycler_view_news);
-        mRecyclerViewNews.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerViewNews.setLayoutManager(layoutManager);
     }
 
     @Override
@@ -184,6 +195,8 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         //bottomNavigation
         bottomNavigationView = getActivity().findViewById(R.id.navigation);
         mViewLayoutActionBar = view.findViewById(R.id.view_flipper);
+        mTxtNameNewsLogin = view.findViewById(R.id.txt_name_news_login);
+        mImgNewsPerson = view.findViewById(R.id.img_news_person);
     }
 
     @Override

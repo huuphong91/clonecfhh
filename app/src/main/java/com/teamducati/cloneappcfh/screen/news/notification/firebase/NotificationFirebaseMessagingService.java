@@ -50,7 +50,6 @@ public class NotificationFirebaseMessagingService extends FirebaseMessagingServi
 
     private static final String TAG = "MyFirebaseMsgService";
     private NoticationContract.Presenter mPresenter;
-    ImageView imageView;
     private Bitmap bitmapImage;
 
     @Override
