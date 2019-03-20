@@ -1,8 +1,6 @@
 package com.teamducati.cloneappcfh.screen.account;
 
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +29,7 @@ public class LoginFragment extends Fragment implements AccountContract.View {
     @BindView(R.id.edt_password)
     EditText mEdtPassword;
 
+    private User userLogin;
     private Unbinder unbinder;
 
     private AccountContract.Presenter mPresenter;
@@ -56,10 +55,10 @@ public class LoginFragment extends Fragment implements AccountContract.View {
             String username = mEdtUsername.getText().toString();
             String password = mEdtPassword.getText().toString();
 //            validateField(username, password);
-            User user = new User();
-            user.setUserName(username);
-            user.setPassword(password);
-            mPresenter.onLogin(user);
+            userLogin= new User();
+            userLogin.setUserName(username);
+            userLogin.setPassword(password);
+            mPresenter.onLogin(userLogin);
         });
     }
 
@@ -100,7 +99,6 @@ public class LoginFragment extends Fragment implements AccountContract.View {
     public void showLoginScreen() {
 
     }
-
 
     @Override
     public void onDestroyView() {

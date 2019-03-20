@@ -1,7 +1,6 @@
 package com.teamducati.cloneappcfh.screen.account;
 
 import com.teamducati.cloneappcfh.entity.User;
-import com.teamducati.cloneappcfh.screen.news.NewsContract;
 import com.teamducati.cloneappcfh.utils.BasePresenter;
 import com.teamducati.cloneappcfh.utils.BaseView;
 

@@ -30,6 +30,7 @@ android {
             signingConfig signingConfigs.config
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -98,4 +99,8 @@ dependencies {
     implementation 'com.google.android.libraries.places:places:1.0.0'
     //Events Bus
     implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.google.firebase:firebase-storage:9.2.1'
+    implementation 'com.google.firebase:firebase-auth:9.2.1'
 }
+apply plugin: 'com.google.gms.google-services'
