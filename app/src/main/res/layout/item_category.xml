@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@drawable/border"
+    android:layout_height="wrap_content">
+<TextView
+    android:id="@+id/txtCategoryItem"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:text="Cà phê"
+    android:textColor="#000"
+    android:textSize="15sp"
+    android:gravity="center|left"
+    android:paddingLeft="@dimen/margin_left_10dp"
+    />
+</LinearLayout>

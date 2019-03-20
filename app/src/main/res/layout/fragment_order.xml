@@ -106,12 +106,14 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab"
+                android:id="@+id/fabSortProduct"
                 android:layout_width="wrap_content"
+                android:src="@drawable/icon_sort"
+                android:tag="0"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_12dp"
+                android:backgroundTint="#FF9800"
                 android:layout_marginBottom="@dimen/margin_12dp"
-                android:src="@drawable/icon_plus"
                 app:fabSize="mini"
                 app:layout_constraintBottom_toTopOf="@+id/csl_cart"
                 app:layout_constraintLeft_toLeftOf="parent" />
