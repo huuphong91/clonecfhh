@@ -11,6 +11,7 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.teamducati.cloneappcfh.R;
+import com.teamducati.cloneappcfh.entity.APIStoreMap.Address;
 import com.teamducati.cloneappcfh.screen.account.AccountFragment;
 import com.teamducati.cloneappcfh.screen.account.AccountPresenter;
 import com.teamducati.cloneappcfh.screen.news.NewsFragment;
@@ -20,6 +21,10 @@ import com.teamducati.cloneappcfh.screen.order.OrderPresenter;
 import com.teamducati.cloneappcfh.screen.store.StoreFragment;
 import com.teamducati.cloneappcfh.screen.store.StorePresenter;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Objects;
 
