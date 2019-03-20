@@ -68,8 +68,8 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
     TextView textView;
     @BindView(R.id.imgSearchProduct)
     ImageView imgSearchProduct;
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
+    @BindView(R.id.fabSortProduct)
+    FloatingActionButton mSortProduct;
     private Unbinder unbinder;
     private OrderContract.Presenter mPresenter;
     private ItemProductResponse itemProductResponse;
@@ -115,6 +115,24 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
 
         numberProductInCartCurrent = -1;
         priceProductInCartCurrent = -1;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mSortProduct.setOnClickListener(view->{
+
+            DialogCategoreOrder order = new DialogCategoreOrder();
+            order.showDialog(getActivity());
+
+//            if(mSortProduct.getTag().equals("0")){
+//                mSortProduct.setTag("0");
+//                mSortProduct.setImageDrawable(getResources().getDrawable(R.drawable.icon_delete));
+//            }else {
+//                mSortProduct.setTag("1");
+//                mSortProduct.setImageDrawable(getResources().getDrawable(R.drawable.icon_sort));
+//            }
+        });
     }
 
     private void setupViewPager(ViewPager viewPager) {
