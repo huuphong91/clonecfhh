@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
+import android.widget.Toast;
 
 import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.data.model.store.Store;
@@ -32,12 +34,17 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.Observable;
 
+import static androidx.core.content.ContextCompat.checkSelfPermission;
+
 public class StoreFragment extends Fragment implements OnMapReadyCallback, StoreView, GoogleMap.OnMyLocationChangeListener {
+
+    private final String TAG = getClass().getName();
 
     private MapView mMapView;
     private GoogleMap mGoogleMap;
@@ -47,7 +54,7 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
     private RecyclerView rvListNearByStore;
     private StoreHorizontalAdapter adapter;
     private FloatingActionButton btnShowMyLocation;
-    private StorePresenter presenter = new StorePresenterIpm(this);
+    private StorePresenter presenter;
 
     public static StoreFragment newInstance() {
 
@@ -57,11 +64,13 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView: ");
         return inflater.inflate(R.layout.fragment_store, container, false);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         listStoreNearBy = new ArrayList<>();
         listStore = new ArrayList<>();
@@ -70,7 +79,9 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onViewCreated: ");
         super.onViewCreated(view, savedInstanceState);
+        presenter = new StorePresenterIpm(this);
         mMapView = view.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
         mMapView.getMapAsync(this);
@@ -78,6 +89,7 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
         btnShowMyLocation.setOnClickListener(v -> {
             if (mGoogleMap.isMyLocationEnabled()) {
                 Location myLocation = mGoogleMap.getMyLocation();
+                if (myLocation == null) return;
                 mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), 13f));
             }
         });
@@ -91,14 +103,14 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
         mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
         LatLng centerOfVietnam = new LatLng(16.681521, 107.159505);
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(centerOfVietnam, 6));
-        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 696);
         } else {
             mGoogleMap.setMyLocationEnabled(true);
             mGoogleMap.setOnMyLocationChangeListener(this);
         }
-
         presenter.loadListStore();
+        Log.d(TAG, "onMapReady: ");
     }
 
     private void initRecyclerView(View view) {
@@ -111,29 +123,31 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
             Store store = listStoreNearBy.get(position);
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(store.storeLat, store.storeLong), 13f));
         });
-//        rvListNearByStore.setTranslationY(rvListNearByStore.getHeight());
-//        rvListNearByStore.setVisibility(View.VISIBLE);
-//        TranslateAnimation animation = new TranslateAnimation(0,0,rvListNearByStore.getHeight(),0);
-//        animation.setDuration(5000);
-//        rvListNearByStore.startAnimation(animation);
-//        btnShowMyLocation.startAnimation(animation);
+        rvListNearByStore.setVisibility(View.VISIBLE);
+        TranslateAnimation animation = new TranslateAnimation(0, 0, 335, 0);
+        animation.setDuration(2000);
+        rvListNearByStore.startAnimation(animation);
+        btnShowMyLocation.startAnimation(animation);
 
     }
 
     @Override
     public void onResume() {
+        Log.d(TAG, "onResume: ");
         super.onResume();
         mMapView.onResume();
     }
 
     @Override
     public void onStart() {
+        Log.d(TAG, "onStart: ");
         super.onStart();
         mMapView.onStart();
     }
 
     @Override
     public void onStop() {
+        Log.d(TAG, "onStop: ");
         super.onStop();
         presenter.onStop();
         mMapView.onStop();
@@ -141,12 +155,14 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
 
     @Override
     public void onPause() {
+        Log.d(TAG, "onPause: ");
         mMapView.onPause();
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "onDestroy: ");
         mMapView.onDestroy();
         super.onDestroy();
         presenter.onDestroy();
@@ -154,6 +170,7 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
 
     @Override
     public void onLowMemory() {
+        Log.d(TAG, "onLowMemory: ");
         super.onLowMemory();
         mMapView.onLowMemory();
     }
@@ -187,6 +204,7 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
     @Override
     public void onError(Throwable throwable) {
         Log.e(this.getClass().getName(), throwable.getLocalizedMessage());
+        Toast.makeText(getContext(), getResources().getText(R.string.load_api_failed), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -197,6 +215,8 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
 
         listStoreNearBy.clear();
         mCurentLocation = location;
+        if (mGoogleMap != null)
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13f));
         Location storeLocation = new Location("Location to compair");
         for (Store store : listStore) {
             storeLocation.setLatitude(store.storeLat);
@@ -215,6 +235,10 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 696) {
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                mGoogleMap.setMyLocationEnabled(true);
+                mGoogleMap.setOnMyLocationChangeListener(this);
+            }
 
         }
     }
