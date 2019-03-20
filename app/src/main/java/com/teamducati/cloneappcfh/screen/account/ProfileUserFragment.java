@@ -189,6 +189,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), Constants.PICK_IMAGE);
+        uploadImage();
     }
 
     @Override
@@ -201,7 +202,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(ProfileUserFragment.this.getContext().
                         getContentResolver(), filePath);
                 mImageAvatar.setImageBitmap(bitmap);
-                uploadImage();
+//                uploadImage();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -209,8 +210,8 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     }
 
     private void uploadImage() {
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+//        storage = FirebaseStorage.getInstance();
+//        storageReference = storage.getReference();
         if (filePath != null) {
             final ProgressDialog progressDialog = new ProgressDialog(getActivity());
             progressDialog.setTitle("Uploading...");
