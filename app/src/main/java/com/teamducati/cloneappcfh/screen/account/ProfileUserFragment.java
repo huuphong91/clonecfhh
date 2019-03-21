@@ -21,6 +21,10 @@ import com.teamducati.cloneappcfh.entity.User;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
 import com.teamducati.cloneappcfh.utils.Constants;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.IOException;
 
 import androidx.annotation.NonNull;
@@ -76,11 +80,17 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
         return view;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(User event) {
+        //data change
+        initData();
+    }
+
     private void initData() {
         userObj = new User();
         userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
         if (!(userObj == null)) {
-            showUserDetail(userObj);
+            showUserDetail();
         }
     }
 
@@ -110,7 +120,8 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     }
 
     @Override
-    public void showUserDetail(User user) {
+    public void showUserDetail() {
+        this.user = userObj;
         mEdtFirstName.setText(user.getFirstName());
         mEdtLastName.setText(user.getLastName());
         mEdtBirthdate.setText(user.getBirthday());
@@ -119,7 +130,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
         mEdtGender.setText(user.getGender());
         Glide.with(getActivity())
                 .load(user.getImgAvatarUrl()).into(mImageAvatar);
-        this.user = userObj;
+
 
     }
 
@@ -150,6 +161,20 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     @Override
     public void setPresenter(AccountContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

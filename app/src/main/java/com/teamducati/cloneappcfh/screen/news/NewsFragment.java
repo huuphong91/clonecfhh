@@ -26,6 +26,10 @@ import com.teamducati.cloneappcfh.screen.news.notification.NewsNotificationDialo
 import com.teamducati.cloneappcfh.screen.news.notificationsdetails.NotificationDetailsDialogFragment;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import androidx.fragment.app.Fragment;
@@ -70,6 +74,7 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     public NewsFragment() {
         // Required empty public constructor
     }
+
     public static NewsFragment newInstance() {
         return new NewsFragment();
     }
@@ -142,6 +147,7 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         });
     }
 
+
     private void initActionBar() {
         //ActivityUtils.removeAllDataObject(getActivity());
         userObj = new User();
@@ -159,7 +165,11 @@ public class NewsFragment extends Fragment implements NewsContract.View {
             mViewLayoutActionBar.setDisplayedChild(1);
         }
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(User event) {
+        //data change
+        initActionBar();
+    }
     private void initShowStartupDialogNotification() {
         Intent intent = getActivity().getIntent();
         if (intent.getStringExtra("firebase_id") != null) {
@@ -226,5 +236,19 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     public void onResume() {
         super.onResume();
         mPresenter.start();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

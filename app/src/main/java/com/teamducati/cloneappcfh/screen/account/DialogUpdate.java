@@ -22,6 +22,8 @@ import com.teamducati.cloneappcfh.entity.User;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
 import com.teamducati.cloneappcfh.utils.Constants;
 
+import org.greenrobot.eventbus.EventBus;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -29,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class DialogUpdate extends DialogFragment implements AccountContract.View {
+public class DialogUpdate extends DialogFragment  {
 
     @BindView(R.id.edtPropertyDialog)
     EditText mEdtPropertyDialog;
@@ -40,25 +42,10 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
     @BindView(R.id.ibtnCloseDialog)
     ImageButton mBtnCloseDialog;
 
-    private AccountContract.Presenter mPresenter;
     private Unbinder unbinder;
     private User user;
     private String title;
     private ProfileUserFragment profileUserFragment;
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        if (getArguments() != null) {
-            title = getArguments().getString(Constants.KEY_BUNDLE_TITLE_UPDATE_USER);
-            user = getArguments().getParcelable(Constants.KEY_BUNDLE_UPDATE_USER);
-        }
-    }
-
-    public void setPresenter(AccountContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
 
     public DialogUpdate() {
 
@@ -71,6 +58,16 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
         bundle.putParcelable(Constants.KEY_BUNDLE_UPDATE_USER, user);
         dialogUpdate.setArguments(bundle);
         return dialogUpdate;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (getArguments() != null) {
+            title = getArguments().getString(Constants.KEY_BUNDLE_TITLE_UPDATE_USER);
+            user = getArguments().getParcelable(Constants.KEY_BUNDLE_UPDATE_USER);
+        }
     }
 
     @Override
@@ -149,6 +146,8 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myRef.child("User").setValue(user);
                 ActivityUtils.setDataObject(getActivity(), user);
+                EventBus.getDefault().post(user);
+
             }
 
             @Override
@@ -165,33 +164,5 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
         unbinder.unbind();
     }
 
-    @Override
-    public void showUserDetail(User user) {
 
-    }
-
-    @Override
-    public void restartViewAccount() {
-
-    }
-
-    @Override
-    public void showLoginFail(String whyFail) {
-
-    }
-
-    @Override
-    public void showUpdateUserPropertySuccess() {
-
-    }
-
-    @Override
-    public void showUpdateUserPropertyFail() {
-
-    }
-
-    @Override
-    public void showLoginScreen() {
-
-    }
 }

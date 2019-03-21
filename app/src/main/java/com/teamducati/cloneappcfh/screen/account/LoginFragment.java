@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.User;
+import com.teamducati.cloneappcfh.utils.ActivityUtils;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -60,12 +61,13 @@ public class LoginFragment extends Fragment implements AccountContract.View {
     }
 
     @Override
-    public void showUserDetail(User user) {
+    public void showUserDetail() {
 
     }
 
     @Override
     public void restartViewAccount() {
+        ActivityUtils.restartAllFragmentDisplay(getActivity());
 
     }
 

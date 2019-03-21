@@ -17,7 +17,9 @@ public interface AccountContract {
 
     interface View extends BaseView<AccountContract.Presenter> {
 
-        void showUserDetail(User user);
+        void showUserDetail();
+
+        void showLoginScreen();
 
         void restartViewAccount();
 
@@ -27,7 +29,7 @@ public interface AccountContract {
 
         void showUpdateUserPropertyFail();
 
-        void showLoginScreen();
+
     }
 }
 

@@ -50,20 +50,11 @@ public class AccountFragment extends Fragment implements AccountContract.View {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (profileUserFragment == null) {
-            profileUserFragment = ProfileUserFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(getActivity().getSupportFragmentManager(), profileUserFragment, R.id.contentAccountFrame);
-            profileUserFragment.setPresenter(mPresenter);
-        }
-        if (loginFragment == null) {
-            loginFragment = LoginFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(getActivity().getSupportFragmentManager(), loginFragment, R.id.contentAccountFrame);
-            loginFragment.setPresenter(mPresenter);
-        }
+
     }
 
     @Override
-    public void showUserDetail(User user) {
+    public void showUserDetail() {
         profileUserFragment = ProfileUserFragment.newInstance();
         profileUserFragment.setPresenter(mPresenter);
         ActivityUtils.chooseFragmentWannaDisplay(getActivity().getSupportFragmentManager(), profileUserFragment,

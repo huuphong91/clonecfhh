@@ -10,6 +10,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teamducati.cloneappcfh.entity.User;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
+import com.teamducati.cloneappcfh.utils.eventsbus.EventBusStore;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +40,9 @@ public class AccountPresenter implements AccountContract.Presenter {
     public void start() {
         userObj = ActivityUtils.getDataObject(context, userObj.getClass());
         if (!(userObj==null)) {
-            mAccountView.showLoginScreen();
+            mAccountView.showUserDetail();
         } else {
-            mAccountView.showUserDetail(userObj);
+            mAccountView.showLoginScreen();
         }
     }
 
@@ -68,7 +71,8 @@ public class AccountPresenter implements AccountContract.Presenter {
                                 && userList.get(0).getPassword().equals(user.getPassword().trim().toLowerCase())) {
                             Log.d("onDataChange: ", "data match");
                             ActivityUtils.setDataObject(context, userList.get(0));
-                            mAccountView.restartViewAccount();
+                            EventBus.getDefault().post(userList.get(0));
+                            mAccountView.showUserDetail();
                         } else {
                             Log.d("onDataChange: ", "data not match");
                             mAccountView.showLoginFail("check your information");
@@ -87,8 +91,9 @@ public class AccountPresenter implements AccountContract.Presenter {
 
     @Override
     public void onLogout() {
-        mAccountView.restartViewAccount();
         ActivityUtils.removeAllDataObject(context);
+        mAccountView.restartViewAccount();
+
     }
 
     @Override
