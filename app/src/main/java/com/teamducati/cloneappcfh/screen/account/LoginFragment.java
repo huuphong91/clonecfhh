@@ -12,8 +12,6 @@ import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.User;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
 
-import java.util.Objects;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
@@ -63,14 +61,14 @@ public class LoginFragment extends Fragment implements AccountContract.View {
     }
 
     @Override
-    public void showUserDetail(User user) {
+    public void showUserDetail() {
 
-        ProfileUserFragment profileUserFragment = (ProfileUserFragment) Objects.requireNonNull(getActivity())
-                .getSupportFragmentManager()
-                .findFragmentById(R.id.contentAccountFrame);
-        if (profileUserFragment != null) {
-            ActivityUtils.chooseFragmentWannaDisplay(getActivity().getSupportFragmentManager(), profileUserFragment, R.id.contentAccountFrame);
-        }
+    }
+
+    @Override
+    public void restartViewAccount() {
+        ActivityUtils.restartAllFragmentDisplay(getActivity());
+
     }
 
     @Override

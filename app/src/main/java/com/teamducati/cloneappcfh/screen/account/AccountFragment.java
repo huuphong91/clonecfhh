@@ -39,34 +39,34 @@ public class AccountFragment extends Fragment implements AccountContract.View {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         unbinder = ButterKnife.bind(this, view);
+        initEvent();
         return view;
+    }
+
+    private void initEvent() {
+       mPresenter.start();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (profileUserFragment == null) {
-            profileUserFragment = ProfileUserFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(getActivity().getSupportFragmentManager(), profileUserFragment, R.id.contentAccountFrame);
-            profileUserFragment.setPresenter(mPresenter);
-        }
-        loginFragment = (LoginFragment) Objects.requireNonNull(getActivity())
-                .getSupportFragmentManager()
-                .findFragmentById(R.id.contentAccountFrame);
-        if (loginFragment == null) {
-            loginFragment = LoginFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(getActivity().getSupportFragmentManager(), loginFragment, R.id.contentAccountFrame);
-            loginFragment.setPresenter(mPresenter);
-        }
 
     }
 
     @Override
-    public void showUserDetail(User user) {
-        profileUserFragment.showUserDetail(user);
-        ActivityUtils.chooseFragmentWannaDisplay(Objects.requireNonNull(getActivity())
-                .getSupportFragmentManager(), profileUserFragment, R.id.contentAccountFrame);
+    public void showUserDetail() {
+        profileUserFragment = ProfileUserFragment.newInstance();
+        profileUserFragment.setPresenter(mPresenter);
+        ActivityUtils.chooseFragmentWannaDisplay(getActivity().getSupportFragmentManager(), profileUserFragment,
+                R.id.contentAccountFrame);
+
     }
+
+    @Override
+    public void restartViewAccount() {
+        ActivityUtils.restartAllFragmentDisplay(getActivity());
+    }
+
 
     @Override
     public void showLoginFail(String whyFail) {
@@ -86,7 +86,7 @@ public class AccountFragment extends Fragment implements AccountContract.View {
     @Override
     public void showLoginScreen() {
         loginFragment = LoginFragment.newInstance();
-        ActivityUtils.addFragmentToActivity(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
+        ActivityUtils.chooseFragmentWannaDisplay(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
                 loginFragment, R.id.contentAccountFrame);
         loginFragment.setPresenter(mPresenter);
     }

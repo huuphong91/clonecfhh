@@ -13,7 +13,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher_tch"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -30,7 +30,7 @@
              notification message. See README(https://goo.gl/6BKBk7) for more. -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@android:color/holo_orange_dark" />
+            android:resource="@drawable/ic_launcher_tch" />
         <!-- [END fcm_default_icon] -->
         <!-- [START fcm_default_channel] -->
         <meta-data

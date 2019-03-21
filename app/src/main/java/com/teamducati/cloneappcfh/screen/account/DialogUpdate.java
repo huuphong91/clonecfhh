@@ -3,7 +3,6 @@ package com.teamducati.cloneappcfh.screen.account;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.User;
+import com.teamducati.cloneappcfh.utils.ActivityUtils;
 import com.teamducati.cloneappcfh.utils.Constants;
+
+import org.greenrobot.eventbus.EventBus;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class DialogUpdate extends DialogFragment {
+public class DialogUpdate extends DialogFragment  {
 
     @BindView(R.id.edtPropertyDialog)
     EditText mEdtPropertyDialog;
@@ -40,24 +42,10 @@ public class DialogUpdate extends DialogFragment {
     @BindView(R.id.ibtnCloseDialog)
     ImageButton mBtnCloseDialog;
 
-    private AccountContract.Presenter mPresenter;
     private Unbinder unbinder;
     private User user;
     private String title;
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        if (getArguments() != null) {
-            title = getArguments().getString(Constants.KEY_BUNDLE_TITLE_UPDATE_USER);
-            user = getArguments().getParcelable(Constants.KEY_BUNDLE_UPDATE_USER);
-        }
-    }
-
-    public void setPresenter(AccountContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
+    private ProfileUserFragment profileUserFragment;
 
     public DialogUpdate() {
 
@@ -70,6 +58,16 @@ public class DialogUpdate extends DialogFragment {
         bundle.putParcelable(Constants.KEY_BUNDLE_UPDATE_USER, user);
         dialogUpdate.setArguments(bundle);
         return dialogUpdate;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (getArguments() != null) {
+            title = getArguments().getString(Constants.KEY_BUNDLE_TITLE_UPDATE_USER);
+            user = getArguments().getParcelable(Constants.KEY_BUNDLE_UPDATE_USER);
+        }
     }
 
     @Override
@@ -89,6 +87,7 @@ public class DialogUpdate extends DialogFragment {
             updateProperty(title);
             updateUserProperty(user);
             dismiss();
+
         });
     }
 
@@ -145,8 +144,12 @@ public class DialogUpdate extends DialogFragment {
         myRef.orderByChild("User").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    myRef.child("User").setValue(user);
+                myRef.child("User").setValue(user);
+                ActivityUtils.setDataObject(getActivity(), user);
+                EventBus.getDefault().post(user);
+
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -160,4 +163,6 @@ public class DialogUpdate extends DialogFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+
 }

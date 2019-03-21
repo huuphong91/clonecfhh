@@ -12,7 +12,7 @@
         android:src="@drawable/ic_arrow_back_black_24dp" />
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view_order_search"
-        android:layout_toRightOf="@id/img_back_web_view"
+        android:layout_toRightOf="@id/img_back_search"
         android:background="@drawable/custom_search"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
