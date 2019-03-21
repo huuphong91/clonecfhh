@@ -1,11 +1,11 @@
-package com.teamducati.cloneappcfh.screen.account;
+package com.teamducati.cloneappcfh.screen.account.profileaccount;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +13,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.User;
+import com.teamducati.cloneappcfh.screen.account.AccountContract;
+import com.teamducati.cloneappcfh.screen.account.AccountPresenter;
+import com.teamducati.cloneappcfh.screen.account.loginaccount.LoginFragment;
+import com.teamducati.cloneappcfh.screen.account.updateaccount.DialogUpdate;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
 import com.teamducati.cloneappcfh.utils.Constants;
 
@@ -36,7 +39,8 @@ import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ProfileUserFragment extends Fragment implements AccountContract.View, View.OnClickListener {
+public class ProfileUserFragment extends Fragment implements AccountContract.View.ProfileView,
+        View.OnClickListener {
 
     @BindView(R.id.btn_close)
     ImageButton mBtnClose;
@@ -62,8 +66,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     private AccountContract.Presenter mPresenter;
     private Uri filePath;
     private User userObj;
-//    private FirebaseStorage storage;
-//    private StorageReference storageReference;
+
 
     public ProfileUserFragment() {
     }
@@ -76,7 +79,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile_user, container, false);
         unbinder = ButterKnife.bind(this, view);
-        initData();
+
         return view;
     }
 
@@ -86,11 +89,15 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
         initData();
     }
 
+    private void initPresenter() {
+        mPresenter = new AccountPresenter(getActivity(), this);
+    }
+
     private void initData() {
         userObj = new User();
-        userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
+        userObj = ActivityUtils.getDataObject(getActivity(), new User().getClass());
         if (!(userObj == null)) {
-            showUserDetail();
+            mPresenter.onGetProfile();
         }
     }
 
@@ -103,7 +110,10 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initPresenter();
+        initData();
         setEventsClick();
+
     }
 
     private void setEventsClick() {
@@ -120,7 +130,8 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     }
 
     @Override
-    public void showUserDetail() {
+    public void showProfileAccount() {
+        Log.d("LifeCycleTest","Profile Fragment Event Show Profile");
         this.user = userObj;
         mEdtFirstName.setText(user.getFirstName());
         mEdtLastName.setText(user.getLastName());
@@ -130,32 +141,17 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
         mEdtGender.setText(user.getGender());
         Glide.with(getActivity())
                 .load(user.getImgAvatarUrl()).into(mImageAvatar);
-
-
     }
 
     @Override
     public void restartViewAccount() {
-
-    }
-
-    @Override
-    public void showLoginFail(String whyFail) {
-
-    }
-
-    @Override
-    public void showUpdateUserPropertySuccess() {
-        Toast.makeText(getActivity(), "Updated successfull", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showUpdateUserPropertyFail() {
-    }
-
-    @Override
-    public void showLoginScreen() {
-
+        //ActivityUtils.removeAllFragmentDisplay(getActivity().getSupportFragmentManager());
+        if (getContext() != null) {
+           LoginFragment loginFragment = LoginFragment.newInstance();
+            loginFragment.setPresenter(mPresenter);
+            ActivityUtils.chooseFragmentWannaDisplay(getActivity().getSupportFragmentManager(), loginFragment,
+                    R.id.contentAccountFrame);
+        }
     }
 
     @Override
@@ -187,28 +183,28 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_close:
-                mPresenter.onLogout();
+                mPresenter.onLogoutAccount();
                 break;
             case R.id.btnLogOut:
-                mPresenter.onLogout();
-            break;
+                mPresenter.onLogoutAccount();
+                break;
             case R.id.edtFirstName:
-                DialogUpdate.newInstance(user, "First name").show(getFragmentManager(), "Update");
+                DialogUpdate.newInstance(user, "First name").show(getActivity().getSupportFragmentManager(), "Update");
                 break;
             case R.id.edtBirthDate:
-                DialogUpdate.newInstance(user, "Birthdate").show(getFragmentManager(), "Update");
+                DialogUpdate.newInstance(user, "Birthdate").show(getActivity().getSupportFragmentManager(), "Update");
                 break;
 //            case R.id.edtEmail:
 //                DialogUpdate.newInstance(user, "Email").show(getFragmentManager(), "Update");
 //                break;
             case R.id.edtGender:
-                DialogUpdate.newInstance(user, "Gender").show(getFragmentManager(), "Update");
+                DialogUpdate.newInstance(user, "Gender").show(getActivity().getSupportFragmentManager(), "Update");
                 break;
             case R.id.edtPhoneNumber:
-                DialogUpdate.newInstance(user, "Phone number").show(getFragmentManager(), "Update");
+                DialogUpdate.newInstance(user, "Phone number").show(getActivity().getSupportFragmentManager(), "Update");
                 break;
             case R.id.edtLastName:
-                DialogUpdate.newInstance(user, "Last name").show(getFragmentManager(), "Update");
+                DialogUpdate.newInstance(user, "Last name").show(getActivity().getSupportFragmentManager(), "Update");
                 break;
             case R.id.imgAvatar:
                 chooseImage();
@@ -222,7 +218,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), Constants.PICK_IMAGE);
-        uploadImage();
+
     }
 
     @Override
@@ -242,29 +238,5 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
         }
     }
 
-    private void uploadImage() {
-//        storage = FirebaseStorage.getInstance();
-//        storageReference = storage.getReference();
-        if (filePath != null) {
-            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
 
-//            StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
-//            ref.putFile(filePath)
-//                    .addOnSuccessListener(taskSnapshot -> {
-//                        progressDialog.dismiss();
-//                        Toast.makeText(getActivity(), "Uploaded", Toast.LENGTH_SHORT).show();
-//                    })
-//                    .addOnFailureListener(e -> {
-//                        progressDialog.dismiss();
-//                        Toast.makeText(getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-//                    })
-//                    .addOnProgressListener(taskSnapshot -> {
-//                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
-//                                .getTotalByteCount());
-//                        progressDialog.setMessage("Uploaded " + (int) progress + "%");
-//                    });
-        }
-    }
 }

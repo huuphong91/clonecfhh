@@ -7,6 +7,7 @@ import com.teamducati.cloneappcfh.utils.BaseView;
 public interface AccountContract {
 
     interface Presenter extends BasePresenter {
+
         void onCheckDataAccount();
 
         void onLoginAccount(User user);
@@ -20,25 +21,35 @@ public interface AccountContract {
     }
 
     interface View extends BaseView<AccountContract.Presenter> {
-        void showLoginView();
+        interface AccountView extends View {
 
-        void showProfileView();
+            void showLoginView();
 
-        void showDialogView();
+            void showProfileView();
+        }
 
-        void showLoginSuccess();
+        interface LoginView extends View {
+            void showLoginSuccess();
 
-        void showLoginFailed(String error);
+            void showLoginFailed(String error);
 
-        void showProfileSuccess();
+        }
 
-        void showProfileFailed(String error);
+        interface ProfileView extends View {
 
-        void showUpdateSuccess();
+            void showProfileAccount();
 
-        void showUpdateFailed(String error);
+            void restartViewAccount();
 
-        void restartViewAccount();
+        }
+
+        interface UpdateView extends View {
+
+            void showUpdateSuccess();
+
+            void showUpdateFailed(String error);
+        }
+
     }
 }
 

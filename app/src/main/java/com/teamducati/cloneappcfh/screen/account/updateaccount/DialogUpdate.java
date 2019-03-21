@@ -1,6 +1,7 @@
 package com.teamducati.cloneappcfh.screen.account.updateaccount;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.teamducati.cloneappcfh.entity.User;
 import com.teamducati.cloneappcfh.screen.account.AccountContract;
 import com.teamducati.cloneappcfh.screen.account.AccountPresenter;
 import com.teamducati.cloneappcfh.utils.Constants;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -23,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class DialogUpdate extends DialogFragment implements AccountContract.View {
+public class DialogUpdate extends DialogFragment implements AccountContract.View.UpdateView {
 
     @BindView(R.id.edtPropertyDialog)
     EditText mEdtPropertyDialog;
@@ -38,6 +40,7 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
     private User user;
     private String title;
     private AccountContract.Presenter mPresenter;
+    private Dialog dialog;
 
     public DialogUpdate() {
 
@@ -66,19 +69,16 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = View.inflate(getContext(), R.layout.dialog_update_profile, null);
         unbinder = ButterKnife.bind(this, view);
-        initPresenter();
+
         return view;
     }
+
 
     private void initPresenter() {
         mPresenter = new AccountPresenter(getContext(), this);
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setCancelable(false);
-        setProperty(title);
+    private void intiEvent() {
         mBtnCloseDialog.setOnClickListener(v -> dismiss());
         mBtnUpdateDialog.setOnClickListener(v -> {
             updateProperty(title);
@@ -86,6 +86,21 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
             dismiss();
 
         });
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setProperty(title);
+        initPresenter();
+        intiEvent();
+
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        dialog = super.onCreateDialog(savedInstanceState);
+        return dialog;
     }
 
     private void setProperty(String title) {
@@ -137,48 +152,6 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-
-    @Override
-    public void showLoginView() {
-
-    }
-
-    @Override
-    public void showProfileView() {
-
-    }
-
-    @Override
-    public void showDialogView() {
-
-    }
-
-    @Override
-    public void showLoginSuccess() {
-
-    }
-
-    @Override
-    public void showLoginFailed(String error) {
-
-    }
-
-    @Override
-    public void showProfileSuccess() {
-
-    }
-
-    @Override
-    public void showProfileFailed(String error) {
-
-    }
-
-    @Override
     public void showUpdateSuccess() {
 
     }
@@ -189,13 +162,23 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
     }
 
     @Override
-    public void restartViewAccount() {
-
-    }
-
-
-    @Override
     public void setPresenter(AccountContract.Presenter presenter) {
         mPresenter = presenter;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.setCancelable(false);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
 }

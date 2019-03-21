@@ -24,20 +24,38 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class AccountPresenter implements AccountContract.Presenter {
 
     private Context context;
-    private AccountContract.View mAccountView;
+    private AccountContract.View.AccountView mAccountView;
+    private AccountContract.View.LoginView mLoginView;
+    private AccountContract.View.ProfileView mProfileView;
+    private AccountContract.View.UpdateView mUpdateView;
 
     private User userObj;
 
-    public AccountPresenter(Context context, AccountContract.View accountView) {
+    public AccountPresenter(Context context, AccountContract.View view) {
         this.context = context;
-        this.mAccountView = accountView;
-        mAccountView.setPresenter(this);
+        if(view instanceof AccountContract.View.AccountView){
+            this.mAccountView = (AccountContract.View.AccountView) view;
+            this.mAccountView.setPresenter(this);
+        }
+        if(view instanceof AccountContract.View.LoginView){
+            this.mLoginView = (AccountContract.View.LoginView) view;
+            this.mLoginView.setPresenter(this);
+        }
+        if(view instanceof AccountContract.View.ProfileView){
+            this.mProfileView = (AccountContract.View.ProfileView) view;
+            this.mProfileView.setPresenter(this);
+        }
+        if(view instanceof AccountContract.View.UpdateView){
+            this.mUpdateView = (AccountContract.View.UpdateView) view;
+            this.mUpdateView.setPresenter(this);
+        }
+
         userObj = new User();
     }
 
     @Override
     public void start() {
-        onCheckDataAccount();
+
     }
 
     @Override
@@ -56,10 +74,10 @@ public class AccountPresenter implements AccountContract.Presenter {
         String password = user.getPassword();
         final ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setTitle("Login");
-        progressDialog.setMessage("Đang xủ lý, vui lòng chờ trong giây lát...");
+        progressDialog.setMessage("Đang xủ lý...");
         progressDialog.show();
         if (username.equals("") || password.equals("")) {
-            mAccountView.showLoginFailed("please fulfill information");
+            mLoginView.showLoginFailed("please fulfill information");
             progressDialog.dismiss();
         } else {
             List<User> userList = new ArrayList<>();
@@ -80,12 +98,13 @@ public class AccountPresenter implements AccountContract.Presenter {
                                 && userList.get(0).getPassword().equals(user.getPassword().trim().toLowerCase())) {
                             Log.d("onDataChange: ", "data match");
                             ActivityUtils.setDataObject(context, userList.get(0));
+                            mLoginView.showLoginSuccess();
                             EventBus.getDefault().post(userList.get(0));
-                            mAccountView.showLoginSuccess();
+                         //   ActivityUtils.restartAllFragmentDisplay((Activity) context);
                             progressDialog.dismiss();
                         } else {
                             Log.d("onDataChange: ", "data not match");
-                            mAccountView.showLoginFailed("check your information");
+                            mLoginView.showLoginFailed("check your information");
                             progressDialog.dismiss();
                         }
                     }
@@ -101,24 +120,10 @@ public class AccountPresenter implements AccountContract.Presenter {
     }
 
     @Override
-    public void onLogoutAccount() {
-        ActivityUtils.removeAllDataObject(context);
-        EventBus.getDefault().post(userObj);
-        mAccountView.restartViewAccount();
-
-    }
-
-    @Override
-    public void onGetProfile() {
-        userObj = ActivityUtils.getDataObject(context, new User().getClass());
-        mAccountView.showProfileView();
-    }
-
-    @Override
     public void onUpdateAccount(User user) {
         final ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setTitle("Update...");
-        progressDialog.setMessage("Đang xủ lý, vui lòng chờ trong giây lát...");
+        progressDialog.setMessage("Đang xủ lý...");
         progressDialog.show();
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
         myRef.orderByChild("User").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -127,13 +132,33 @@ public class AccountPresenter implements AccountContract.Presenter {
                 myRef.child("User").setValue(user);
                 ActivityUtils.setDataObject(context, user);
                 EventBus.getDefault().post(user);
+                mUpdateView.showUpdateSuccess();
                 progressDialog.dismiss();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                mUpdateView.showUpdateFailed("Error");
             }
         });
     }
+
+    @Override
+    public void onLogoutAccount() {
+        ActivityUtils.removeAllDataObject(context);
+        EventBus.getDefault().post(userObj);
+        if (context != null) {
+            mProfileView.restartViewAccount();
+          //  ActivityUtils.restartAllFragmentDisplay((Activity) context);
+        }
+
+    }
+
+    @Override
+    public void onGetProfile() {
+        userObj = ActivityUtils.getDataObject(context, new User().getClass());
+        mProfileView.showProfileAccount();
+    }
+
+
 }

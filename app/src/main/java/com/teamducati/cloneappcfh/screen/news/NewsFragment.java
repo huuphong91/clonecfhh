@@ -159,6 +159,18 @@ public class NewsFragment extends Fragment implements NewsContract.View {
                     .load(userObj.getImgAvatarUrl())
                     .apply(RequestOptions.circleCropTransform())
                     .into(mImgNewsPerson);
+            mTxtNameNewsLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bottomNavigationView.setSelectedItemId(R.id.navigation_account);
+                }
+            });
+            mImgNewsPerson.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bottomNavigationView.setSelectedItemId(R.id.navigation_account);
+                }
+            });
             mViewLayoutActionBar.setDisplayedChild(0);
         } else {
             Log.d("Data", "null data");

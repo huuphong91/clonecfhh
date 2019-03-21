@@ -2,11 +2,11 @@ package com.teamducati.cloneappcfh.screen.account;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.screen.account.loginaccount.LoginFragment;
@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class AccountFragment extends Fragment implements AccountContract.View {
+public class AccountFragment extends Fragment implements AccountContract.View.AccountView {
 
     @BindView(R.id.contentAccountFrame)
     FrameLayout mContentAccountFrame;
@@ -40,9 +40,13 @@ public class AccountFragment extends Fragment implements AccountContract.View {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         unbinder = ButterKnife.bind(this, view);
+        initPresenter();
         return view;
     }
 
+    private void initPresenter() {
+        mPresenter = new AccountPresenter(getContext(), this);
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -52,16 +56,20 @@ public class AccountFragment extends Fragment implements AccountContract.View {
 
     @Override
     public void showLoginView() {
+        Log.d("LifeCycleTest", "Account Fragment Event Show Login");
+
         if (getContext() != null) {
             loginFragment = LoginFragment.newInstance();
+            loginFragment.setPresenter(mPresenter);
             ActivityUtils.addFragmentToActivity(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
                     loginFragment, R.id.contentAccountFrame);
-            loginFragment.setPresenter(mPresenter);
         }
     }
 
     @Override
     public void showProfileView() {
+        Log.d("LifeCycleTest", "Account Fragment Event Show Profile");
+
         if (getContext() != null) {
             profileUserFragment = ProfileUserFragment.newInstance();
             profileUserFragment.setPresenter(mPresenter);
@@ -71,55 +79,9 @@ public class AccountFragment extends Fragment implements AccountContract.View {
     }
 
     @Override
-    public void showDialogView() {
-
-    }
-
-    @Override
-    public void showLoginSuccess() {
-
-    }
-
-    @Override
-    public void showLoginFailed(String error) {
-
-    }
-
-    @Override
-    public void showProfileSuccess() {
-
-    }
-
-    @Override
-    public void showProfileFailed(String error) {
-
-    }
-
-    @Override
-    public void showUpdateSuccess() {
-
-    }
-
-    @Override
-    public void showUpdateFailed(String error) {
-
-    }
-
-    @Override
-    public void restartViewAccount() {
-        ActivityUtils.restartAllFragmentDisplay(getActivity());
-    }
-
-
-    @Override
-    public void setPresenter(AccountContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
-
-    @Override
     public void onStart() {
+        mPresenter.onCheckDataAccount();
         super.onStart();
-        mPresenter.start();
     }
 
     @Override
@@ -127,4 +89,11 @@ public class AccountFragment extends Fragment implements AccountContract.View {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+    @Override
+    public void setPresenter(AccountContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+
 }

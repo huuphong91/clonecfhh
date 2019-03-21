@@ -13,7 +13,6 @@ import com.teamducati.cloneappcfh.entity.User;
 import com.teamducati.cloneappcfh.screen.account.AccountContract;
 import com.teamducati.cloneappcfh.screen.account.AccountPresenter;
 import com.teamducati.cloneappcfh.screen.account.profileaccount.ProfileUserFragment;
-import com.teamducati.cloneappcfh.screen.account.profileaccount.ProfileUserFragment;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
 
 import androidx.annotation.Nullable;
@@ -22,9 +21,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class LoginFragment extends Fragment implements AccountContract.View {
+public class LoginFragment extends Fragment implements AccountContract.View.LoginView {
 
-    @BindView(R.id.btnLogin)
+    @BindView(R.id.btnLoginAccount)
     Button mBtnLogin;
     @BindView(R.id.edt_username)
     EditText mEdtUsername;
@@ -35,9 +34,9 @@ public class LoginFragment extends Fragment implements AccountContract.View {
     private Unbinder unbinder;
 
     private AccountContract.Presenter mPresenter;
-    private ProfileUserFragment profileUserFragment;
 
-    public LoginFragment(){}
+    public LoginFragment() {
+    }
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
@@ -47,52 +46,27 @@ public class LoginFragment extends Fragment implements AccountContract.View {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         unbinder = ButterKnife.bind(this, view);
-        initPresenter();
+
         return view;
     }
 
-    private void initPresenter() {
-        mPresenter=new AccountPresenter(getActivity(),this);
-    }
-
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    private void initEvent() {
         mBtnLogin.setOnClickListener(v -> {
             String username = mEdtUsername.getText().toString();
             String password = mEdtPassword.getText().toString();
-            userLogin= new User();
+            userLogin = new User();
             userLogin.setUserName(username);
             userLogin.setPassword(password);
             mPresenter.onLoginAccount(userLogin);
         });
     }
 
-
-    @Override
-    public void showLoginView() {
-
-    }
-
-    @Override
-    public void showProfileView() {
-
-    }
-
-    @Override
-    public void showDialogView() {
-
-    }
-
     @Override
     public void showLoginSuccess() {
-
         if (getContext() != null) {
-            ActivityUtils.removeFragmentDisplay(getActivity().getSupportFragmentManager(),this);
-            profileUserFragment = ProfileUserFragment.newInstance();
+            ProfileUserFragment profileUserFragment = ProfileUserFragment.newInstance();
             profileUserFragment.setPresenter(mPresenter);
-            ActivityUtils.addFragmentToActivity(getActivity().getSupportFragmentManager(), profileUserFragment,
+            ActivityUtils.chooseFragmentWannaDisplay(getActivity().getSupportFragmentManager(), profileUserFragment,
                     R.id.contentAccountFrame);
         }
     }
@@ -102,30 +76,17 @@ public class LoginFragment extends Fragment implements AccountContract.View {
 
     }
 
-    @Override
-    public void showProfileSuccess() {
-
+    private void initPresenter() {
+        mPresenter = new AccountPresenter(getActivity(), this);
     }
 
-    @Override
-    public void showProfileFailed(String error) {
-
-    }
 
     @Override
-    public void showUpdateSuccess() {
-
-    }
-
-    @Override
-    public void showUpdateFailed(String error) {
-
-    }
-
-    @Override
-    public void restartViewAccount() {
-        ActivityUtils.removeFragmentDisplay(getActivity().getSupportFragmentManager(),this);
-//        ActivityUtils.restartAllFragmentDisplay(getActivity());
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Toast.makeText(getContext(), "Life", Toast.LENGTH_SHORT).show();
+        initPresenter();
+        initEvent();
     }
 
     @Override

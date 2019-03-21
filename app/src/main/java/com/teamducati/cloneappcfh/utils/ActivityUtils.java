@@ -20,19 +20,19 @@ public class ActivityUtils {
     public static void addFragmentToActivity(FragmentManager fragmentManager, Fragment fragment, int frameId) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(frameId, fragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 
     public static void chooseFragmentWannaDisplay(FragmentManager fragmentManager, Fragment fragment, int frameId) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(frameId, fragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 
-    public static void removeFragmentDisplay(FragmentManager fragmentManager, Fragment fragment) {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.remove(fragment);
-        transaction.commit();
+    public static void removeAllFragmentDisplay(FragmentManager fragmentManager) {
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
 
