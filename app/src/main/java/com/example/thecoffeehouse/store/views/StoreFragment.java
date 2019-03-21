@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.data.model.store.Store;
 import com.example.thecoffeehouse.data.model.store.StoreResponeObject;
+import com.example.thecoffeehouse.order.detail.DetailDialogFragment;
 import com.example.thecoffeehouse.store.presenters.StorePresenter;
 import com.example.thecoffeehouse.store.presenters.StorePresenterIpm;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -76,7 +78,6 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
         listStore = new ArrayList<>();
     }
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onViewCreated: ");
@@ -94,6 +95,8 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
             }
         });
         initRecyclerView(view);
+
+
     }
 
     @Override
@@ -109,8 +112,9 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
             mGoogleMap.setMyLocationEnabled(true);
             mGoogleMap.setOnMyLocationChangeListener(this);
         }
-        presenter.loadListStore();
-        Log.d(TAG, "onMapReady: ");
+        //mGoogleMap.setInfoWindowAdapter(new MapInfoWindow(getContext()));
+        //presenter.loadListStore();
+        presenter.loadListStoreFromDatabase();
     }
 
     private void initRecyclerView(View view) {
@@ -122,6 +126,7 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
         adapter.setItemClickListener((view1, position) -> {
             Store store = listStoreNearBy.get(position);
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(store.storeLat, store.storeLong), 13f));
+            StoreDetailDialogFragment.getInstance(store).show(getFragmentManager(), StoreDetailDialogFragment.TAG);
         });
         rvListNearByStore.setVisibility(View.VISIBLE);
         TranslateAnimation animation = new TranslateAnimation(0, 0, 335, 0);
@@ -191,6 +196,7 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
                     markerOptions.title(store.storeName);
                     markerOptions.snippet(store.storeAddress.full_address);
                     mGoogleMap.addMarker(markerOptions);
+
                 });
 //        for (StoreResponeObject.State state : responeObject.listState) {
 //            for (StoreResponeObject.District distric : state.districts) {
@@ -199,6 +205,22 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
 //                }
 //            }
 //        }
+    }
+
+    @Override
+    public void onStoreLoaded(List<Store> listStoreStore) {
+        Log.d(TAG, "onStoreLoaded: listStoreStore.size() = "+listStoreStore.size());
+        for (Store store : listStoreStore
+        ) {
+            listStore.add(store);
+            Log.d(this.getClass().getName(), store.storeName);
+            LatLng mLatLng = new LatLng(store.storeLat, store.storeLong);
+            MarkerOptions markerOptions = new MarkerOptions().position(mLatLng);
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_map));
+            markerOptions.title(store.storeName);
+            markerOptions.snippet(store.storeAddress.full_address);
+            mGoogleMap.addMarker(markerOptions);
+        }
     }
 
     @Override
@@ -242,4 +264,6 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
 
         }
     }
+
+
 }

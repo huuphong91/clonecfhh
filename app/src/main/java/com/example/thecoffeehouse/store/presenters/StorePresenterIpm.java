@@ -18,7 +18,7 @@ public class StorePresenterIpm implements StorePresenter {
     private StoreView mView;
 
     public StorePresenterIpm(StoreView view) {
-        mAppRepository = new AppRespositoryImp();
+        mAppRepository = new AppRespositoryImp(view.getActivity().getApplication());
         mView = view;
         compositeDisposable = new CompositeDisposable();
     }
@@ -28,6 +28,17 @@ public class StorePresenterIpm implements StorePresenter {
     public void loadListStore() {
         Disposable disposable = mAppRepository.getListStore()
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mView::onStoreLoaded,mView::onError);
+        compositeDisposable.add(disposable);
+        //Call from SplashScreen
+        //mAppRepository.loadApiToDatabase();
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void loadListStoreFromDatabase() {
+        Disposable disposable = mAppRepository.getListStoreFromDatabase().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mView::onStoreLoaded,mView::onError);
         compositeDisposable.add(disposable);
