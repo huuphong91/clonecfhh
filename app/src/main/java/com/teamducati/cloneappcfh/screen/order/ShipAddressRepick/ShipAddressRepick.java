@@ -3,7 +3,6 @@ package com.teamducati.cloneappcfh.screen.order.ShipAddressRepick;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,7 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.teamducati.cloneappcfh.R;
-import com.teamducati.cloneappcfh.screen.main.MainActivity;
 import com.teamducati.cloneappcfh.screen.order.adapter.RepickShipAddressAdapter;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 import java.util.Objects;
@@ -31,7 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class ShipAddressRepick extends DialogFragment implements ShipAddressRepickContract.View, RepickShipAddressAdapter.OnClickListener {
+public class ShipAddressRepick extends DialogFragment implements ShipAddressRepickContract.View {
 
     @BindView(R.id.edtRepickShipLocation)
     EditText edtRepickShipLocation;
@@ -94,7 +90,7 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
 
     private void initRecycleView() {
         rvRepickShipAddress.setLayoutManager(new LinearLayoutManager(getActivity()));
-        repickShipAddressAdapter = new RepickShipAddressAdapter(this);
+        repickShipAddressAdapter = new RepickShipAddressAdapter();
         rvRepickShipAddress.setHasFixedSize(true);
         rvRepickShipAddress.setAdapter(repickShipAddressAdapter);
     }
@@ -133,24 +129,6 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
 
     public void setLocation(String address) {
         mAddress = address;
-    }
-
-    @Override
-    public void onCurrentLocationClick() {
-        ((MainActivity) Objects.requireNonNull(getActivity())).getLocation(R.id.navigation_order);
-        dismiss();
-    }
-
-    @Override
-    public void onRecentLocationCLick() {
-        dismiss();
-    }
-
-    @Override
-    public void onPickLocationClick(String address) {
-        String addressPart[] = address.split(",");
-        EventBus.getDefault().post(addressPart[0]);
-        dismiss();
     }
 
     @Override

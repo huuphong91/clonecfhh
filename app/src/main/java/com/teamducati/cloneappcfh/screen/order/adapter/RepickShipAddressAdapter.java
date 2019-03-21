@@ -10,7 +10,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.Address;
+import com.teamducati.cloneappcfh.entity.MessageEvent;
 import com.teamducati.cloneappcfh.utils.Constants;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,18 +28,15 @@ public class RepickShipAddressAdapter extends RecyclerView.Adapter<RecyclerView.
 
     private List<Address> mAddressList;
 
-    private OnClickListener mListener;
-
-    public RepickShipAddressAdapter(OnClickListener listener) {
+    public RepickShipAddressAdapter() {
         this.mAddressList = new ArrayList<>();
-        this.mListener = listener;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = null;
+        View view;
 
         switch (viewType) {
             case POSITION_ADDRESS_TYPE:
@@ -117,9 +117,13 @@ public class RepickShipAddressAdapter extends RecyclerView.Adapter<RecyclerView.
             tvPositionAddress = itemView.findViewById(R.id.tvPositionAddress);
             tvPositionTitle = itemView.findViewById(R.id.tvPositionTitle);
             imgPositionShip = itemView.findViewById(R.id.imgPositionShip);
-            itemView.setOnClickListener(v -> {
-                mListener.onCurrentLocationClick();
-            });
+            itemView.setOnClickListener(v -> postEventCurrentLocationClick());
+        }
+
+        private void postEventCurrentLocationClick() {
+            MessageEvent event = new MessageEvent();
+            event.setOnCurrentLocationClick(true);
+            EventBus.getDefault().post(event);
         }
 
         void bindPositionAddress(int position) {
@@ -143,17 +147,15 @@ public class RepickShipAddressAdapter extends RecyclerView.Adapter<RecyclerView.
         ShipAddressResultViewHolder(@NonNull View itemView) {
             super(itemView);
             tvShipAddressResult = itemView.findViewById(R.id.tvShipAddressResult);
-            itemView.setOnClickListener(v -> {
-                mListener.onPickLocationClick(mAddressList.get(getAdapterPosition()).getFullAddress());
-            });
+            itemView.setOnClickListener(v -> postShipAddress());
         }
-    }
 
-    public interface OnClickListener {
-        void onCurrentLocationClick();
-
-        void onRecentLocationCLick();
-
-        void onPickLocationClick(String address);
+        private void postShipAddress() {
+            String pickShipAddress = mAddressList.get(getAdapterPosition()).getFullAddress();
+            String addressPart[] = pickShipAddress.split(",");
+            MessageEvent event = new MessageEvent();
+            event.setPickShipAddress(addressPart[0]);
+            EventBus.getDefault().post(event);
+        }
     }
 }

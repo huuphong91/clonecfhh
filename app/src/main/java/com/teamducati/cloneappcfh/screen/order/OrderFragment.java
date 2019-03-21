@@ -14,8 +14,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.Address;
+import com.teamducati.cloneappcfh.entity.MessageEvent;
 import com.teamducati.cloneappcfh.entity.api_order.DataItem;
 import com.teamducati.cloneappcfh.entity.api_order.ItemProductResponse;
+import com.teamducati.cloneappcfh.screen.main.MainActivity;
 import com.teamducati.cloneappcfh.screen.order.ShipAddressRepick.ShipAddressRepick;
 import com.teamducati.cloneappcfh.screen.order.ordersearch.OrderSearchDialogFragment;
 import com.teamducati.cloneappcfh.utils.Constants;
@@ -28,6 +30,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -137,14 +140,19 @@ public class OrderFragment extends Fragment implements OrderContract.View {
     }
 
     @Subscribe
-    public void onEvent(Address event) {
-        mAddressCurrent = event.getFullAddress();
-        tvShipAddress.setText(mAddressCurrent);
-    }
+    public void onEvent(MessageEvent event) {
+        if (event.getAddress() != null) {
+            mAddressCurrent = event.getAddress();
+            tvShipAddress.setText(mAddressCurrent);
+        } else {
+            tvShipAddress.setText(event.getPickShipAddress());
+            dialogFragment.dismiss();
+        }
 
-    @Subscribe
-    public void onEventResult(String eventResult) {
-        tvShipAddress.setText(eventResult);
+        if (event.isOnCurrentLocationClick()) {
+            ((MainActivity) Objects.requireNonNull(getActivity())).getLocation(R.id.navigation_order);
+            dialogFragment.dismiss();
+        }
     }
 
     @Override

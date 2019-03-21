@@ -8,6 +8,8 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.teamducati.cloneappcfh.entity.MessageEvent;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
@@ -61,9 +63,9 @@ public class FetchAddressTask extends AsyncTask<Location, Void, String> {
     @Override
     protected void onPostExecute(String lastLocation) {
         if (lastLocation != null) {
-            com.teamducati.cloneappcfh.entity.APIStoreMap.Address address = new com.teamducati.cloneappcfh.entity.APIStoreMap.Address();
-            address.setFullAddress(lastLocation);
-            EventBus.getDefault().post(address);
+            MessageEvent event = new MessageEvent();
+            event.setAddress(lastLocation);
+            EventBus.getDefault().postSticky(event);
         }
         super.onPostExecute(lastLocation);
     }
