@@ -1,4 +1,4 @@
-package com.teamducati.cloneappcfh.screen.store;
+package com.teamducati.cloneappcfh.screen.store.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package com.teamducati.cloneappcfh.screen.store;
+package com.teamducati.cloneappcfh.screen.store.adapter;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -67,11 +67,12 @@ public class StoreInProvinceAdapter extends RecyclerView.Adapter<StoreInProvince
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Double lat = Double.parseDouble(mApiDistricts.get(0).getStores().get(0).getLatitude());
-                Double lon = Double.parseDouble(mApiDistricts.get(0).getStores().get(0).getLongitude());
-                String name = mApiDistricts.get(0).getStores().get(0).getName();
-                String address = mApiDistricts.get(0).getStores().get(0).getAddress().getStreet();
-                List<StoresItem> storesItems = mApiDistricts.get(0).getStores();
+                DistrictsItem districtsItem = mApiDistricts.get(position);
+                Double lat = Double.parseDouble(districtsItem.getStores().get(0).getLatitude());
+                Double lon = Double.parseDouble(districtsItem.getStores().get(0).getLongitude());
+                String name = districtsItem.getStores().get(0).getName();
+                String address = districtsItem.getStores().get(0).getAddress().getStreet();
+                List<StoresItem> storesItems = districtsItem.getStores();
                 FragmentManager manager = ((Activity) context).getFragmentManager();
                 EventBus.getDefault().post(new EventBusStore(lat, lon, name, address, storesItems, position));
             }
