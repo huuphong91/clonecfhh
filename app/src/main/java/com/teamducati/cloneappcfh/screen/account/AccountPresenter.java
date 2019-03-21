@@ -2,6 +2,7 @@ package com.teamducati.cloneappcfh.screen.account;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -98,6 +99,21 @@ public class AccountPresenter implements AccountContract.Presenter {
 
     @Override
     public void updateUserProperty(User user) {
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
+        myRef.orderByChild("User").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                myRef.child("User").setValue(user);
+                ActivityUtils.setDataObject(context, user);
+                EventBus.getDefault().post(user);
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        Toast.makeText(context, "updated successful", Toast.LENGTH_SHORT).show();
     }
 }
