@@ -191,7 +191,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
                 break;
             case R.id.btnLogOut:
                 mPresenter.onLogout();
-                break;
+            break;
             case R.id.edtFirstName:
                 DialogUpdate.newInstance(user, "First name").show(getFragmentManager(), "Update");
                 break;
