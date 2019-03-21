@@ -114,6 +114,7 @@ public class StoreFragment extends Fragment implements StoreContract.View {
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);
         showListStore(event.storesItems);
         HideShow();
+        mStore.setText(event.name);
     }
 
     private void HideShow() {

@@ -62,7 +62,6 @@ public class StoreInProvinceAdapter extends RecyclerView.Adapter<StoreInProvince
 
     @Override
     public void onBindViewHolder(@NonNull StoreInProvinceViewHolder holder, int position) {
-        String storesItem = mName.get(holder.getAdapterPosition());
         holder.mStoreInProvince.setText(mName.get(position));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,10 +69,9 @@ public class StoreInProvinceAdapter extends RecyclerView.Adapter<StoreInProvince
                 DistrictsItem districtsItem = mApiDistricts.get(position);
                 Double lat = Double.parseDouble(districtsItem.getStores().get(0).getLatitude());
                 Double lon = Double.parseDouble(districtsItem.getStores().get(0).getLongitude());
-                String name = districtsItem.getStores().get(0).getName();
+                String name = mName.get(position);
                 String address = districtsItem.getStores().get(0).getAddress().getStreet();
                 List<StoresItem> storesItems = districtsItem.getStores();
-                FragmentManager manager = ((Activity) context).getFragmentManager();
                 EventBus.getDefault().post(new EventBusStore(lat, lon, name, address, storesItems, position));
             }
         });

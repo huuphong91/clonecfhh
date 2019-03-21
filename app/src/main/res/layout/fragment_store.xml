@@ -70,10 +70,10 @@
             android:layout_weight="8.5"
             android:layout_height="match_parent"
             android:text="Bạn muốn đến cửa hàng nào"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:paddingLeft="@dimen/margin_left_10dp"
             android:textColor="#000"
-            android:gravity="center"/>
+            android:gravity="center|left"/>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1.5"
