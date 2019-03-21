@@ -11,7 +11,7 @@ import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StoresItem;
 import com.teamducati.cloneappcfh.screen.news.adapter.ItemClickListener;
 import com.teamducati.cloneappcfh.screen.store.DialogStoreDetail;
-
+import java.util.ArrayList;
 import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,7 +67,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreAdapter
                 DialogStoreDetail dialogStoreDetail = new DialogStoreDetail();
                 dialogStoreDetail.showDialog(context,
                         mApiStores.get(position).getName(),
-                        mApiStores.get(position).getImages().get(0),
+                        mApiStores.get(position).getImages(),
                         Double.parseDouble(mApiStores.get(position).getLatitude()),
                         Double.parseDouble(mApiStores.get(position).getLongitude()),
                         mApiStores.get(position).getAddress().getFullAddress(),
