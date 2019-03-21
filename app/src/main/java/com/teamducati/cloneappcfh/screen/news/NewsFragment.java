@@ -151,7 +151,7 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     private void initActionBar() {
         //ActivityUtils.removeAllDataObject(getActivity());
         userObj = new User();
-        userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
+        userObj = ActivityUtils.getDataObject(getActivity(), new User().getClass());
         if (!(userObj == null)) {
             Log.d("Data", userObj.toString());
             mTxtNameNewsLogin.setText(userObj.getFirstName());

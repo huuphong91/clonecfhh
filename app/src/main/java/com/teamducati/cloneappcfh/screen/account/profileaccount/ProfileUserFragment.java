@@ -1,4 +1,4 @@
-package com.teamducati.cloneappcfh.screen.account;
+package com.teamducati.cloneappcfh.screen.account.profileaccount;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -13,11 +13,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.User;
+import com.teamducati.cloneappcfh.screen.account.AccountContract;
+import com.teamducati.cloneappcfh.screen.account.AccountPresenter;
+import com.teamducati.cloneappcfh.screen.account.loginaccount.LoginFragment;
+import com.teamducati.cloneappcfh.screen.account.updateaccount.DialogUpdate;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
 import com.teamducati.cloneappcfh.utils.Constants;
 
@@ -26,6 +29,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,6 +66,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     private AccountContract.Presenter mPresenter;
     private Uri filePath;
     private User userObj;
+    private LoginFragment loginFragment;
 //    private FirebaseStorage storage;
 //    private StorageReference storageReference;
 
@@ -76,6 +81,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile_user, container, false);
         unbinder = ButterKnife.bind(this, view);
+        initPresenter();
         initData();
         return view;
     }
@@ -86,11 +92,15 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
         initData();
     }
 
+    private void initPresenter() {
+        mPresenter = new AccountPresenter(getActivity(), this);
+    }
+
     private void initData() {
         userObj = new User();
-        userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
+        userObj = ActivityUtils.getDataObject(getActivity(), new User().getClass());
         if (!(userObj == null)) {
-            showUserDetail();
+            showProfileView();
         }
     }
 
@@ -120,7 +130,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     }
 
     @Override
-    public void showUserDetail() {
+    public void showProfileView() {
         this.user = userObj;
         mEdtFirstName.setText(user.getFirstName());
         mEdtLastName.setText(user.getLastName());
@@ -130,33 +140,58 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
         mEdtGender.setText(user.getGender());
         Glide.with(getActivity())
                 .load(user.getImgAvatarUrl()).into(mImageAvatar);
+    }
 
+    @Override
+    public void showLoginView() {
+        loginFragment = LoginFragment.newInstance();
+        ActivityUtils.addFragmentToActivity(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
+                loginFragment, R.id.contentAccountFrame);
+        loginFragment.setPresenter(mPresenter);
+    }
+
+    @Override
+    public void showDialogView() {
+
+    }
+
+    @Override
+    public void showLoginSuccess() {
+
+    }
+
+    @Override
+    public void showLoginFailed(String error) {
+
+    }
+
+    @Override
+    public void showProfileSuccess() {
+
+    }
+
+    @Override
+    public void showProfileFailed(String error) {
+
+    }
+
+    @Override
+    public void showUpdateSuccess() {
+
+    }
+
+    @Override
+    public void showUpdateFailed(String error) {
 
     }
 
     @Override
     public void restartViewAccount() {
+        ActivityUtils.removeFragmentDisplay(getActivity().getSupportFragmentManager(),this);
+        showLoginView();
 
     }
 
-    @Override
-    public void showLoginFail(String whyFail) {
-
-    }
-
-    @Override
-    public void showUpdateUserPropertySuccess() {
-        Toast.makeText(getActivity(), "Updated successfull", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showUpdateUserPropertyFail() {
-    }
-
-    @Override
-    public void showLoginScreen() {
-
-    }
 
     @Override
     public void setPresenter(AccountContract.Presenter presenter) {
@@ -187,10 +222,10 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_close:
-                mPresenter.onLogout();
+                mPresenter.onLogoutAccount();
                 break;
             case R.id.btnLogOut:
-                mPresenter.onLogout();
+                mPresenter.onLogoutAccount();
                 break;
             case R.id.edtFirstName:
                 DialogUpdate.newInstance(user, "First name").show(getFragmentManager(), "Update");

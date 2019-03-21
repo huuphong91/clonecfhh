@@ -7,29 +7,38 @@ import com.teamducati.cloneappcfh.utils.BaseView;
 public interface AccountContract {
 
     interface Presenter extends BasePresenter {
+        void onCheckDataAccount();
 
-        void onLogin(User user);
+        void onLoginAccount(User user);
 
-        void onLogout();
+        void onLogoutAccount();
 
-        void updateUserProperty(User user);
+        void onGetProfile();
+
+        void onUpdateAccount(User user);
+
     }
 
     interface View extends BaseView<AccountContract.Presenter> {
+        void showLoginView();
 
-        void showUserDetail();
+        void showProfileView();
 
-        void showLoginScreen();
+        void showDialogView();
+
+        void showLoginSuccess();
+
+        void showLoginFailed(String error);
+
+        void showProfileSuccess();
+
+        void showProfileFailed(String error);
+
+        void showUpdateSuccess();
+
+        void showUpdateFailed(String error);
 
         void restartViewAccount();
-
-        void showLoginFail(String whyFail);
-
-        void showUpdateUserPropertySuccess();
-
-        void showUpdateUserPropertyFail();
-
-
     }
 }
 

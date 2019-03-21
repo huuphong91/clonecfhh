@@ -1,5 +1,6 @@
 package com.teamducati.cloneappcfh.screen.account;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
@@ -10,7 +11,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teamducati.cloneappcfh.entity.User;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
-import com.teamducati.cloneappcfh.utils.eventsbus.EventBusStore;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -24,34 +24,43 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class AccountPresenter implements AccountContract.Presenter {
 
     private Context context;
-
     private AccountContract.View mAccountView;
 
     private User userObj;
 
     public AccountPresenter(Context context, AccountContract.View accountView) {
-        this.context=context;
+        this.context = context;
         this.mAccountView = accountView;
         mAccountView.setPresenter(this);
-        userObj=new User();
+        userObj = new User();
     }
 
     @Override
     public void start() {
-        userObj = ActivityUtils.getDataObject(context, userObj.getClass());
-        if (!(userObj==null)) {
-            mAccountView.showUserDetail();
+        onCheckDataAccount();
+    }
+
+    @Override
+    public void onCheckDataAccount() {
+        userObj = ActivityUtils.getDataObject(context, new User().getClass());
+        if (!(userObj == null)) {
+            mAccountView.showProfileView();
         } else {
-            mAccountView.showLoginScreen();
+            mAccountView.showLoginView();
         }
     }
 
     @Override
-    public void onLogin(User user) {
+    public void onLoginAccount(User user) {
         String username = user.getUserName();
         String password = user.getPassword();
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setTitle("Login");
+        progressDialog.setMessage("Đang xủ lý, vui lòng chờ trong giây lát...");
+        progressDialog.show();
         if (username.equals("") || password.equals("")) {
-            mAccountView.showLoginFail("please fulfill information");
+            mAccountView.showLoginFailed("please fulfill information");
+            progressDialog.dismiss();
         } else {
             List<User> userList = new ArrayList<>();
             DatabaseReference database = FirebaseDatabase.getInstance().getReference();
@@ -72,10 +81,12 @@ public class AccountPresenter implements AccountContract.Presenter {
                             Log.d("onDataChange: ", "data match");
                             ActivityUtils.setDataObject(context, userList.get(0));
                             EventBus.getDefault().post(userList.get(0));
-                            mAccountView.showUserDetail();
+                            mAccountView.showLoginSuccess();
+                            progressDialog.dismiss();
                         } else {
                             Log.d("onDataChange: ", "data not match");
-                            mAccountView.showLoginFail("check your information");
+                            mAccountView.showLoginFailed("check your information");
+                            progressDialog.dismiss();
                         }
                     }
                 }
@@ -90,14 +101,39 @@ public class AccountPresenter implements AccountContract.Presenter {
     }
 
     @Override
-    public void onLogout() {
+    public void onLogoutAccount() {
         ActivityUtils.removeAllDataObject(context);
+        EventBus.getDefault().post(userObj);
         mAccountView.restartViewAccount();
 
     }
 
     @Override
-    public void updateUserProperty(User user) {
+    public void onGetProfile() {
+        userObj = ActivityUtils.getDataObject(context, new User().getClass());
+        mAccountView.showProfileView();
+    }
 
+    @Override
+    public void onUpdateAccount(User user) {
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setTitle("Update...");
+        progressDialog.setMessage("Đang xủ lý, vui lòng chờ trong giây lát...");
+        progressDialog.show();
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
+        myRef.orderByChild("User").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                myRef.child("User").setValue(user);
+                ActivityUtils.setDataObject(context, user);
+                EventBus.getDefault().post(user);
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
