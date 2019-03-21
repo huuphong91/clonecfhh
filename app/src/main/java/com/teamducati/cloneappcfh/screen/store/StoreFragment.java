@@ -19,6 +19,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StatesItem;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StoresItem;
+import com.teamducati.cloneappcfh.screen.store.adapter.ProvinceAdapter;
+import com.teamducati.cloneappcfh.screen.store.adapter.StoreAdapter;
 import com.teamducati.cloneappcfh.utils.eventsbus.EventBusStore;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -112,6 +114,7 @@ public class StoreFragment extends Fragment implements StoreContract.View {
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);
         showListStore(event.storesItems);
         HideShow();
+        mStore.setText(event.name);
     }
 
     private void HideShow() {

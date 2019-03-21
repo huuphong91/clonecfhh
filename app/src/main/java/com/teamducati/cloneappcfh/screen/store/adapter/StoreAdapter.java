@@ -1,4 +1,4 @@
-package com.teamducati.cloneappcfh.screen.store;
+package com.teamducati.cloneappcfh.screen.store.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StoresItem;
 import com.teamducati.cloneappcfh.screen.news.adapter.ItemClickListener;
+import com.teamducati.cloneappcfh.screen.store.DialogStoreDetail;
+
 import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
