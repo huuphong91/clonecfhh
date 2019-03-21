@@ -1,4 +1,4 @@
-package com.teamducati.cloneappcfh.screen.account;
+package com.teamducati.cloneappcfh.screen.account.updateaccount;
 
 
 import android.content.Context;
@@ -10,20 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.User;
-import com.teamducati.cloneappcfh.utils.ActivityUtils;
+import com.teamducati.cloneappcfh.screen.account.AccountContract;
+import com.teamducati.cloneappcfh.screen.account.AccountPresenter;
 import com.teamducati.cloneappcfh.utils.Constants;
-
-import org.greenrobot.eventbus.EventBus;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -31,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class DialogUpdate extends DialogFragment  {
+public class DialogUpdate extends DialogFragment implements AccountContract.View {
 
     @BindView(R.id.edtPropertyDialog)
     EditText mEdtPropertyDialog;
@@ -45,7 +37,7 @@ public class DialogUpdate extends DialogFragment  {
     private Unbinder unbinder;
     private User user;
     private String title;
-    private ProfileUserFragment profileUserFragment;
+    private AccountContract.Presenter mPresenter;
 
     public DialogUpdate() {
 
@@ -74,7 +66,12 @@ public class DialogUpdate extends DialogFragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = View.inflate(getContext(), R.layout.dialog_update_profile, null);
         unbinder = ButterKnife.bind(this, view);
+        initPresenter();
         return view;
+    }
+
+    private void initPresenter() {
+        mPresenter = new AccountPresenter(getContext(), this);
     }
 
     @Override
@@ -85,7 +82,7 @@ public class DialogUpdate extends DialogFragment  {
         mBtnCloseDialog.setOnClickListener(v -> dismiss());
         mBtnUpdateDialog.setOnClickListener(v -> {
             updateProperty(title);
-            updateUserProperty(user);
+            mPresenter.onUpdateAccount(user);
             dismiss();
 
         });
@@ -139,25 +136,6 @@ public class DialogUpdate extends DialogFragment  {
         }
     }
 
-    public void updateUserProperty(User user) {
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
-        myRef.orderByChild("User").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                myRef.child("User").setValue(user);
-                ActivityUtils.setDataObject(getActivity(), user);
-                EventBus.getDefault().post(user);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        Toast.makeText(getContext(), "updated successful", Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -165,4 +143,59 @@ public class DialogUpdate extends DialogFragment  {
     }
 
 
+    @Override
+    public void showLoginView() {
+
+    }
+
+    @Override
+    public void showProfileView() {
+
+    }
+
+    @Override
+    public void showDialogView() {
+
+    }
+
+    @Override
+    public void showLoginSuccess() {
+
+    }
+
+    @Override
+    public void showLoginFailed(String error) {
+
+    }
+
+    @Override
+    public void showProfileSuccess() {
+
+    }
+
+    @Override
+    public void showProfileFailed(String error) {
+
+    }
+
+    @Override
+    public void showUpdateSuccess() {
+
+    }
+
+    @Override
+    public void showUpdateFailed(String error) {
+
+    }
+
+    @Override
+    public void restartViewAccount() {
+
+    }
+
+
+    @Override
+    public void setPresenter(AccountContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
 }
