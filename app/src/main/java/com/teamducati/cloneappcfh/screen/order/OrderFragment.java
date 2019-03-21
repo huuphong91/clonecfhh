@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.teamducati.cloneappcfh.R;
+import com.teamducati.cloneappcfh.entity.APIStoreMap.Address;
 import com.teamducati.cloneappcfh.entity.api_order.DataItem;
 import com.teamducati.cloneappcfh.entity.api_order.ItemProductResponse;
 import com.teamducati.cloneappcfh.screen.order.ShipAddressRepick.ShipAddressRepick;
@@ -43,7 +44,7 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OrderFragment extends Fragment implements OrderContract.View, ShipAddressRepick.OnClickItem {
+public class OrderFragment extends Fragment implements OrderContract.View {
 
     public static final String TAG = OrderFragment.class.getName();
     private static int numberProductInCartCurrent;
@@ -73,23 +74,18 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
     private Unbinder unbinder;
     private OrderContract.Presenter mPresenter;
     private ItemProductResponse itemProductResponse;
-    private SharedPreferences sp;
-    private DialogFragment dialogFragment = ShipAddressRepick.newInstance();
+    private DialogFragment dialogFragment;
+    private String mAddressCurrent = null;
 
     public OrderFragment() {
 
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order, container, false);
         unbinder = ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -101,17 +97,16 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
 
         mPresenter.onGetAllProductPresenter();
 
-        ((ShipAddressRepick) dialogFragment).setOnClickItem(this);
-
         mToolBarShipLocation.setOnClickListener(v -> {
+            dialogFragment = ShipAddressRepick.newInstance();
             dialogFragment.show(getChildFragmentManager(), "tag");
-        });
-        imgSearchProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OrderSearchDialogFragment.newInstance(itemProductResponse).show(getFragmentManager(), "");
+            if (mAddressCurrent != null) {
+                ((ShipAddressRepick) dialogFragment).setLocation(mAddressCurrent);
             }
         });
+
+        imgSearchProduct.setOnClickListener(v ->
+                OrderSearchDialogFragment.newInstance(itemProductResponse).show(getFragmentManager(), ""));
 
         numberProductInCartCurrent = -1;
         priceProductInCartCurrent = -1;
@@ -120,18 +115,10 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mSortProduct.setOnClickListener(view->{
+        mSortProduct.setOnClickListener(view -> {
 
             DialogCategoreOrder order = new DialogCategoreOrder();
             order.showDialog(getActivity());
-
-//            if(mSortProduct.getTag().equals("0")){
-//                mSortProduct.setTag("0");
-//                mSortProduct.setImageDrawable(getResources().getDrawable(R.drawable.icon_delete));
-//            }else {
-//                mSortProduct.setTag("1");
-//                mSortProduct.setImageDrawable(getResources().getDrawable(R.drawable.icon_sort));
-//            }
         });
     }
 
@@ -147,12 +134,17 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
         constraintLayoutCart.setVisibility(View.VISIBLE);
         tvNumberProduct.setText(String.valueOf(event.numberProduct));
         tvPrice.setText(Utils.formatMoney(event.price * event.numberProduct));
+    }
 
+    @Subscribe
+    public void onEvent(Address event) {
+        mAddressCurrent = event.getFullAddress();
+        tvShipAddress.setText(mAddressCurrent);
+    }
 
-        //        sp = Utils.getSharedPreferences(this.getActivity(), sp);
-//        SharedPreferences.Editor editor = sp.edit();
-//        Gson gson = new Gson();
-//        String productGson = new Gson().toString();
+    @Subscribe
+    public void onEventResult(String eventResult) {
+        tvShipAddress.setText(eventResult);
     }
 
     @Override
@@ -171,17 +163,6 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
         mPresenter = presenter;
     }
 
-    @Override
-    public void onClickItem(String address) {
-        tvShipAddress.setText(address);
-    }
-
-
-    public void setLocation(String address) {
-        tvShipAddress.setText(address);
-        ((ShipAddressRepick) dialogFragment).setLocation(address);
-    }
-
     public void writeSharedPreferences(String objectGson) {
         SharedPreferences sharedPreferences = Utils.getSharedPreferencesInstance(this.getActivity());
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -193,6 +174,14 @@ public class OrderFragment extends Fragment implements OrderContract.View, ShipA
         String productPref = sharedPreferences.getString(Constants.KEY_PRODUCT_SHARED_PREF, "");
         if (!"".equals(productPref)) {
             DataItem dataItem = Utils.getGsonInstance().fromJson(productPref, DataItem.class);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
         }
     }
 

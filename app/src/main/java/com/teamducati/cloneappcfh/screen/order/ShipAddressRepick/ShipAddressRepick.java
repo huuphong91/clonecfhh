@@ -3,6 +3,7 @@ package com.teamducati.cloneappcfh.screen.order.ShipAddressRepick;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.screen.main.MainActivity;
 import com.teamducati.cloneappcfh.screen.order.adapter.RepickShipAddressAdapter;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 import java.util.Objects;
@@ -37,8 +40,6 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
 
     private Unbinder unbinder;
 
-    private OnClickItem mListener;
-
     private ShipAddressRepickContract.Presenter mPresenter;
 
     private RepickShipAddressAdapter repickShipAddressAdapter;
@@ -49,8 +50,20 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
 
     private FindAutocompletePredictionsRequest.Builder requestBuilder;
 
+    private static ShipAddressRepick sInstance;
+
     public static ShipAddressRepick newInstance() {
-        return new ShipAddressRepick();
+        if (sInstance == null) {
+            sInstance = new ShipAddressRepick();
+        }
+        return sInstance;
+    }
+
+    private static ShipAddressRepick destroyInstance() {
+        if (sInstance != null) {
+            sInstance = null;
+        }
+        return sInstance;
     }
 
     @Override
@@ -64,8 +77,6 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
 
         requestBuilder = FindAutocompletePredictionsRequest.builder()
                 .setCountry("vn");
-
-        ((MainActivity) Objects.requireNonNull(getActivity())).getLocation();
     }
 
     @Nullable
@@ -126,7 +137,7 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
 
     @Override
     public void onCurrentLocationClick() {
-        ((MainActivity) Objects.requireNonNull(getActivity())).getLocation();
+        ((MainActivity) Objects.requireNonNull(getActivity())).getLocation(R.id.navigation_order);
         dismiss();
     }
 
@@ -138,7 +149,7 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
     @Override
     public void onPickLocationClick(String address) {
         String addressPart[] = address.split(",");
-        mListener.onClickItem(addressPart[0]);
+        EventBus.getDefault().post(addressPart[0]);
         dismiss();
     }
 
@@ -158,17 +169,10 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
         mPresenter = presenter;
     }
 
-    public void setOnClickItem(OnClickItem listener) {
-        mListener = listener;
-    }
-
-    public interface OnClickItem {
-        void onClickItem(String address);
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        destroyInstance();
     }
 }

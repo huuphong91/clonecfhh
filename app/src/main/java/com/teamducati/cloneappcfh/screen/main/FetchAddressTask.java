@@ -8,6 +8,8 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -17,11 +19,9 @@ public class FetchAddressTask extends AsyncTask<Location, Void, String> {
 
     @SuppressLint("StaticFieldLeak")
     private Context mContext;
-    private OnTaskCompleted mListener;
 
-    FetchAddressTask(Context mContext, OnTaskCompleted listener) {
+    FetchAddressTask(Context mContext) {
         this.mContext = mContext;
-        mListener = listener;
     }
 
     @Override
@@ -60,11 +60,11 @@ public class FetchAddressTask extends AsyncTask<Location, Void, String> {
 
     @Override
     protected void onPostExecute(String lastLocation) {
-        mListener.onTaskCompleted(lastLocation);
+        if (lastLocation != null) {
+            com.teamducati.cloneappcfh.entity.APIStoreMap.Address address = new com.teamducati.cloneappcfh.entity.APIStoreMap.Address();
+            address.setFullAddress(lastLocation);
+            EventBus.getDefault().post(address);
+        }
         super.onPostExecute(lastLocation);
-    }
-
-    public interface OnTaskCompleted {
-        void onTaskCompleted(String result);
     }
 }

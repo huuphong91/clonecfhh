@@ -29,7 +29,7 @@ import androidx.core.app.ActivityCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements FetchAddressTask.OnTaskCompleted {
+public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     @BindView(R.id.navigation)
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
                 positionFragment = 1;
                 setCurrentItem(positionFragment);
                 if (isFirstClickOnOrderTab) {
-                    getLocation();
+                    getLocation(R.id.navigation_order);
                     isFirstClickOnOrderTab = false;
                 }
 
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
                 positionFragment = 2;
                 setCurrentItem(positionFragment);
                 if (isFirstClickOnStoreTab) {
-                    getLocation();
+                    getLocation(R.id.navigation_store);
                     isFirstClickOnStoreTab = false;
                 }
                 return true;
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
         return false;
     };
 
-    public void getLocation() {
+    public void getLocation(int itemId) {
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]
@@ -164,9 +164,9 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
                     REQUEST_LOCATION_PERMISSION);
         } else {
             mFusedLocation.getLastLocation().addOnSuccessListener(location -> {
-                if (location != null) {
+                if (location != null && itemId == R.id.navigation_order) {
                     // mStoreFragment.setLocation(location);
-                    new FetchAddressTask(this, this).execute(location);
+                    new FetchAddressTask(this).execute(location);
                 }
             });
         }
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
 
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getLocation();
+                    getLocation(R.id.navigation_order);
                 } else {
                     Toast.makeText(this,
                             "Denied",
@@ -191,10 +191,5 @@ public class MainActivity extends AppCompatActivity implements FetchAddressTask.
                 }
                 break;
         }
-    }
-
-    @Override
-    public void onTaskCompleted(String result) {
-        mOrderFragment.setLocation(result);
     }
 }
