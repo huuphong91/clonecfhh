@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -63,8 +64,50 @@ public class AppRespositoryImp implements AppRepository {
 
     @SuppressLint("CheckResult")
     @Override
-    public Flowable loadApiToDatabase() {
-//        getListStore().subscribeOn(Schedulers.io())
+    public Flowable<Long> loadApiToDatabase() {
+
+        getListStore().toFlowable()
+                .subscribeOn(Schedulers.io())
+                .flatMap(storeResponeObject -> {
+                    storeDao.deleteAll();
+                    return Flowable.fromIterable(storeResponeObject.listState);
+                })
+                .flatMap(state -> Flowable.fromIterable(state.districts))
+                .flatMap(district -> Flowable.fromCallable(() -> storeDao.insertStores(district.stores)));
+
+
+
+        return getListStore().subscribeOn(Schedulers.io())
+                .toObservable()
+                .flatMap(new Function<StoreResponeObject, ObservableSource<StoreResponeObject.State>>() {
+                    @Override
+                    public ObservableSource<StoreResponeObject.State> apply(StoreResponeObject storeResponeObject) throws Exception {
+                        storeDao.deleteAll();
+                        return Observable.fromIterable(storeResponeObject.listState);
+                    }
+                }).flatMap(state -> Observable.fromIterable(state.districts))
+                .flatMap(district -> Observable.fromIterable(district.stores))
+                .flatMap(new Function<Store, ObservableSource<Long>>() {
+                    @Override
+                    public ObservableSource<Long> apply(Store store) throws Exception {
+                        long result = storeDao.insertStore(store);
+                        return Observable.just(result);
+                    }
+                }).toFlowable(BackpressureStrategy.BUFFER);
+
+
+
+//                .flatMap(state -> {
+//
+//                     Observable.fromIterable(state.districts);
+//                })
+//                .flatMap(storeResponeObject -> Observable.fromIterable(storeResponeObject.listState))
+//                .flatMap(state -> Observable.fromIterable(state.districts))
+//                .flatMap(district -> Observable.fromIterable(district.stores))
+//                .toFlowable(null);
+
+
+        //        getListStore().subscribeOn(Schedulers.io())
 //                .subscribe(storeResponeObject -> {
 //                    storeDao.deleteAll();
 //                    Observable.just(storeResponeObject)
@@ -84,30 +127,5 @@ public class AppRespositoryImp implements AppRepository {
 ////                            });
 ////                },throwable -> {});
 //                });
-        return getListStore().subscribeOn(Schedulers.io())
-                .toObservable()
-                .flatMap(new Function<StoreResponeObject, ObservableSource<StoreResponeObject.State>>() {
-                    @Override
-                    public ObservableSource<StoreResponeObject.State> apply(StoreResponeObject storeResponeObject) throws Exception {
-                        storeDao.deleteAll();
-                        return Observable.fromIterable(storeResponeObject.listState);
-                    }
-                }).flatMap(state -> Observable.fromIterable(state.districts))
-                .flatMap(district -> Observable.fromIterable(district.stores))
-                .flatMap(new Function<Store, ObservableSource<Store>>() {
-                    @Override
-                    public ObservableSource<Store> apply(Store store) throws Exception {
-                        storeDao.insertStore(store);
-                        return null;
-                    }
-                }).toFlowable(null);
-//                .flatMap(state -> {
-//
-//                     Observable.fromIterable(state.districts);
-//                })
-//                .flatMap(storeResponeObject -> Observable.fromIterable(storeResponeObject.listState))
-//                .flatMap(state -> Observable.fromIterable(state.districts))
-//                .flatMap(district -> Observable.fromIterable(district.stores))
-//                .toFlowable(null);
     }
 }

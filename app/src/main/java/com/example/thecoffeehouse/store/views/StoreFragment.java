@@ -141,6 +141,9 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
         Log.d(TAG, "onResume: ");
         super.onResume();
         mMapView.onResume();
+        if (mCurentLocation!=null & mGoogleMap!=null){
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mCurentLocation.getLatitude(), mCurentLocation.getLongitude()), 13f));
+        }
     }
 
     @Override
@@ -257,6 +260,9 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 696) {
+            if (permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION)&& grantResults[0]==PackageManager.PERMISSION_GRANTED){
+
+            }
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mGoogleMap.setMyLocationEnabled(true);
                 mGoogleMap.setOnMyLocationChangeListener(this);

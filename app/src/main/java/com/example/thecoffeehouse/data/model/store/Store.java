@@ -9,7 +9,6 @@ import java.util.List;
 
 import androidx.room.Embedded;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
@@ -45,7 +44,7 @@ public class Store implements Comparable<Store>, Serializable {
 
     @Override
     public int compareTo(Store o) {
-        return o.storeDistance - storeDistance;
+        return storeDistance - o.storeDistance;
     }
 
     public static class StoreAddress implements Serializable {

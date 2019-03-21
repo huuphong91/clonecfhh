@@ -19,4 +19,7 @@ public interface StoreDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertStore(Store store);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    List<Long> insertStores(List<Store> stores);
 }

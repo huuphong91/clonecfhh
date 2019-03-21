@@ -21,6 +21,7 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -67,6 +68,12 @@ public class StoreDetailDialogFragment extends DialogFragment {
         mStore = (Store) getArguments().getSerializable(KEY_BUNDLE_STORE);
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getDialog().getWindow()
+                .getAttributes().windowAnimations = R.style.DialogFragment;
+    }
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -124,14 +131,17 @@ public class StoreDetailDialogFragment extends DialogFragment {
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
+                mMapView.setClickable(false);
                 googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                googleMap.getUiSettings().setMapToolbarEnabled(false);
+                googleMap.getUiSettings().setZoomControlsEnabled(false);
+                googleMap.getUiSettings().setCompassEnabled(false);
+                googleMap.getUiSettings().setZoomGesturesEnabled(false);
                 googleMap.getUiSettings().setScrollGesturesEnabled(false);
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(new LatLng(mStore.storeLat, mStore.storeLong));
                 markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_map));
                 googleMap.addMarker(markerOptions);
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mStore.storeLat, mStore.storeLong), 13f));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mStore.storeLat, mStore.storeLong), 14f));
             }
         });
     }
