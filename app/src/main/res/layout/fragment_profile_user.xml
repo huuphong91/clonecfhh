@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -32,13 +33,13 @@
         android:id="@+id/edtFirstName"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/border"
+        android:layout_marginTop="48dp"
+        android:backgroundTint="#000000"
         android:focusable="false"
         android:inputType="textPersonName"
         android:paddingLeft="16dp"
         android:text="@string/update"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,24 +53,27 @@
         android:layout_marginTop="2dp"
         android:text="@string/first_name"
         android:textSize="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/edtFirstName"
         app:layout_constraintStart_toStartOf="@+id/edtFirstName"
         app:layout_constraintTop_toTopOf="@+id/edtFirstName" />
 
     <ImageView
+        android:id="@+id/imageView8"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="24dp"
         android:src="@drawable/ic_chevron_right_black"
-        app:layout_constraintBottom_toBottomOf="@+id/edtFirstName"
+        app:layout_constraintBottom_toTopOf="@+id/tvLastName"
         app:layout_constraintEnd_toEndOf="@+id/edtFirstName"
-        app:layout_constraintTop_toTopOf="@+id/edtFirstName" />
+        app:layout_constraintTop_toTopOf="@+id/tvFirstName" />
 
 
     <EditText
         android:id="@+id/edtLastName"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:background="@drawable/border"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#000000"
         android:focusable="false"
         android:inputType="textPersonName"
         android:paddingLeft="16dp"
@@ -88,6 +92,7 @@
         android:layout_marginTop="2dp"
         android:text="@string/last_name"
         android:textSize="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/edtLastName"
         app:layout_constraintStart_toStartOf="@+id/edtLastName"
         app:layout_constraintTop_toTopOf="@+id/edtLastName" />
 
@@ -96,16 +101,16 @@
         android:layout_height="0dp"
         android:layout_marginEnd="24dp"
         android:src="@drawable/ic_chevron_right_black"
-        app:layout_constraintBottom_toBottomOf="@+id/edtLastName"
+        app:layout_constraintBottom_toTopOf="@+id/tvBirthDate"
         app:layout_constraintEnd_toEndOf="@+id/edtLastName"
-        app:layout_constraintTop_toTopOf="@+id/edtLastName" />
+        app:layout_constraintTop_toTopOf="@+id/tvLastName" />
 
 
     <EditText
         android:id="@+id/edtBirthDate"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:background="@drawable/border"
+        android:layout_marginTop="8dp"
         android:focusable="false"
         android:paddingLeft="16dp"
         android:text="@string/update"
@@ -123,24 +128,26 @@
         android:layout_marginTop="2dp"
         android:text="@string/birthdate"
         android:textSize="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/edtBirthDate"
         app:layout_constraintStart_toStartOf="@+id/edtBirthDate"
         app:layout_constraintTop_toTopOf="@+id/edtBirthDate" />
 
     <ImageView
+        android:id="@+id/imageView9"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="24dp"
         android:src="@drawable/ic_chevron_right_black"
-        app:layout_constraintBottom_toBottomOf="@+id/edtBirthDate"
+        app:layout_constraintBottom_toTopOf="@+id/tvEmail"
         app:layout_constraintEnd_toEndOf="@+id/edtBirthDate"
-        app:layout_constraintTop_toTopOf="@+id/edtBirthDate" />
+        app:layout_constraintTop_toTopOf="@+id/tvBirthDate" />
 
 
     <EditText
         android:id="@+id/edtEmail"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:background="@drawable/border"
+        android:layout_marginTop="8dp"
         android:focusable="false"
         android:paddingLeft="16dp"
         android:text="@string/update"
@@ -158,6 +165,7 @@
         android:layout_marginTop="2dp"
         android:text="@string/email"
         android:textSize="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/edtEmail"
         app:layout_constraintStart_toStartOf="@+id/edtEmail"
         app:layout_constraintTop_toTopOf="@+id/edtEmail" />
 
@@ -166,7 +174,7 @@
         android:id="@+id/edtPhoneNumber"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:background="@drawable/border"
+        android:layout_marginTop="8dp"
         android:focusable="false"
         android:paddingLeft="16dp"
         android:text="@string/update"
@@ -184,24 +192,26 @@
         android:layout_marginTop="2dp"
         android:text="@string/phone_number"
         android:textSize="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/edtPhoneNumber"
         app:layout_constraintStart_toStartOf="@+id/edtPhoneNumber"
         app:layout_constraintTop_toTopOf="@+id/edtPhoneNumber" />
 
     <ImageView
+        android:id="@+id/imageView6"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="24dp"
         android:src="@drawable/ic_chevron_right_black"
-        app:layout_constraintBottom_toBottomOf="@+id/edtPhoneNumber"
+        app:layout_constraintBottom_toTopOf="@+id/tvGender"
         app:layout_constraintEnd_toEndOf="@+id/edtPhoneNumber"
-        app:layout_constraintTop_toTopOf="@+id/edtPhoneNumber" />
+        app:layout_constraintTop_toTopOf="@+id/tvPhoneNumber" />
 
 
     <EditText
         android:id="@+id/edtGender"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:background="@drawable/border"
+        android:layout_marginTop="8dp"
         android:focusable="false"
         android:paddingLeft="16dp"
         android:text="@string/update"
@@ -219,17 +229,19 @@
         android:layout_marginTop="2dp"
         android:text="@string/gender"
         android:textSize="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/edtGender"
         app:layout_constraintStart_toStartOf="@+id/edtGender"
         app:layout_constraintTop_toTopOf="@+id/edtGender" />
 
     <ImageView
+        android:id="@+id/imageView7"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="24dp"
         android:src="@drawable/ic_chevron_right_black"
         app:layout_constraintBottom_toBottomOf="@+id/edtGender"
         app:layout_constraintEnd_toEndOf="@+id/edtGender"
-        app:layout_constraintTop_toTopOf="@+id/edtGender" />
+        app:layout_constraintTop_toTopOf="@+id/tvGender" />
 
     <Button
         android:id="@+id/btnLogOut"
@@ -258,7 +270,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/avatar_demo"
+        android:src="@drawable/icon_user_login"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
