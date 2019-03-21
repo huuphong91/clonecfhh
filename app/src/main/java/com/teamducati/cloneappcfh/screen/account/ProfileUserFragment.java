@@ -149,7 +149,6 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
 
     @Override
     public void showUpdateUserPropertySuccess() {
-        Toast.makeText(getActivity(), "Updated successfull11", Toast.LENGTH_SHORT).show();
     }
 
     @Override
