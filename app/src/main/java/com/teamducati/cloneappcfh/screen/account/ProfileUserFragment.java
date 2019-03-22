@@ -30,6 +30,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -66,8 +67,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     private AccountContract.Presenter mPresenter;
     private Uri filePath;
     private User userObj;
-//    private FirebaseStorage storage;
-//    private StorageReference storageReference;
+    private DialogUpdate dialogUpdate = DialogUpdate.getInstance();
 
     public ProfileUserFragment() {
     }
@@ -95,13 +95,8 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
         userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
         if (!(userObj == null)) {
             showUserDetail();
+
         }
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -132,7 +127,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
         mEdtEmail.setText(user.getEmail());
         mEdtPhoneNumber.setText(user.getPhoneNumber());
         mEdtGender.setText(user.getGender());
-        loadImage(convertStringToBitmap(user.getImgAvatarUrl()),mImageAvatar);
+        loadImage(convertStringToBitmap(user.getImgAvatarUrl()), mImageAvatar);
 
 
     }
@@ -163,19 +158,24 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     @Override
     public void setPresenter(AccountContract.Presenter presenter) {
         mPresenter = presenter;
+        dialogUpdate.setPresenter(presenter);
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        if (dialogUpdate != null) {
+            dialogUpdate = DialogUpdate.getInstance();
+            dialogUpdate.setPresenter(mPresenter);
+        }
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
+        super.onStop();
         EventBus.getDefault().unregister(this);
     }
 
@@ -195,26 +195,31 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
                 mPresenter.onLogout();
                 break;
             case R.id.edtFirstName:
-                DialogUpdate.newInstance(user, "First name").show(getFragmentManager(), "Update");
+                dialogUpdate.setDemo(user, "First name");
+                dialogUpdate.show(Objects.requireNonNull(getFragmentManager()), "Update");
                 break;
             case R.id.edtBirthDate:
-                DialogUpdate.newInstance(user, "Birthdate").show(getFragmentManager(), "Update");
+                dialogUpdate.setDemo(user, "Birthdate");
+                dialogUpdate.show(Objects.requireNonNull(getFragmentManager()), "Update");
                 break;
 //            case R.id.edtEmail:
 //                DialogUpdate.newInstance(user, "Email").show(getFragmentManager(), "Update");
 //                break;
             case R.id.edtGender:
-                DialogUpdate.newInstance(user, "Gender").show(getFragmentManager(), "Update");
+                dialogUpdate.setDemo(user, "Gender");
+                dialogUpdate.show(Objects.requireNonNull(getFragmentManager()), "Update");
                 break;
             case R.id.edtPhoneNumber:
-                DialogUpdate.newInstance(user, "Phone number").show(getFragmentManager(), "Update");
+                dialogUpdate.setDemo(user, "Phone number");
+                dialogUpdate.show(Objects.requireNonNull(getFragmentManager()), "Update");
                 break;
             case R.id.edtLastName:
-                DialogUpdate.newInstance(user, "Last name").show(getFragmentManager(), "Update");
+                dialogUpdate.setDemo(user, "Last name");
+                dialogUpdate.show(Objects.requireNonNull(getFragmentManager()), "Update");
                 break;
             case R.id.imgAvatar:
                 chooseImage();
-                Bitmap bm=((BitmapDrawable)mImageAvatar.getDrawable()).getBitmap();
+                Bitmap bm = ((BitmapDrawable) mImageAvatar.getDrawable()).getBitmap();
                 uploadImage(bm);
                 break;
         }
@@ -240,7 +245,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
                 && data != null && data.getData() != null) {
             filePath = data.getData();
             try {
-               Bitmap bitmapPickImage = MediaStore.Images.Media.getBitmap(ProfileUserFragment.this.getContext().
+                Bitmap bitmapPickImage = MediaStore.Images.Media.getBitmap(ProfileUserFragment.this.getContext().
                         getContentResolver(), filePath);
                 uploadImage(bitmapPickImage);
                 mImageAvatar.setImageBitmap(bitmapPickImage);

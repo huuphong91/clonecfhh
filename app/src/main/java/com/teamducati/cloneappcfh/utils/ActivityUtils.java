@@ -59,7 +59,7 @@ public class ActivityUtils {
 //        mSharedPreferencesEditor.putString("data_object_" +
 //                objectData.getClass().getSimpleName().toLowerCase(), mSetStringJSONObject);
         mSharedPreferencesEditor.putString("data_object", mSetStringJSONObject);
-        mSharedPreferencesEditor.commit();
+        mSharedPreferencesEditor.apply();
     }
 
     public static <T> T getDataObject(Context context, Class<T> objectData) {
@@ -75,13 +75,13 @@ public class ActivityUtils {
 //        mSharedPreferencesEditor.remove("data_object_" +
 //                objectData.getClass().getSimpleName().toLowerCase());
         mSharedPreferencesEditor.remove("data_object");
-        mSharedPreferencesEditor.commit();
+        mSharedPreferencesEditor.apply();
     }
 
     public static void removeAllDataObject(Context context) {
         mSharedPreferencesEditor = mSharedPreferences.edit();
         mSharedPreferencesEditor.clear();
-        mSharedPreferencesEditor.commit();
+        mSharedPreferencesEditor.apply();
 
     }
 

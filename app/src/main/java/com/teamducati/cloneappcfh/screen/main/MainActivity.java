@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         mNewsPresenter = new NewsPresenter(mNewsFragment);
         mOrderPresenter = new OrderPresenter(mOrderFragment);
         mStorePresenter = new StorePresenter(mStoreFragment);
-        mAccountPresenter = new AccountPresenter(this, mAccountFragment);
+        mAccountPresenter = new AccountPresenter(mAccountFragment);
     }
 
     private void addFragmentToPagerAdapter() {

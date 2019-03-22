@@ -153,7 +153,7 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         userObj = new User();
         userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
         if (!(userObj == null)) {
-            Log.d("Data", userObj.toString());
+
             mTxtNameNewsLogin.setText(userObj.getFirstName());
             Glide.with(getContext())
                     .load(userObj.getImgAvatarUrl())

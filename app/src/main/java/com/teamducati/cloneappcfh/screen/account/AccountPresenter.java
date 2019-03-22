@@ -30,8 +30,7 @@ public class AccountPresenter implements AccountContract.Presenter {
 
     private User userObj;
 
-    public AccountPresenter(Context context, AccountContract.View accountView) {
-        this.context=context;
+    public AccountPresenter(AccountContract.View accountView) {
         this.mAccountView = accountView;
         mAccountView.setPresenter(this);
         userObj=new User();
@@ -94,7 +93,6 @@ public class AccountPresenter implements AccountContract.Presenter {
     public void onLogout() {
         ActivityUtils.removeAllDataObject(context);
         mAccountView.restartViewAccount();
-
     }
 
     @Override
@@ -115,5 +113,10 @@ public class AccountPresenter implements AccountContract.Presenter {
             }
         });
         Toast.makeText(context, "updated successful", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void getContext(Context context) {
+        this.context = context;
     }
 }

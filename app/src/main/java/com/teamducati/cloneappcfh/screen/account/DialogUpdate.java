@@ -47,34 +47,44 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
     private String title;
     private AccountContract.Presenter mPresenter;
 
-    public DialogUpdate() {
+    private static DialogUpdate sInstance;
 
+    public static DialogUpdate getInstance() {
+        if (sInstance == null) {
+            sInstance = new DialogUpdate();
+        }
+        return sInstance;
     }
 
-    public static DialogUpdate newInstance(User user, String title) {
-        DialogUpdate dialogUpdate = new DialogUpdate();
+    public void setDemo(User user, String title) {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.KEY_BUNDLE_TITLE_UPDATE_USER, title);
         bundle.putParcelable(Constants.KEY_BUNDLE_UPDATE_USER, user);
-        dialogUpdate.setArguments(bundle);
-        return dialogUpdate;
+        sInstance.setArguments(bundle);
+    }
+
+    private static DialogUpdate destroyInstance() {
+        if (sInstance != null) {
+            sInstance = null;
+        }
+        return sInstance;
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+    }
 
-        if (getArguments() != null) {
-            title = getArguments().getString(Constants.KEY_BUNDLE_TITLE_UPDATE_USER);
-            user = getArguments().getParcelable(Constants.KEY_BUNDLE_UPDATE_USER);
-        }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = View.inflate(getContext(), R.layout.dialog_update_profile, null);
         unbinder = ButterKnife.bind(this, view);
-        mPresenter=new AccountPresenter(getContext(),this);
         return view;
     }
 
@@ -82,7 +92,6 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setCancelable(false);
-        setProperty(title);
         mBtnCloseDialog.setOnClickListener(v -> dismiss());
         mBtnUpdateDialog.setOnClickListener(v -> {
             updateProperty(title);
@@ -90,6 +99,21 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
             dismiss();
 
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getArguments() != null) {
+            title = getArguments().getString(Constants.KEY_BUNDLE_TITLE_UPDATE_USER);
+            user = getArguments().getParcelable(Constants.KEY_BUNDLE_UPDATE_USER);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setProperty(title);
     }
 
     private void setProperty(String title) {
@@ -183,4 +207,8 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
         mPresenter = presenter;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }
