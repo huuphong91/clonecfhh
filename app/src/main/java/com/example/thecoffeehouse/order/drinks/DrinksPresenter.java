@@ -31,6 +31,8 @@ public class DrinksPresenter implements DrinksPresenterImp {
                 .getProduct()
                 .subscribeOn(Schedulers.io())
                 .flatMap(order -> Observable.fromIterable(order.getData()))
+                .filter (dataItem -> dataItem.getCategId ().get (0) != 9)
+                .filter (dataItem -> dataItem.getVariants ().get (0).getVal () != null)
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread());
     }

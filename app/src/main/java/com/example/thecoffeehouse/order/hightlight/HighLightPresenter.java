@@ -29,6 +29,8 @@ public class HighLightPresenter implements IHighLightDrinks {
                 .getProduct ()
                 .subscribeOn (Schedulers.io ())
                 .flatMap (apiProduct -> Observable.fromIterable (apiProduct.getData ()))
+                .filter (dataItem -> dataItem.getCategId ().get (0) == 9)
+                .filter (dataItem -> dataItem.getVariants ().get (0).getVal () != null)
                 .toList ()
                 .observeOn (AndroidSchedulers.mainThread ());
     }
@@ -38,7 +40,6 @@ public class HighLightPresenter implements IHighLightDrinks {
             @Override
             public void onSuccess(List<DataItem> dataItems) {
                 highLightView.displayProduct (dataItems);
-
             }
 
             @Override

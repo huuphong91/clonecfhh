@@ -20,6 +20,11 @@
 
     <style name="DialogFragment" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="windowNoTitle">true</item>
+        <item name="dialogCornerRadius">@dimen/abc_dialog_corner_radius_material</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:paddingBottom">8dp</item>
     </style>
-
+    <style name="DetailDialogFragment" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>

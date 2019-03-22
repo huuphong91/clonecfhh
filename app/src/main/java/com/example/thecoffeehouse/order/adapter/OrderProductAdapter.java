@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 
+import com.example.thecoffeehouse.ConvertToUTF8;
 import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.data.model.product.DataItem;
 import com.example.thecoffeehouse.order.detail.DetailDialogFragment;
@@ -22,14 +23,12 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductViewHo
 
     private Context mContext;
     private List<DataItem> mListValues, mFilterList;
-    private FragmentManager manager;
     private CustomFilter filter;
     private OnOrderListItemInteractionListener mListener;
 
     public OrderProductAdapter(Context mContext, List<DataItem> mListValues) {
         this.mContext = mContext;
         this.mListValues = mListValues;
-        this.manager = manager;
     }
 
     @NonNull
@@ -63,7 +62,7 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductViewHo
     }
 
 
-    public void setListener(OnOrderListItemInteractionListener mListener){
+    public void setListener(OnOrderListItemInteractionListener mListener) {
         this.mListener = mListener;
 
     }
@@ -85,7 +84,9 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductViewHo
             if (constraint != null && constraint.length () > 0) {
                 constraint = constraint.toString ().toLowerCase ();
                 for (DataItem item : mFilterList) {
-                    if (item.getProductName ().toLowerCase ().contains (constraint)) {
+                    if (ConvertToUTF8.onConvert (item.getProductName ()).contains (constraint)
+                            || item.getProductName ().toLowerCase ().contains (constraint)
+                            || String.valueOf (item.getBasePrice ()).contains (constraint)) {
                         resultList.add (item);
                     }
                 }

@@ -29,7 +29,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>{
         public ImageView thumbnail, thumbnail_news;
         public MyViewHolder(View view) {
             super(view);
-            title_for_you = (TextView) view.findViewById(R.id.title_for_you);
+//            title_for_you = (TextView) view.findViewById(R.id.title_for_you);
             title_bold_you=(TextView) view.findViewById(R.id.title_bold_for_you);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail_for_you);
         }
@@ -52,7 +52,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>{
         public void onBindViewHolder (final MyViewHolder holder, int position) {
             final ResponseForYou album = mListNews.get(position);
             holder.title_bold_you.setText(album.getTitle());
-            holder.title_for_you.setText(album.getContent());
+//            holder.title_for_you.setText(album.getContent());
             Glide.with(mContext).load(album.getImage()).into(holder.thumbnail);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

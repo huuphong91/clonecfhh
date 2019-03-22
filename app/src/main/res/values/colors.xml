@@ -4,10 +4,11 @@
     <color name="colorPrimaryDark">@color/material_grey_600</color>
     <color name="colorAccent">#f4511e</color>
     <color name="colorHighlight">#ffaf43</color>
-    <color name="colorWhite">#ffffff</color>
+    <color name="colorWhite">#FFF</color>
     <color name="colorBlack">#000000</color>
     <color name="colorOrange">#ffff792c</color>
     <color name="popup_top">#ffff792c</color>
+    <color name="background">#2FEEEAEA</color>
     <color name="TCH">#ff9500</color>
     <color name="moca_rs_black_two_50">#80000000</color>
     <color name="black">#000000</color>

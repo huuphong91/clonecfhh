@@ -1,14 +1,21 @@
 <resources>
-    <string name="app_name">Vlxxchamtv</string>
-    <string name="title_news">News</string>
-    <string name="title_order">Order</string>
-    <string name="title_store">Store</string>
-    <string name="title_profile">Profile</string>
+    <string name="app_name">The coffee house fake</string>
+    <string name="title_news">Tin tức</string>
+    <string name="title_order">Đặt hàng</string>
+    <string name="title_store">Cửa hàng</string>
+    <string name="title_profile">Tài khoản</string>
     <string name="action_settings">Settings</string>
     <string name="GOOGLE_MAP_API_KEY">AIzaSyAksCftJZ_8_RV3O5gMqP43I4Yb-8ShkMs</string>
-    <string name="label_login">Login</string>
+    <string name="label_login">Đăng nhập</string>
     <string name="fb_app_id">2082594551830252</string>
     <string name="account_kit_client_token">6e40bce01a734393dabbf1d7d7090fdb</string>
     <string name="ak_login_protocol_scheme">ak6e40bce01a734393dabbf1d7d7090fdb</string>
     <string name="action_open_news"></string>
+    <string name="radio_small">Nhỏ</string>
+    <string name="radio_medium">Vừa</string>
+    <string name="radio_large">Lớn</string>
+    <string name="button_add_to_cart">Thêm vào giỏ</string>
+    <string name="button_remove_from_cart">Bỏ chọn món</string>
+    <string name="filter_cate_title">Danh mục món</string>
+
 </resources>

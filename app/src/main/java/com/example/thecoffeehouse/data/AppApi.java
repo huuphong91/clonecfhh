@@ -2,6 +2,7 @@ package com.example.thecoffeehouse.data;
 
 import com.example.thecoffeehouse.data.model.entity.ResponseForYou;
 import com.example.thecoffeehouse.data.model.entity.ResponseNews;
+import com.example.thecoffeehouse.data.model.product.Category;
 import com.example.thecoffeehouse.data.model.product.Order;
 import com.example.thecoffeehouse.data.model.store.StoreResponeObject;
 
@@ -24,5 +25,8 @@ public interface AppApi {
 
     @GET("api/v2/news_promotion")
     Observable<List<ResponseForYou>> getForYou();
+
+    @GET("api/v2/category/web")
+    Observable<List<Category>> getCategory();
 
 }
