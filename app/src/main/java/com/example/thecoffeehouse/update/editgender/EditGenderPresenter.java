@@ -21,13 +21,11 @@ public class EditGenderPresenter implements IEditGenderContract.Presenter {
         mPrefs = callback.getContexttt().getSharedPreferences("dataUser", Activity.MODE_PRIVATE);
     }
 
-
     @Override
     public void changeGender(String numberPhone,String gender) {
         Gson gson = new Gson();
         String json = mPrefs.getString("myObject", null);
         mUser = gson.fromJson(json, User.class);
-//        dialog.show();
         mDataRef.child(numberPhone).child("gender").setValue(gender).addOnCompleteListener(task -> {
             mUser.setGender(gender);
             SharedPreferences.Editor editor = mPrefs.edit();
@@ -36,7 +34,6 @@ public class EditGenderPresenter implements IEditGenderContract.Presenter {
             String json1 = gson1.toJson(mUser);
             editor.putString("myObject",json1);
             editor.commit();
-//            dialog.dismiss();
             callback.onChangedSuccess(gender);
         });
     }

@@ -16,15 +16,11 @@ public class EditFirstNamePresenter implements IEditFirstNameContract.Presenter 
     private IEditFirstNameContract.View callback;
     DatabaseReference mDataRef = FirebaseDatabase.getInstance().getReference("Users");
     private SharedPreferences mPrefs;
-//    private ProgressDialog dialog;
 
     public EditFirstNamePresenter(IEditFirstNameContract.View callback){
         this.callback = callback;
         mPrefs = callback.getContextt().getSharedPreferences("dataUser", Activity.MODE_PRIVATE);
-//        dialog = new ProgressDialog(callback.getContextt());
-//        dialog.setTitle("Uploading");
-//        dialog.setMessage("Please wait!!!");
-//        dialog.setCanceledOnTouchOutside(false);
+
     }
 
     @Override
@@ -32,7 +28,6 @@ public class EditFirstNamePresenter implements IEditFirstNameContract.Presenter 
         Gson gson = new Gson();
         String json = mPrefs.getString("myObject", null);
         mUser = gson.fromJson(json, User.class);
-//        dialog.show();
         mDataRef.child(numberPhone).child("firstName").setValue(firstName).addOnCompleteListener(task -> {
             mUser.setFirstName(firstName);
             SharedPreferences.Editor editor = mPrefs.edit();
@@ -41,7 +36,6 @@ public class EditFirstNamePresenter implements IEditFirstNameContract.Presenter 
             String json1 = gson1.toJson(mUser);
             editor.putString("myObject",json1);
             editor.commit();
-//            dialog.dismiss();
             callback.onEditSuccess(firstName);
         });
     }

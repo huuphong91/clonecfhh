@@ -7,7 +7,8 @@ public interface IPresenterLoginContract {
         void onCheckSucess(String result);
         void onCheckFail(String result);
         void onLoadSucess(String result);
-        void onLoadFail(String result);
+        void onFirstLogin(String result);
+        void onCancel(String result);
 
         Context activity();
     }

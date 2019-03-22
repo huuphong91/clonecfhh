@@ -144,8 +144,8 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
         });
 
         mRelChangeGendle.setOnClickListener(v -> {
-            dialogBox();
-//            EditGenderFragment.newInstance(user.getPhoneNumber()).show(getActivity().getSupportFragmentManager(),Constant.BOTTOM_SHEET);
+//            dialogBox();
+            mListener.onChangeFragment(EditGenderFragment.newInstance(user.getPhoneNumber()),Constant.BOTTOM_SHEET);
         });
 
         mImageViewBack.setOnClickListener(v -> {

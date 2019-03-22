@@ -17,22 +17,15 @@ public class PresenterLogin implements IPresenterLoginContract.Presenter {
     private DatabaseReference mDataRef = FirebaseDatabase.getInstance().getReference("Users");
     private IPresenterLoginContract.View callback;
     private SharedPreferences mPrefs;
-    private ProgressDialog dialog;
-
 
     public PresenterLogin(IPresenterLoginContract.View callback){
         this.callback = callback;
         mPrefs = callback.activity().getSharedPreferences("dataUser",Activity.MODE_PRIVATE);
-//        dialog = new ProgressDialog(callback.activity());
-//        dialog.setTitle("Checking!!!");
-//        dialog.setMessage("Please!!!");
-//        dialog.setCanceledOnTouchOutside(false);
-    }
 
+    }
 
     @Override
     public void checkFirstLogin(String numberPhone) {
-//        dialog.show();
         if(!numberPhone.startsWith("0")){
             numberPhone = "0"+ numberPhone;
         }
@@ -45,23 +38,18 @@ public class PresenterLogin implements IPresenterLoginContract.Presenter {
                     loadUser(finalNumberPhone);
                 } else {
                     callback.onCheckFail("Chua Co User");
-//                    dialog.dismiss();
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 callback.onCheckFail(databaseError.getMessage());
-//                dialog.dismiss();
             }
         });
     }
 
     @Override
     public void loadUser(String numberPhone) {
-//        if(numberPhone.startsWith("0")){
-//
-//        }
+
         mDataRef.child(numberPhone).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -73,17 +61,14 @@ public class PresenterLogin implements IPresenterLoginContract.Presenter {
                     editor.putString("myObject",json);
                     editor.commit();
                     callback.onLoadSucess("Load Thanh Cong");
-//                    dialog.dismiss();
                 }
                 else {
-                    callback.onLoadFail("Kiem tra ket noi mang va thu lai");
-//                    dialog.dismiss();
+                    callback.onFirstLogin("Kiem tra ket noi mang va thu lai");
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                callback.onLoadFail(databaseError.getMessage());
-//                dialog.dismiss();
+                callback.onCancel(databaseError.getMessage());
             }
         });
     }
