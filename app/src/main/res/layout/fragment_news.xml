@@ -15,18 +15,18 @@
             android:background="@color/white">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                app:civ_border_color="#FFF"
+                app:civ_border_color="#FDFBFB"
                 app:civ_border_width="1dp"
                 android:id="@+id/news_account_image"
                 android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
                 android:layout_margin="@dimen/activity_margin"
-                android:src="@drawable/atv"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/news_text_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
                 android:id="@+id/news_account_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_margin"
+                android:textStyle="bold"
                 android:padding="5dp"
                 android:paddingStart="@dimen/text_padding"
                 android:paddingEnd="@dimen/text_padding"

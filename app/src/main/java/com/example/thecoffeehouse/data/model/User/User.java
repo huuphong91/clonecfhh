@@ -1,4 +1,4 @@
-package com.example.thecoffeehouse.user;
+package com.example.thecoffeehouse.data.model.User;
 
 import java.io.Serializable;
 
