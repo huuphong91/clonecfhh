@@ -2,28 +2,20 @@ package com.example.thecoffeehouse.data;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
-import android.util.Log;
 
-import com.example.thecoffeehouse.R;
+import com.example.thecoffeehouse.data.model.product.Category;
+import com.example.thecoffeehouse.data.model.product.Order;
 import com.example.thecoffeehouse.data.model.store.Store;
 import com.example.thecoffeehouse.data.model.store.StoreDao;
-import com.example.thecoffeehouse.data.model.store.StoreDatabase;
 import com.example.thecoffeehouse.data.model.store.StoreResponeObject;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.Single;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -37,18 +29,17 @@ public class AppRespositoryImp implements AppRepository {
     }
 
     @Override
+    public Observable<Order> getCartItem() {
+        return ApiHandler.getInstance ().getAppApi ().getProduct ();
+    }
+    @Override
     public Single<StoreResponeObject> getListStore() {
         return ApiHandler.getInstance().getAppApi().getListStore();
     }
 
     @Override
-    public Observable<Order> getCartItem() {
-        return ApiHandler.getInstance ().getAppApi ().getProduct ();
-    }
-
-    @Override
     public Observable<List<Category>> getCategory() {
-        return ApiHandler.getInstance ().getAppApi ().getCategory ();
+        return ApiHandler.getInstance().getAppApi().getCategory();
     }
 
 
@@ -60,7 +51,6 @@ public class AppRespositoryImp implements AppRepository {
     @SuppressLint("CheckResult")
     @Override
     public Flowable<Long> loadApiToDatabase() {
-
         getListStore().toFlowable()
                 .subscribeOn(Schedulers.io())
                 .flatMap(storeResponeObject -> {
@@ -69,7 +59,6 @@ public class AppRespositoryImp implements AppRepository {
                 })
                 .flatMap(state -> Flowable.fromIterable(state.districts))
                 .flatMap(district -> Flowable.fromCallable(() -> storeDao.insertStores(district.stores)));
-
 
 
         return getListStore().subscribeOn(Schedulers.io())
@@ -89,6 +78,7 @@ public class AppRespositoryImp implements AppRepository {
                         return Observable.just(result);
                     }
                 }).toFlowable(BackpressureStrategy.BUFFER);
+
 
 
 
@@ -122,5 +112,10 @@ public class AppRespositoryImp implements AppRepository {
 ////                            });
 ////                },throwable -> {});
 //                });
+    }
+
+    @Override
+    public Observable<Order> getProduct() {
+        return ApiHandler.getInstance().getAppApi().getProduct();
     }
 }

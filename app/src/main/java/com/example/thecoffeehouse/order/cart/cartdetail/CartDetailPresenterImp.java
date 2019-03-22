@@ -18,7 +18,7 @@ public class CartDetailPresenterImp implements CartDetailPresenter {
 
     public CartDetailPresenterImp(Application application, CartDetailView cartDetailView) {
         this.cartDetailView = cartDetailView;
-        appRespositoryImp = new AppRespositoryImp ();
+        appRespositoryImp = new AppRespositoryImp (application);
         cartRepository = new CartRepository (application);
     }
 

@@ -25,11 +25,10 @@ public class SplashPresenterImp implements SplashPresenter {
     @Override
     public void loadStore() {
         repository.loadApiToDatabase().observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    for (long i : aLong
-                    ) {
-                        Log.d(TAG, "loadStore: added" + i);
-                    }
+                .subscribe(longs -> {
+
+                    Log.d(TAG, "loadStore: added" + longs);
+
                 }, throwable -> {
                 }, view::onLoadStoreSuccess);
     }

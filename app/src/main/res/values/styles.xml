@@ -30,7 +30,6 @@
     </style>
 
     <style name="AppTheme.SplashScreen" parent="AppTheme.NoActionBar">
-        <item name="android:windowFullscreen">true</item>
     </style>
 
 </resources>
