@@ -3,7 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="140dp"
+    android:background="@color/colorWhite">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/moca_rs_pinkish_grey_four"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView4"
@@ -11,12 +21,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        android:layout_marginTop="60dp"
+        android:gravity="center"
         android:text="Thanh toán khi giao hàng"
         android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/tv_total_book_cart"
         app:layout_constraintEnd_toStartOf="@+id/view6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/view" />
 
     <TextView
         android:id="@+id/textView5"
@@ -32,28 +43,25 @@
         android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/btn_book"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/view6"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/view6"
         android:layout_width="1dp"
-        android:layout_height="100dp"
+        android:layout_height="70dp"
         android:layout_margin="16dp"
-        android:background="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/btn_book"
+        android:background="@color/moca_rs_pinkish_grey_four"
         app:layout_constraintEnd_toEndOf="@+id/btn_book"
         app:layout_constraintStart_toStartOf="@+id/btn_book"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_total"
+        android:id="@+id/tv_total_book_cart"
         style="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_margin="8dp"
         android:layout_marginBottom="8dp"
         android:text="TextView"
         android:textColor="@color/black"
@@ -63,16 +71,44 @@
         app:layout_constraintStart_toStartOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-    <Button
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/btn_book"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_action_background_selector"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/btn_cart_background_selector"
+        android:clickable="true"
         android:text="Đặt hàng để mua"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="121dp" />
+        app:layout_constraintTop_toBottomOf="@+id/view6">
+
+        <TextView
+            android:id="@+id/tv_btn_order"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Đặt hàng"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_btn_total"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:text="0d"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

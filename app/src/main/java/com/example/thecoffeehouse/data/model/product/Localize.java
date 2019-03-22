@@ -1,6 +1,7 @@
 package com.example.thecoffeehouse.data.model.product;
 
 import com.google.gson.annotations.SerializedName;
+
 public class Localize{
 
 	@SerializedName("vi")
@@ -24,4 +25,13 @@ public class Localize{
 	public String getEn(){
 		return en;
 	}
+
+	@Override
+ 	public String toString(){
+		return 
+			"Localize{" + 
+			"vi = '" + vi + '\'' + 
+			",en = '" + en + '\'' + 
+			"}";
+		}
 }

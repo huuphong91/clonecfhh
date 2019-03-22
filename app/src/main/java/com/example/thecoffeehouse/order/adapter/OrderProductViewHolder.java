@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.data.model.product.DataItem;
+import com.example.thecoffeehouse.order.FormatPrice;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +15,7 @@ public class OrderProductViewHolder extends RecyclerView.ViewHolder {
 
     private TextView mTxtProductName, mTxtProductSize, mTxtProductPrice;
     private ImageView mProductImage;
+    private FormatPrice formatPrice = new FormatPrice ();
 
     public OrderProductViewHolder(View view) {
         super (view);
@@ -26,7 +28,7 @@ public class OrderProductViewHolder extends RecyclerView.ViewHolder {
     public void bindToViewHolder(DataItem currentProduct) {
         mTxtProductName.setText (currentProduct.getProductName ());
         mTxtProductSize.setText (currentProduct.getVariants ().get (0).getVal ());
-        mTxtProductPrice.setText (String.valueOf (currentProduct.getBasePrice ()));
+        mTxtProductPrice.setText (formatPrice.formatPrice (Integer.parseInt (String.valueOf (currentProduct.getBasePrice ()))));
         Glide.with (itemView.getContext ()).load (currentProduct.getImage ()).into (mProductImage);
     }
 

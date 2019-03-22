@@ -1,6 +1,7 @@
 package com.example.thecoffeehouse.order.search;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,9 +12,13 @@ import android.widget.EditText;
 
 import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.data.model.product.DataItem;
+import com.example.thecoffeehouse.order.adapter.OnOrderListItemInteractionListener;
 import com.example.thecoffeehouse.order.adapter.OrderProductAdapter;
 import com.example.thecoffeehouse.order.drinks.DrinksPresenter;
 import com.example.thecoffeehouse.order.drinks.DrinksView;
+import com.example.thecoffeehouse.order.hightlight.HighLightDrinks;
+import com.example.thecoffeehouse.order.hightlight.HighLightDrinksView;
+import com.example.thecoffeehouse.order.hightlight.HighLightPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,18 +29,25 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SearchDialogFragment extends DialogFragment implements DrinksView {
+public class SearchDialogFragment extends DialogFragment implements SearchView{
 
     private EditText edtSearch;
     private OrderProductAdapter mAdapter;
     private RecyclerView mList;
-    private DrinksPresenter searchPresenter;
-
+    private SearchPresenter searchPresenter;
+    private OnOrderListItemInteractionListener mListener;
     public static SearchDialogFragment newInstance() {
         SearchDialogFragment fragment = new SearchDialogFragment ();
         return fragment;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach (context);
+        if (context instanceof OnOrderListItemInteractionListener) {
+            mListener = (OnOrderListItemInteractionListener) context;
+        }
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -80,13 +92,14 @@ public class SearchDialogFragment extends DialogFragment implements DrinksView {
     }
 
     private void initViewId(View view) {
-        searchPresenter = new DrinksPresenter (SearchDialogFragment.this);
+        searchPresenter = new SearchPresenter (SearchDialogFragment.this);
         edtSearch = view.findViewById (R.id.edt_search);
         mList = view.findViewById (R.id.list_search);
         mList.setLayoutManager (new GridLayoutManager (getContext (), 2));
         List<DataItem> itemList = new ArrayList<> ();
         mAdapter = new OrderProductAdapter (getContext (), itemList);
         mList.setAdapter (mAdapter);
+        mAdapter.setListener (mListener);
     }
 
     @Override
