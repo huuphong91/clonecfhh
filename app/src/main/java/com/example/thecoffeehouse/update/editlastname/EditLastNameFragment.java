@@ -37,8 +37,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class EditLastNameFragment extends Fragment implements IEditLastNameContract.View {
 
-//    private DialogInterface.OnDismissListener onDismissListener;
-
     private IEditLastNameContract.Presenter presenter;
     private String mLastName;
     private String mNumberPhone;
@@ -67,7 +65,6 @@ public class EditLastNameFragment extends Fragment implements IEditLastNameContr
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_last_name, container, false);
         initView(view);
         return view;
@@ -101,8 +98,6 @@ public class EditLastNameFragment extends Fragment implements IEditLastNameContr
 
     private void initEvents() {
         mImageViewBack.setOnClickListener(v -> {
-//            UpdateFragment.newInstance().show(getFragmentManager(), Constant.UPDATE_FRAGMENT);
-//            EditLastNameFragment.this.dismiss();
             mListener.onUpdateFragment();
         });
 
@@ -123,8 +118,6 @@ public class EditLastNameFragment extends Fragment implements IEditLastNameContr
              }
          }, 2000);
 
-//        getDialog().dismiss();
-//        UpdateFragment.newInstance().show(getFragmentManager(), Constant.UPDATE_FRAGMENT);
 
     }
 

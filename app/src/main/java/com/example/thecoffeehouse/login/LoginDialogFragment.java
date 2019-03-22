@@ -41,6 +41,7 @@ import androidx.fragment.app.FragmentManager;
 
 public class LoginDialogFragment extends Fragment implements IPresenterLoginContract.View {
 
+    private final String TAG = "LoginDialogFragmnet";
     IPresenterLoginContract.Presenter presenter;
     private final static int REQUEST_CODE = 999;
     private Toolbar toolbar;
@@ -52,7 +53,7 @@ public class LoginDialogFragment extends Fragment implements IPresenterLoginCont
     private AppCompatActivity activity;
     private String numberPhone;
     private FragmentInteractionListener mListener;
-    private IIIII iiiii;
+//    private IIIII iiiii;
     private OnUpdateListener onUpdateListener;
 
     public static LoginDialogFragment newInstance() {
@@ -69,9 +70,9 @@ public class LoginDialogFragment extends Fragment implements IPresenterLoginCont
         if(context instanceof OnUpdateListener){
             onUpdateListener = (OnUpdateListener) context;
         }
-        if( context instanceof IIIII){
-            iiiii = (IIIII) context;
-        }
+//        if( context instanceof IIIII){
+//            iiiii = (IIIII) context;
+//        }
     }
 
     @Override
@@ -120,7 +121,6 @@ public class LoginDialogFragment extends Fragment implements IPresenterLoginCont
                 Toast.makeText(activity, "CANCEL", Toast.LENGTH_SHORT).show();
                 return;
             } else {
-
                 presenter.checkFirstLogin(numberPhone);
                 if (accountKitLoginResult.getAccessToken() != null) {
 //                    Toast.makeText(activity, "Success! %s" + accountKitLoginResult.getAccessToken().getAccountId(), Toast.LENGTH_SHORT).show();
@@ -133,37 +133,39 @@ public class LoginDialogFragment extends Fragment implements IPresenterLoginCont
 
     @Override
     public void onCheckSucess(String result) {
-        Toast.makeText(activity, result, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onCheckSucess: "+result);
     }
 
     @Override
     public void onCheckFail(String result) {
-//        FirstUpdateFragment.newInstance().show(getFragmentManager(), Constant.FIRST_UPDATE_FRAGMENT);
         mListener.onChangeFragment(FirstUpdateFragment.newInstance(), Constant.FIRST_UPDATE_FRAGMENT);
-
     }
 
     @Override
     public void onLoadSucess(String result) {
+        mImageDelete.setVisibility(View.GONE);
         mButtonCommit.loadingSuccessful();
-        //LoginDialogFragment.this.dismiss();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent mStartActivity = new Intent(getContext(), MainActivity.class);
-                int mPendingIntentId = 123456;
-                PendingIntent mPendingIntent = PendingIntent.getActivity(getContext(), mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
-                AlarmManager mgr = (AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
-                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-                System.exit(0);
-            }
-        }, 2000);
+        new Handler().postDelayed(() -> {
+            Intent mStartActivity = new Intent(getContext(), MainActivity.class);
+            int mPendingIntentId = 123456;
+            PendingIntent mPendingIntent = PendingIntent.getActivity(getContext(), mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+            AlarmManager mgr = (AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
+            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+            System.exit(0);
+        }, 1000);
     }
 
     @Override
-    public void onLoadFail(String result) {
-        Toast.makeText(activity, result, Toast.LENGTH_SHORT).show();
+    public void onFirstLogin(String result) {
+        Log.d(TAG, "onFirstLogin: "+result);
+    }
+
+    @Override
+    public void onCancel(String result) {
+        mImageDelete.setEnabled(true);
+        Log.d(TAG, "onCancel: "+result);
         mButtonCommit.loadingFailed();
+        mButtonCommit.reset();
     }
 
     @Override
@@ -189,7 +191,6 @@ public class LoginDialogFragment extends Fragment implements IPresenterLoginCont
         mImageDelete.setOnClickListener(v ->  onUpdateListener.onUpdateFragment());
 
         mButtonEmail.setOnClickListener(v -> {
-            Toast.makeText(activity, "I'm Tan ", Toast.LENGTH_SHORT).show();
         });
 
         mButtonFB.setOnClickListener(v -> {
@@ -198,12 +199,8 @@ public class LoginDialogFragment extends Fragment implements IPresenterLoginCont
             editor.clear();
             editor.commit();
             AccountKit.logOut();
-            Log.d( "initEvent: ","------");
+            Log.d(TAG, "initEvent: ");
             onUpdateListener.onUpdateFragment();
-//            Intent newIntent = new Intent(activity, MainActivity.class);
-//            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(newIntent);
         });
 
         mButtonCommit.setOnClickListener(v -> {
