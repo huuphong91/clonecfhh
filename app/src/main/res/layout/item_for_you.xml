@@ -1,3 +1,4 @@
+
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -11,7 +12,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite">
-
         <ImageView
             android:id="@+id/thumbnail_for_you"
             android:layout_width="220dp"
@@ -21,6 +21,7 @@
             android:scaleType="fitXY"
             card_view:layout_constraintBottom_toTopOf="@+id/title_bold_for_you"
             card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.0"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent"
             card_view:layout_constraintVertical_chainStyle="spread_inside" />

@@ -16,11 +16,7 @@
             android:layout_width="180dp"
             android:layout_height="180dp"
             android:layout_margin="0dp"
-            android:layout_marginBottom="8dp"
             android:src="@drawable/image"
-            app:layout_constraintBottom_toTopOf="@+id/tv_name_product"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -73,7 +69,7 @@
             app:layout_constraintTop_toBottomOf="@+id/view" />
 
         <TextView
-            android:id="@+id/tv_price_cart"
+            android:id="@+id/tv_cost"
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

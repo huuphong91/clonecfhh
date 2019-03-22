@@ -79,12 +79,11 @@
             android:hint="Tên của bạn" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-
-        android:textColor="#FFFF"
+    <com.dx.dxloadingbutton.lib.LoadingButton
+        app:lb_btnText="Xác nhận"
+        app:lb_cornerRadius="10"
+        app:lb_btnColor="@color/colorOrange"
         android:textAllCaps="false"
-        android:backgroundTint="@color/colorOrange"
-        android:background="@drawable/custom_button_radius"
         android:id="@+id/frag_update_btn_commit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

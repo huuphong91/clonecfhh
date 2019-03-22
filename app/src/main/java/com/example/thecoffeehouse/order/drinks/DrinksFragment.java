@@ -78,16 +78,8 @@ public class DrinksFragment extends Fragment implements DrinksView {
     }
 
     @Override
-    public void displayProduct(List<DataItem> orderResponse) {
-        List<DataItem> list = new ArrayList<> ();
-        if (orderResponse != null) {
-            for (DataItem item : orderResponse) {
-                if (item.getCategId ().get (0) != 9) {
-                    list.add (item);
-                }
-            }
-        }
-        mAdapter.setValues (list);
+    public void displayProduct(List<DataItem> itemList) {
+        mAdapter.setValues (itemList);
     }
 
     @Override

@@ -11,10 +11,6 @@ import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.data.model.product.DataItem;
 import com.example.thecoffeehouse.order.adapter.OnOrderListItemInteractionListener;
 import com.example.thecoffeehouse.order.adapter.OrderProductAdapter;
-import com.example.thecoffeehouse.order.drinks.DrinksFragment;
-import com.example.thecoffeehouse.order.drinks.DrinksPresenter;
-import com.example.thecoffeehouse.order.drinks.DrinksPresenterImp;
-import com.example.thecoffeehouse.order.drinks.DrinksView;
 
 import java.util.ArrayList;
 import java.util.List;

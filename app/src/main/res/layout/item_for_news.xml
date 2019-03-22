@@ -15,7 +15,6 @@
         android:id="@+id/thumbnail_for_news"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         card_view:layout_constraintBottom_toTopOf="@+id/title_bold_news"
@@ -29,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/thumbnail_for_news"
             android:gravity="top"
-            android:layout_margin="8dp"
+            android:padding="6dp"
             android:textSize="14dp"
             android:textStyle="bold"
             card_view:layout_constraintBottom_toTopOf="@+id/title_for_news"
@@ -43,11 +42,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/thumbnail_for_news"
             android:gravity="top"
-            android:layout_margin="8dp"
+            android:paddingBottom="6dp"
+            android:paddingRight="6dp"
+            android:layout_marginLeft="6dp"
             android:textSize="12dp"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/title_bold_news" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

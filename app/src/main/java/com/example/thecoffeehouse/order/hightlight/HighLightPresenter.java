@@ -1,7 +1,6 @@
 package com.example.thecoffeehouse.order.hightlight;
 
 import com.example.thecoffeehouse.data.ApiHandler;
-import com.example.thecoffeehouse.data.RetrofitInstance;
 import com.example.thecoffeehouse.data.model.product.DataItem;
 
 import java.util.List;

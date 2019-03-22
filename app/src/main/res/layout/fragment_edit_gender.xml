@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/moca_rs_pinkish_grey_four"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:background="#FFF"
+        android:text="Giới tính của bạn?"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="24dp" />
+    <View
+        android:background="@color/moca_rs_pinkish_grey_four"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+    <TextView
+        android:textSize="16sp"
+        android:id="@+id/bottom_sheet_tvMale"
+        android:text="Nam"
+        android:background="#FFF"
+        android:textColor="@color/blue_sun"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="45dp" />
+    <View
+        android:background="@color/moca_rs_pinkish_grey_four"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+    <TextView
+        android:textSize="16sp"
+        android:textColor="@color/blue_sun"
+        android:id="@+id/bottom_sheet_tvFemale"
+        android:background="#FFF"
+        android:text="Nữ"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="45dp" />
+    <com.dx.dxloadingbutton.lib.LoadingButton
+        app:lb_btnColor="#FFF"
+        app:lb_textColor="@color/blue_sun"
+        app:lb_btnText="Hủy bỏ"
+        android:id="@+id/bottom_sheet_tvCancel"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:background="#FFF"
+        android:layout_width="match_parent"
+        android:layout_height="45dp" />
+
+
+</LinearLayout>
