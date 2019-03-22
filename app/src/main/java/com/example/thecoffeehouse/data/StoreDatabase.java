@@ -1,8 +1,10 @@
-package com.example.thecoffeehouse.data.model.store;
+package com.example.thecoffeehouse.data;
 
 import android.content.Context;
 
 import com.example.thecoffeehouse.R;
+import com.example.thecoffeehouse.data.model.store.Store;
+import com.example.thecoffeehouse.data.model.store.StoreDao;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -21,7 +23,7 @@ public abstract class StoreDatabase extends RoomDatabase {
             synchronized (StoreDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            StoreDatabase.class, "thecoffeehouse")
+                            StoreDatabase.class, context.getString(R.string.app_name))
                             .fallbackToDestructiveMigration()
                             .addCallback(sRoomDatabaseCallback)
                             .build();

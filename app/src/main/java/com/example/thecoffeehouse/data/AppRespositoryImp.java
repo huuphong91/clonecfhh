@@ -1,7 +1,5 @@
 package com.example.thecoffeehouse.data;
 
-import com.example.thecoffeehouse.data.model.product.Category;
-import com.example.thecoffeehouse.data.model.product.Order;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.util.Log;
@@ -15,9 +13,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.List;
-
-import io.reactivex.Observable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -43,7 +38,7 @@ public class AppRespositoryImp implements AppRepository {
 
     @Override
     public Single<StoreResponeObject> getListStore() {
-        return ApiHandler.getInstance ().getAppApi ().getListStore ();
+        return ApiHandler.getInstance().getAppApi().getListStore();
     }
 
     @Override

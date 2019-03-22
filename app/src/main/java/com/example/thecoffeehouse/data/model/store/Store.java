@@ -44,7 +44,7 @@ public class Store implements Comparable<Store>, Serializable {
 
     @Override
     public int compareTo(Store o) {
-        return storeDistance - o.storeDistance;
+        return o.storeDistance - storeDistance;
     }
 
     public static class StoreAddress implements Serializable {

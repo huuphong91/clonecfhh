@@ -38,6 +38,7 @@ public class StoreHorizontalAdapter extends RecyclerView.Adapter<StoreHorizontal
     @Override
     public void onBindViewHolder(@NonNull StoreViewHolder storeViewHolder, int i) {
         Store store = mList.get(i);
+        Log.d("MY_TAG", "onBindViewHolder: DISTANCE"+store.storeDistance);
         storeViewHolder.tvStoreName.setText(store.storeName);
         storeViewHolder.tvStoreDistrict.setText(store.storeAddress.district);
         Glide.with(mContext).load(store.storeImages.get(0))

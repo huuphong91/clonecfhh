@@ -20,6 +20,7 @@ import com.example.thecoffeehouse.data.model.store.Store;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -127,22 +128,20 @@ public class StoreDetailDialogFragment extends DialogFragment {
 
     private void initMapView(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mMapView = view.findViewById(R.id.mapViewMini);
+        //GoogleMapOptions options = new GoogleMapOptions().liteMode(true);
         mMapView.onCreate(savedInstanceState);
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                mMapView.setClickable(false);
-                googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                googleMap.getUiSettings().setZoomControlsEnabled(false);
-                googleMap.getUiSettings().setCompassEnabled(false);
-                googleMap.getUiSettings().setZoomGesturesEnabled(false);
-                googleMap.getUiSettings().setScrollGesturesEnabled(false);
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(new LatLng(mStore.storeLat, mStore.storeLong));
-                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_map));
-                googleMap.addMarker(markerOptions);
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mStore.storeLat, mStore.storeLong), 14f));
-            }
+        mMapView.getMapAsync(googleMap -> {
+            mMapView.setClickable(false);
+            googleMap.getUiSettings().setMapToolbarEnabled(false);
+            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+            googleMap.getUiSettings().setZoomControlsEnabled(false);
+            googleMap.getUiSettings().setZoomGesturesEnabled(false);
+            googleMap.getUiSettings().setScrollGesturesEnabled(false);
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(new LatLng(mStore.storeLat, mStore.storeLong));
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_map));
+            googleMap.addMarker(markerOptions);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mStore.storeLat, mStore.storeLong), 14f));
         });
     }
 

@@ -3,6 +3,8 @@ package com.example.thecoffeehouse.store.views;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +33,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -41,6 +44,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static androidx.core.content.ContextCompat.checkSelfPermission;
 
@@ -128,12 +135,6 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(store.storeLat, store.storeLong), 13f));
             StoreDetailDialogFragment.getInstance(store).show(getFragmentManager(), StoreDetailDialogFragment.TAG);
         });
-        rvListNearByStore.setVisibility(View.VISIBLE);
-        TranslateAnimation animation = new TranslateAnimation(0, 0, 335, 0);
-        animation.setDuration(2000);
-        rvListNearByStore.startAnimation(animation);
-        btnShowMyLocation.startAnimation(animation);
-
     }
 
     @Override
@@ -141,7 +142,7 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
         Log.d(TAG, "onResume: ");
         super.onResume();
         mMapView.onResume();
-        if (mCurentLocation!=null & mGoogleMap!=null){
+        if (mCurentLocation != null & mGoogleMap != null) {
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mCurentLocation.getLatitude(), mCurentLocation.getLongitude()), 13f));
         }
     }
@@ -212,7 +213,7 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
 
     @Override
     public void onStoreLoaded(List<Store> listStoreStore) {
-        Log.d(TAG, "onStoreLoaded: listStoreStore.size() = "+listStoreStore.size());
+        Log.d(TAG, "onStoreLoaded: listStoreStore.size() = " + listStoreStore.size());
         for (Store store : listStoreStore
         ) {
             listStore.add(store);
@@ -247,20 +248,21 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
             storeLocation.setLatitude(store.storeLat);
             storeLocation.setLongitude(store.storeLong);
             store.storeDistance = (int) mCurentLocation.distanceTo(storeLocation);
-            if (store.storeDistance < 5000) {
+            if (store.storeDistance < 10000) {
                 listStoreNearBy.add(store);
             }
         }
-
-        Collections.sort(listStore);
+        Collections.sort(listStoreNearBy, Collections.reverseOrder());
         adapter.notifyDataSetChanged();
+        testGeocoder(location);
+        mGoogleMap.setOnMyLocationClickListener(null);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 696) {
-            if (permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION)&& grantResults[0]==PackageManager.PERMISSION_GRANTED){
+            if (permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
             }
             if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -272,4 +274,14 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
     }
 
 
+    private void testGeocoder(Location location) {
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        Disposable disposable = Single
+                .fromCallable(() -> geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1))
+                .subscribeOn(Schedulers.single())
+                .toObservable()
+                .flatMap(Observable::fromIterable)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(address -> Log.d(TAG, "testGeocoder: size: " + address.getAddressLine(0)));
+    }
 }

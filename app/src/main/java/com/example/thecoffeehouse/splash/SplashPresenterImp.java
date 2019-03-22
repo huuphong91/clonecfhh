@@ -2,11 +2,14 @@ package com.example.thecoffeehouse.splash;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.util.Log;
 
 import com.example.thecoffeehouse.data.AppRepository;
 import com.example.thecoffeehouse.data.AppRespositoryImp;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class SplashPresenterImp implements SplashPresenter {
     private AppRepository repository;
@@ -22,6 +25,12 @@ public class SplashPresenterImp implements SplashPresenter {
     @Override
     public void loadStore() {
         repository.loadApiToDatabase().observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {},throwable -> {},view::onLoadStoreSuccess);
+                .subscribe(aLong -> {
+                    for (long i : aLong
+                    ) {
+                        Log.d(TAG, "loadStore: added" + i);
+                    }
+                }, throwable -> {
+                }, view::onLoadStoreSuccess);
     }
 }
