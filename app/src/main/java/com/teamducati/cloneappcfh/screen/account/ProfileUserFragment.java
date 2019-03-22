@@ -3,9 +3,12 @@ package com.teamducati.cloneappcfh.screen.account;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import androidx.annotation.NonNull;
@@ -128,8 +132,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
         mEdtEmail.setText(user.getEmail());
         mEdtPhoneNumber.setText(user.getPhoneNumber());
         mEdtGender.setText(user.getGender());
-        Glide.with(getActivity())
-                .load(user.getImgAvatarUrl()).into(mImageAvatar);
+        loadImage(convertStringToBitmap(user.getImgAvatarUrl()),mImageAvatar);
 
 
     }
@@ -146,7 +149,6 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
 
     @Override
     public void showUpdateUserPropertySuccess() {
-        Toast.makeText(getActivity(), "Updated successfull", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -191,7 +193,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
                 break;
             case R.id.btnLogOut:
                 mPresenter.onLogout();
-            break;
+                break;
             case R.id.edtFirstName:
                 DialogUpdate.newInstance(user, "First name").show(getFragmentManager(), "Update");
                 break;
@@ -212,7 +214,8 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
                 break;
             case R.id.imgAvatar:
                 chooseImage();
-
+                Bitmap bm=((BitmapDrawable)mImageAvatar.getDrawable()).getBitmap();
+                uploadImage(bm);
                 break;
         }
     }
@@ -222,7 +225,12 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), Constants.PICK_IMAGE);
-        uploadImage();
+    }
+
+    private void uploadImage(Bitmap bitmap) {
+        user.setImgAvatarUrl(convertBitmapToString(bitmap));
+        mPresenter.updateUserProperty(user);
+
     }
 
     @Override
@@ -232,39 +240,43 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
                 && data != null && data.getData() != null) {
             filePath = data.getData();
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(ProfileUserFragment.this.getContext().
+               Bitmap bitmapPickImage = MediaStore.Images.Media.getBitmap(ProfileUserFragment.this.getContext().
                         getContentResolver(), filePath);
-                mImageAvatar.setImageBitmap(bitmap);
-//                uploadImage();
+                uploadImage(bitmapPickImage);
+                mImageAvatar.setImageBitmap(bitmapPickImage);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void uploadImage() {
-//        storage = FirebaseStorage.getInstance();
-//        storageReference = storage.getReference();
-        if (filePath != null) {
-            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
 
-//            StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
-//            ref.putFile(filePath)
-//                    .addOnSuccessListener(taskSnapshot -> {
-//                        progressDialog.dismiss();
-//                        Toast.makeText(getActivity(), "Uploaded", Toast.LENGTH_SHORT).show();
-//                    })
-//                    .addOnFailureListener(e -> {
-//                        progressDialog.dismiss();
-//                        Toast.makeText(getActivity(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-//                    })
-//                    .addOnProgressListener(taskSnapshot -> {
-//                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
-//                                .getTotalByteCount());
-//                        progressDialog.setMessage("Uploaded " + (int) progress + "%");
-//                    });
+    public String convertBitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String temp = Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
+
+    public Bitmap convertStringToBitmap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
         }
     }
+
+    public void loadImage(Bitmap bitmap, ImageView imageView) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        Glide.with(this)
+                .asBitmap()
+                .load(stream.toByteArray())
+                .into(imageView);
+    }
+
 }
