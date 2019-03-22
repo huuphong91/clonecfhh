@@ -1,5 +1,7 @@
 package com.example.thecoffeehouse.order.filter;
 
+import android.app.Application;
+
 import com.example.thecoffeehouse.data.ApiHandler;
 import com.example.thecoffeehouse.data.AppRepository;
 import com.example.thecoffeehouse.data.AppRespositoryImp;
@@ -12,9 +14,9 @@ public class FilterPresenterImp implements FilterPresenter {
     private AppRepository appRepository;
     private FilterView filterView;
 
-    public FilterPresenterImp(FilterView filterView) {
+    public FilterPresenterImp(Application application, FilterView filterView) {
         this.filterView = filterView;
-        appRepository = new AppRespositoryImp ();
+        appRepository = new AppRespositoryImp (application);
     }
 
     @Override
