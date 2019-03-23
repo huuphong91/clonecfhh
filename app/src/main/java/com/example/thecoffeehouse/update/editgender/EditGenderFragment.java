@@ -29,6 +29,7 @@ public class EditGenderFragment extends Fragment implements IEditGenderContract.
     private String mNumberPhone;
     private OnUpdateListener mListener;
 
+
     public static EditGenderFragment newInstance(String numberPhone) {
         EditGenderFragment fragment = new EditGenderFragment();
         Bundle bundle = new Bundle();
@@ -75,15 +76,16 @@ public class EditGenderFragment extends Fragment implements IEditGenderContract.
         });
 
         mTextViewCancle.setOnClickListener(v -> {
+            mListener.onUpdateFragment();
         });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        Window window = getDialog().getWindow();
+//        Window window = getActivity().getWindow();
 //        window.setGravity(Gravity.BOTTOM);
-//        WindowManager.LayoutParams params = getDialog().getWindow().getAttributes();
+//        WindowManager.LayoutParams params = getActivity().getWindow().getAttributes();
 //        params.width = WindowManager.LayoutParams.MATCH_PARENT;
 //        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
 //        window.setAttributes(params);
@@ -103,7 +105,12 @@ public class EditGenderFragment extends Fragment implements IEditGenderContract.
     @Override
     public void onChangedSuccess(String messege) {
         mTextViewCancle.loadingSuccessful();
-//        new Handler().postDelayed(() -> dismiss(), 2000);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mListener.onUpdateFragment();
+            }
+        }, 1000);
     }
 
     @Override

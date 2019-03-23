@@ -25,14 +25,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.thecoffeehouse.Constant;
 import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.data.model.User.User;
 import com.example.thecoffeehouse.main.FragmentInteractionListener;
+import com.example.thecoffeehouse.main.IIIII;
 import com.example.thecoffeehouse.main.OnUpdateListener;
 import com.example.thecoffeehouse.update.editbirthday.EditBirthDayFragment;
 import com.example.thecoffeehouse.update.editfirstname.EditFirstNameFragment;
 import com.example.thecoffeehouse.update.editgender.EditGenderFragment;
+import com.example.thecoffeehouse.update.editimage.EditImagePresenter;
 import com.example.thecoffeehouse.update.editimage.IEditImageContract;
 import com.example.thecoffeehouse.update.editlastname.EditLastNameFragment;
 import com.google.gson.Gson;
@@ -68,6 +71,7 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
     private AppCompatActivity activity;
     private FragmentInteractionListener mListener;
     private OnUpdateListener onUpdateListener;
+    private IIIII iiiii;
 
     public static UpdateFragment newInstance() {
         UpdateFragment fragment = new UpdateFragment();
@@ -117,6 +121,7 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
         mImageViewUser = view.findViewById(R.id.update_frag_imgUser);
         activity = new AppCompatActivity();
         mPrefs = getActivity().getSharedPreferences("dataUser", MODE_PRIVATE);
+        presenter = new EditImagePresenter(this);
 
 
     }
@@ -146,6 +151,7 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
         mRelChangeGendle.setOnClickListener(v -> {
 //            dialogBox();
             mListener.onChangeFragment(EditGenderFragment.newInstance(user.getPhoneNumber()),Constant.BOTTOM_SHEET);
+//            iiiii.iiiiii(EditGenderFragment.newInstance(user.getPhoneNumber()),Constant.BOTTOM_SHEET);
         });
 
         mImageViewBack.setOnClickListener(v -> {
@@ -170,29 +176,18 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
         String json = mPrefs.getString("myObject", null);
         user = gson.fromJson(json, User.class);
         if (json != null) {
-            Bitmap bitmap = StringToBitMap(user.getImage());
             Toast.makeText(getActivity(), "Co roi" + user.getFirstName(), Toast.LENGTH_SHORT).show();
             mTextViewLastName.setText(user.getLastName());
             mTextViewFirstName.setText(user.getFirstName());
             mTextViewBirthDay.setText(user.getBirthday());
             mTextViewPhone.setText(user.getPhoneNumber());
             mTextViewGendle.setText(user.getGender());
-            mImageViewUser.setImageBitmap(bitmap);
+            Glide.with(getContext()).load(user.getImage()).placeholder(R.drawable.img_bg_tch).into(mImageViewUser);
         } else {
             Toast.makeText(getActivity(), "Rong", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private Bitmap StringToBitMap(String encodedString) {
-        try {
-            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch (Exception e) {
-            e.getMessage();
-            return null;
-        }
-    }
 
 
     @Override
@@ -223,6 +218,7 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
                 final InputStream imageStream = getContext().getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                 mImageViewUser.setImageBitmap(selectedImage);
+                presenter.editImage(user.getPhoneNumber(),user.getImage(),selectedImage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_LONG).show();
@@ -235,7 +231,12 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
 
     @Override
     public void onChangeSuccess(String messege) {
+        Toast.makeText(activity, messege, Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    public void onChangeFail(String messege) {
+        Toast.makeText(activity, messege, Toast.LENGTH_SHORT).show();
     }
 
     @Override
