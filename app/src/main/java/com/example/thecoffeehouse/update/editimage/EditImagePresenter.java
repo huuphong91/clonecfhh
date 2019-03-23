@@ -110,7 +110,7 @@ public class EditImagePresenter implements IEditImageContract.Presenter {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
                                         Log.d( "onComplete: ","Fail");
-                                        callback.onChangeFail("Change Fail");
+
                                         hud.dismiss();
                                     }
                                 });
@@ -122,7 +122,6 @@ public class EditImagePresenter implements IEditImageContract.Presenter {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                callback.onChangeFail("Change Fail");
                 hud.dismiss();
             }
         });
