@@ -1,6 +1,8 @@
 package com.example.thecoffeehouse.main;
 
+import androidx.fragment.app.Fragment;
+
 public interface IIIII {
 
-    void iiiiii();
+    void iiiiii(Fragment fragment, String tag);
 }

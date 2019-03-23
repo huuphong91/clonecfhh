@@ -53,7 +53,6 @@ public class EditBirthDayFragment extends Fragment implements IEditBirhDayContra
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_birth_day, container, false);
         initView(view);
         return view;
@@ -87,8 +86,6 @@ public class EditBirthDayFragment extends Fragment implements IEditBirhDayContra
 
     private void initEvents(){
         mImageViewBack.setOnClickListener(v -> {
-//            UpdateFragment.newInstance().show(getFragmentManager(), Constant.UPDATE_FRAGMENT);
-//            EditLastNameFragment.this.dismiss();
             mListener.onUpdateFragment();
         });
 
@@ -100,14 +97,9 @@ public class EditBirthDayFragment extends Fragment implements IEditBirhDayContra
 
     @Override
     public void onChangeBirthdaySuccess(String messege) {
-        Log.d("onEditSuccess: ", "-----");
+        Log.d("onEditSuccess: ", messege);
         mButtonCommit.loadingSuccessful();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mListener.onUpdateFragment();
-            }
-        }, 2000);
+        new Handler().postDelayed(() -> mListener.onUpdateFragment(), 2000);
     }
 
     @Override
@@ -123,14 +115,4 @@ public class EditBirthDayFragment extends Fragment implements IEditBirhDayContra
         return getContext();
     }
 
-    private boolean isValidDate(String inDate) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        dateFormat.setLenient(false);
-        try {
-            dateFormat.parse(inDate.trim());
-        } catch (ParseException pe) {
-            return false;
-        }
-        return true;
-    }
 }

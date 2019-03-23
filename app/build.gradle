@@ -73,6 +73,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:16.1.0'
     implementation 'com.google.firebase:firebase-core:16.0.7'
     implementation 'com.google.firebase:firebase-database:16.1.0'
+    implementation 'com.google.firebase:firebase-storage:16.1.0'
     implementation 'com.google.android.gms:play-services-gcm:16.0.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
@@ -81,5 +82,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.github.StevenDXC:DxLoadingButton:2.1'
     implementation 'javax.inject:javax.inject:1'
+
+    implementation 'com.kaopiz:kprogresshud:1.2.0'
 }
 apply plugin: 'com.google.gms.google-services'

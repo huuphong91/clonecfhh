@@ -18,8 +18,9 @@ import com.example.thecoffeehouse.main.OnUpdateListener;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
-public class EditGenderFragment extends DialogFragment implements IEditGenderContract.View {
+public class EditGenderFragment extends Fragment implements IEditGenderContract.View {
 
     private IEditGenderContract.Presenter presenter;
     private TextView mTextViewMale;
@@ -27,6 +28,7 @@ public class EditGenderFragment extends DialogFragment implements IEditGenderCon
     private LoadingButton mTextViewCancle;
     private String mNumberPhone;
     private OnUpdateListener mListener;
+
 
     public static EditGenderFragment newInstance(String numberPhone) {
         EditGenderFragment fragment = new EditGenderFragment();
@@ -47,7 +49,7 @@ public class EditGenderFragment extends DialogFragment implements IEditGenderCon
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Material_Light_NoActionBar_Fullscreen);
+
     }
 
     @Override
@@ -74,19 +76,19 @@ public class EditGenderFragment extends DialogFragment implements IEditGenderCon
         });
 
         mTextViewCancle.setOnClickListener(v -> {
-            dismiss();
+            mListener.onUpdateFragment();
         });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Window window = getDialog().getWindow();
-        window.setGravity(Gravity.BOTTOM);
-        WindowManager.LayoutParams params = getDialog().getWindow().getAttributes();
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        window.setAttributes(params);
+//        Window window = getActivity().getWindow();
+//        window.setGravity(Gravity.BOTTOM);
+//        WindowManager.LayoutParams params = getActivity().getWindow().getAttributes();
+//        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+//        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+//        window.setAttributes(params);
     }
 
     @Override
@@ -106,9 +108,9 @@ public class EditGenderFragment extends DialogFragment implements IEditGenderCon
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                dismiss();
+                mListener.onUpdateFragment();
             }
-        }, 2000);
+        }, 1000);
     }
 
     @Override

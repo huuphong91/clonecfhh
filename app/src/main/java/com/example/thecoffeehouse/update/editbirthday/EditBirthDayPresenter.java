@@ -25,8 +25,6 @@ public class EditBirthDayPresenter implements IEditBirhDayContract.Presenter  {
 
     @Override
     public void changeBirthDay(String numberPhone, String birthDay) {
-
-//        dialog.show();
         mDataRef.child(numberPhone).child("birthday").setValue(birthDay).addOnCompleteListener(task -> {
             boolean isDateTrue = isValidDate(birthDay);
             if(isDateTrue){
@@ -39,13 +37,12 @@ public class EditBirthDayPresenter implements IEditBirhDayContract.Presenter  {
                 String json1 = gson1.toJson(mUser);
                 editor.putString("myObject",json1);
                 editor.apply();
-//            dialog.dismiss();
+
                 callback.onChangeBirthdaySuccess(birthDay);
                 RxBus.getInstance().postEvent(mUser);
             }else {
                 callback.onChangeBirthdayFail("Check again format date. Please!!!!!");
             }
-
         });
     }
 
