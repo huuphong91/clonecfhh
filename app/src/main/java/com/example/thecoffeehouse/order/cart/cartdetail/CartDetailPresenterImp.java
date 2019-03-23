@@ -35,7 +35,7 @@ public class CartDetailPresenterImp implements CartDetailPresenter {
     }
 
     @Override
-    public void removeCartItem(Cart... carts) {
+    public void removeCartItem(Cart carts) {
         cartRepository.delete (carts);
 
     }

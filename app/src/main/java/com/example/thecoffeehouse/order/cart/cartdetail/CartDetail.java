@@ -2,6 +2,7 @@ package com.example.thecoffeehouse.order.cart.cartdetail;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.thecoffeehouse.Constant;
 import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.data.model.product.DataItem;
 import com.example.thecoffeehouse.data.model.product.VariantsItem;
+import com.example.thecoffeehouse.main.OnUpdateListener;
 import com.example.thecoffeehouse.order.FormatPrice;
+import com.example.thecoffeehouse.order.cart.CartInstance;
 import com.example.thecoffeehouse.order.cart.model.Cart;
 
 import java.util.List;
@@ -27,7 +31,7 @@ import androidx.fragment.app.DialogFragment;
 public class CartDetail extends DialogFragment implements CartDetailView {
     private ImageView imgViewProduct;
     private TextView tvName;
-    private TextView tvDescription,tvSeeMore;
+    private TextView tvDescription, tvSeeMore;
     private TextView tvPrice;
     private Button btnAddToCart;
     private ImageView imgViewDecrease;
@@ -44,6 +48,7 @@ public class CartDetail extends DialogFragment implements CartDetailView {
     private List<VariantsItem> varList;
     private FormatPrice formatPrice = new FormatPrice ();
     private int isCheck;
+    private OnUpdateListener mListener;
 
     public static CartDetail newInstance(Cart item) {
         CartDetail fragment = new CartDetail ();
@@ -58,6 +63,9 @@ public class CartDetail extends DialogFragment implements CartDetailView {
         super.onAttach (context);
         if (getArguments () != null) {
             cartItem = (Cart) getArguments ().getSerializable ("cartItem");
+        }
+        if (context instanceof OnUpdateListener) {
+            mListener = (OnUpdateListener) context;
         }
     }
 
@@ -83,11 +91,11 @@ public class CartDetail extends DialogFragment implements CartDetailView {
 
     private void initData() {
         price = dataItem.getPrice ();
-        count= Integer.parseInt (String.valueOf (cartItem.getCount ()));
+        count = Integer.parseInt (String.valueOf (cartItem.getCount ()));
         Glide.with (getContext ()).load (dataItem.getImage ()).into (imgViewProduct);
         tvName.setText (dataItem.getProductName ());
         tvDescription.setText (dataItem.getDescription ());
-        tvPrice.setText (formatPrice.formatPrice (dataItem.getBasePrice ()*count));
+        tvPrice.setText (String.format ("+%s", formatPrice.formatPrice (dataItem.getBasePrice () * count)));
         tvQuality.setText (String.valueOf (cartItem.getCount ()));
         for (VariantsItem item : varList) {
             if (item.getVal ().toLowerCase ().equals ("nhỏ")) {
@@ -100,6 +108,18 @@ public class CartDetail extends DialogFragment implements CartDetailView {
                 radLarge.setVisibility (View.VISIBLE);
             }
         }
+
+        switch (cartItem.getSize ().toLowerCase ()) {
+            case Constant.SMALL_SIZE:
+                radSmall.setChecked (true);
+                break;
+            case Constant.MEDIUM_SIZE:
+                radMedium.setChecked (true);
+                break;
+            case Constant.LARGE_SIZE:
+                radLarge.setChecked (true);
+                break;
+        }
     }
 
     private void initEvent() {
@@ -109,16 +129,13 @@ public class CartDetail extends DialogFragment implements CartDetailView {
         });
         tvSeeMore.setOnClickListener (v -> showMore ());
         imgViewDecrease.setOnClickListener (v -> {
-            if (count > 0) {
-                count--;
-            } else {
+            count--;
+            if (count <= 0) {
                 count = 0;
                 btnAddToCart.setText (getActivity ().getResources ().getString (R.string.button_remove_from_cart));
             }
             tvQuality.setText (String.valueOf (count));
-            tvPrice.setText (formatPrice.formatPrice (Integer.parseInt (String.format
-                    ("+%s", String.valueOf (count * ("".equalsIgnoreCase (size)
-                            ? dataItem.getBasePrice () : getPrice (size)))))));
+            formatPrice (size);
         });
 
         imgViewIncrease.setOnClickListener (v -> {
@@ -128,57 +145,52 @@ public class CartDetail extends DialogFragment implements CartDetailView {
             } else
                 count = 99;
             tvQuality.setText (String.valueOf (count));
-            tvPrice.setText (formatPrice.formatPrice (Integer.parseInt (String.format
-                    ("+%s", String.valueOf (count * ("".equalsIgnoreCase (size)
-                            ? dataItem.getBasePrice () : getPrice (size)))))));
+            formatPrice (size);
         });
 
         radSmall.setOnCheckedChangeListener ((buttonView, isChecked) -> {
             if (isChecked) {
                 size = radSmall.getText ().toString ();
-                tvPrice.setText (formatPrice.formatPrice (Integer.parseInt (String.format
-                        ("+%s", String.valueOf (count * ("".equalsIgnoreCase (size)
-                                ? dataItem.getBasePrice () : getPrice (size)))))));
+                formatPrice (size);
             }
         });
 
         radMedium.setOnCheckedChangeListener ((buttonView, isChecked) -> {
             if (isChecked) {
                 size = radMedium.getText ().toString ();
-                tvPrice.setText (formatPrice.formatPrice (Integer.parseInt (String.format
-                        ("+%s", String.valueOf (count * ("".equalsIgnoreCase (size)
-                                ? dataItem.getBasePrice () : getPrice (size)))))));
+                formatPrice (size);
             }
         });
 
         radLarge.setOnCheckedChangeListener ((buttonView, isChecked) -> {
             if (isChecked) {
                 size = radLarge.getText ().toString ();
-                tvPrice.setText (formatPrice.formatPrice (Integer.parseInt (String.format
-                        ("+%s", String.valueOf (count * ("".equalsIgnoreCase (size)
-                                ? dataItem.getBasePrice () : getPrice (size)))))));
+                formatPrice (size);
             }
         });
         btnAddToCart.setOnClickListener (v -> {
             if (!"".equals (size)) {
                 if (count == 0) {
-                    cartDetailPresenter.removeCartItem (cartItem);
+                    if (size.toLowerCase ().equals (cartItem.getSize ().toLowerCase ())) {
+                        cartDetailPresenter.removeCartItem (cartItem);
+                    }
                 } else {
                     Cart item = newCartItem ();
                     if (item != null) {
-                        if (dataItem.getId ().equals (item.getPid ()) && valOption (item.getSize ())) {
-                            item.setId (cartItem.getId ());
-                            cartDetailPresenter.updateCartItem (item);
-                        } else {
-                            cartDetailPresenter.insertCartItem (item);
-                        }
+                        item.setId (cartItem.getId ());
+                        cartDetailPresenter.updateCartItem (item);
+
                         Toast.makeText (getContext (), dataItem.getProductName () + " Được thêm vào",
                                 Toast.LENGTH_SHORT).show ();
                     }
                 }
+                if (CartInstance.getInstance ().getListCart ().size () == 1) {
+                    CartDetail.this.dismiss ();
+                    mListener.onUpdateFragment ();
+                    return;
+                }
                 CartDetail.this.dismiss ();
-            }
-            else {
+            } else {
                 Toast.makeText (getContext (), "Thử lại", Toast.LENGTH_SHORT).show ();
             }
         });
@@ -189,6 +201,11 @@ public class CartDetail extends DialogFragment implements CartDetailView {
             if (variantsItem.getVal ().equalsIgnoreCase (val)) return true;
         }
         return false;
+    }
+
+    private void formatPrice(String size) {
+        tvPrice.setText (String.format ("+%s", formatPrice.formatPrice (Integer.parseInt (String.valueOf (count * ("".equalsIgnoreCase (size)
+                ? dataItem.getBasePrice () : getPrice (size)))))));
     }
 
     private void initViewId(View view) {
@@ -237,6 +254,7 @@ public class CartDetail extends DialogFragment implements CartDetailView {
         }
         return price;
     }
+
     private void showMore() {
         if (isCheck == 0) {
             tvDescription.setMaxLines (30);

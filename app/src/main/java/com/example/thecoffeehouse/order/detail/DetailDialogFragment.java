@@ -90,7 +90,7 @@ public class DetailDialogFragment extends DialogFragment {
         Glide.with (getContext ()).load (dataItem.getImage ()).into (imgViewProduct);
         tvName.setText (dataItem.getProductName ());
         tvDescription.setText (dataItem.getDescription ());
-        tvPrice.setText (formatPrice.formatPrice (Integer.parseInt (String.valueOf (dataItem.getBasePrice ()))));
+        tvPrice.setText (String.format ("+%s", formatPrice.formatPrice (Integer.parseInt (String.valueOf (dataItem.getBasePrice ())))));
         List<VariantsItem> variantsItems = dataItem.getVariants ();
         for (VariantsItem item : variantsItems) {
             if (item.getVal ().toLowerCase ().equals ("nhỏ")) {
@@ -118,9 +118,7 @@ public class DetailDialogFragment extends DialogFragment {
                 count = 1;
             }
             tvQuality.setText (String.valueOf (count));
-            tvPrice.setText (formatPrice.formatPrice (Integer.parseInt (String.format
-                    ("+%s", String.valueOf (count * ("".equalsIgnoreCase (size)
-                            ? dataItem.getBasePrice () : getPrice (size)))))));
+            formatPrice (size);
         });
         imgViewIncrease.setOnClickListener (v -> {
             if (count < 100)
@@ -128,8 +126,7 @@ public class DetailDialogFragment extends DialogFragment {
             else
                 count = 99;
             tvQuality.setText (String.valueOf (count));
-            tvPrice.setText (formatPrice.formatPrice (Integer.parseInt (String.format ("+%s", String.valueOf (count * ("".equalsIgnoreCase (size)
-                    ? dataItem.getBasePrice () : getPrice (size)))))));
+            formatPrice (size);
         });
         btnAddToCart.setOnClickListener (v -> {
             if (!"".equals (size)) {
@@ -144,22 +141,19 @@ public class DetailDialogFragment extends DialogFragment {
         radSmall.setOnCheckedChangeListener ((buttonView, isChecked) -> {
             if (isChecked) {
                 size = radSmall.getText ().toString ();
-                tvPrice.setText (formatPrice.formatPrice (Integer.parseInt (String.format ("+%s", String.valueOf (count * ("".equalsIgnoreCase (size)
-                        ? dataItem.getBasePrice () : getPrice (size)))))));
+                formatPrice (size);
             }
         });
         radMedium.setOnCheckedChangeListener ((buttonView, isChecked) -> {
             if (isChecked) {
                 size = radMedium.getText ().toString ();
-                tvPrice.setText (formatPrice.formatPrice (Integer.parseInt (String.format ("+%s", String.valueOf (count * ("".equalsIgnoreCase (size)
-                        ? dataItem.getBasePrice () : getPrice (size)))))));
+                formatPrice (size);
             }
         });
         radLarge.setOnCheckedChangeListener ((buttonView, isChecked) -> {
             if (isChecked) {
                 size = radLarge.getText ().toString ();
-                tvPrice.setText (formatPrice.formatPrice (Integer.parseInt (String.format ("+%s", String.valueOf (count * ("".equalsIgnoreCase (size)
-                        ? dataItem.getBasePrice () : getPrice (size)))))));
+                formatPrice (size);
             }
         });
     }
@@ -216,5 +210,9 @@ public class DetailDialogFragment extends DialogFragment {
         int x = (int) TypedValue.applyDimension (TypedValue.COMPLEX_UNIT_DIP, 350, metrics);
         params.width =x;
         window.setAttributes (params);
+    }
+    private void formatPrice(String size) {
+        tvPrice.setText (String.format ("+%s", formatPrice.formatPrice (Integer.parseInt (String.valueOf (count * ("".equalsIgnoreCase (size)
+                ? dataItem.getBasePrice () : getPrice (size)))))));
     }
 }

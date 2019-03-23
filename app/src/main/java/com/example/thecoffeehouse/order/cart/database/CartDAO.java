@@ -22,7 +22,10 @@ public interface CartDAO {
     long insert(Cart device);
 
     @Delete
-    int deleteCart(Cart... cart);
+    int deleteCart(Cart cart);
+
+    @Query("DELETE from cart")
+    int delall();
 
     @Update
     int update(Cart cart);

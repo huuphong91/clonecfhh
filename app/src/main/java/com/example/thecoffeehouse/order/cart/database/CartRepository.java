@@ -33,7 +33,7 @@ public class CartRepository {
                 .observeOn (AndroidSchedulers.mainThread ())
                 .subscribe ((aLong, throwable) -> {
 //                    Do nothing
-                    Log.d ( "insert: ", aLong + " " );
+                    Log.d ("insert: ", aLong + " ");
                 });
     }
 
@@ -42,12 +42,21 @@ public class CartRepository {
                 .subscribeOn (Schedulers.io ())
                 .observeOn (AndroidSchedulers.mainThread ())
                 .subscribe ((aLong, throwable) -> {
-                    Log.d ( "update: ", aLong + " " );
+                    Log.d ("update: ", aLong + " ");
                 });
     }
 
-    public void delete(Cart... cart) {
+    public void delete(Cart cart) {
         Single.fromCallable (() -> (cartDAO.deleteCart (cart)))
+                .subscribeOn (Schedulers.io ())
+                .observeOn (AndroidSchedulers.mainThread ())
+                .subscribe ((aLong, throwable) -> {
+                    Log.d ("delete: ", aLong + "-----");
+                });
+    }
+
+    public void delall() {
+        Single.fromCallable (() -> (cartDAO.delall ()))
                 .subscribeOn (Schedulers.io ())
                 .observeOn (AndroidSchedulers.mainThread ())
                 .subscribe ((aLong, throwable) -> {

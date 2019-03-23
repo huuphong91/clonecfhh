@@ -22,6 +22,7 @@ import com.example.thecoffeehouse.news.NewsFragment;
 import com.example.thecoffeehouse.order.OrderFragment;
 //import com.example.thecoffeehouse.order.adapter.OnOrderListItemInteractionListener;
 import com.example.thecoffeehouse.order.adapter.OnOrderListItemInteractionListener;
+import com.example.thecoffeehouse.order.cart.CartFragment;
 import com.example.thecoffeehouse.order.cart.CartInstance;
 import com.example.thecoffeehouse.order.cart.adpater.OnOrderListCartListener;
 import com.example.thecoffeehouse.order.cart.cartdetail.CartDetail;
@@ -192,6 +193,11 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
         }
         fragment = mFragmentManager.findFragmentByTag (Constant.UPDATE_FRAGMENT);
         if (fragment instanceof UpdateFragment) {
+            super.onBackPressed ();
+            return;
+        }
+        fragment = mFragmentManager.findFragmentByTag (Constant.CART_FRAGMENT);
+        if (fragment instanceof CartFragment) {
             super.onBackPressed ();
             return;
         }

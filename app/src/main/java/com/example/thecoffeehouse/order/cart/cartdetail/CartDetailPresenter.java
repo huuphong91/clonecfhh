@@ -6,7 +6,7 @@ public interface CartDetailPresenter {
 
     void getCartItem(String id);
 
-    void removeCartItem(Cart... carts);
+    void removeCartItem(Cart carts);
 
     void updateCartItem(Cart cart);
 

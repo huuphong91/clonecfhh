@@ -29,7 +29,11 @@ public class CartViewModel extends AndroidViewModel {
         mRepository.insert (cart);
     }
 
-    public void delete(Cart... carts) {
+    public void delete(Cart carts) {
         mRepository.delete (carts);
+    }
+
+    public void delall(){
+        mRepository.delall ();
     }
 }
