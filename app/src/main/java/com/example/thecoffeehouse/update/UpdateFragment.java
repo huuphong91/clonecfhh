@@ -231,12 +231,12 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
 
     @Override
     public void onChangeSuccess(String messege) {
-        Toast.makeText(activity, messege, Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void onChangeFail(String messege) {
-        Toast.makeText(activity, messege, Toast.LENGTH_SHORT).show();
+
     }
 
     @Override

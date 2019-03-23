@@ -141,7 +141,6 @@ public class NewsFragment extends Fragment implements NewsView, ForYouView {
 
     private void loggedView(User user) {
         Toast.makeText(activity, "" + user.getLastName(), Toast.LENGTH_SHORT).show();
-
         Glide.with(activity).load(user.getImage()).placeholder(R.drawable.img_bg_tch).into(mImgAccount);
         mTxtName.setText(user.getFirstName() + " " + user.getLastName());
         mTxtName.setVisibility(View.VISIBLE);
