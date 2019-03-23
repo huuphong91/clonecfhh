@@ -43,7 +43,6 @@ public class CartDetail extends DialogFragment implements CartDetailView {
     private CartDetailPresenterImp cartDetailPresenter;
     private List<VariantsItem> varList;
     private FormatPrice formatPrice = new FormatPrice ();
-
     private int isCheck;
 
     public static CartDetail newInstance(Cart item) {
