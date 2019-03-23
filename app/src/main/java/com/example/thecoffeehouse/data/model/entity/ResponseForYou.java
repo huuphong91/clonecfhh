@@ -1,16 +1,24 @@
 package com.example.thecoffeehouse.data.model.entity;
 import com.google.gson.annotations.SerializedName;
 
+import org.reactivestreams.Publisher;
+
 import java.io.Serializable;
+import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName ="foryounews")
 public class ResponseForYou implements Serializable {
-
 	@SerializedName("date")
 	private String date;
-
 	@SerializedName("button")
 	private String button;
-
+	@ColumnInfo(name = "image")
+	@NonNull
 	@SerializedName("image")
 	private String image;
 
@@ -21,26 +29,30 @@ public class ResponseForYou implements Serializable {
 	private String deeplink;
 
 	@SerializedName("action")
-	private Object action;
+	private String action;
 
 	@SerializedName("shareUrl")
 	private String shareUrl;
-
+	@PrimaryKey()
+	@NonNull
+	@ColumnInfo(name = "id")
 	@SerializedName("id")
 	private String id;
-
+	@ColumnInfo(name = "title")
+	@NonNull
 	@SerializedName("title")
 	private String title;
-
+	@ColumnInfo(name = "url")
+	@NonNull
 	@SerializedName("url")
 	private String url;
-
+	@ColumnInfo(name = "content")
+	@NonNull
 	@SerializedName("content")
 	private String content;
 
 	@SerializedName("key")
-	private Object key;
-
+	private String key;
 	public void setDate(String date){
 		this.date = date;
 	}
@@ -81,11 +93,11 @@ public class ResponseForYou implements Serializable {
 		return deeplink;
 	}
 
-	public void setAction(Object action){
+	public void setAction(String action){
 		this.action = action;
 	}
 
-	public Object getAction(){
+	public String getAction(){
 		return action;
 	}
 
@@ -129,30 +141,30 @@ public class ResponseForYou implements Serializable {
 		return content;
 	}
 
-	public void setKey(Object key){
+	public void setKey(String key){
 		this.key = key;
 	}
 
-	public Object getKey(){
+	public String getKey(){
 		return key;
 	}
 
 	@Override
  	public String toString(){
-		return 
-			"ResponseForYou{" + 
-			"date = '" + date + '\'' + 
-			",button = '" + button + '\'' + 
-			",image = '" + image + '\'' + 
-			",effects = '" + effects + '\'' + 
-			",deeplink = '" + deeplink + '\'' + 
-			",action = '" + action + '\'' + 
-			",shareUrl = '" + shareUrl + '\'' + 
-			",id = '" + id + '\'' + 
-			",title = '" + title + '\'' + 
-			",url = '" + url + '\'' + 
-			",content = '" + content + '\'' + 
-			",key = '" + key + '\'' + 
+		return
+			"ResponseForYou{" +
+			"date = '" + date + '\'' +
+			",button = '" + button + '\'' +
+			",image = '" + image + '\'' +
+			",effects = '" + effects + '\'' +
+			",deeplink = '" + deeplink + '\'' +
+			",action = '" + action + '\'' +
+			",shareUrl = '" + shareUrl + '\'' +
+			",id = '" + id + '\'' +
+			",title = '" + title + '\'' +
+			",url = '" + url + '\'' +
+			",content = '" + content + '\'' +
+			",key = '" + key + '\'' +
 			"}";
-		}
+	}
 }

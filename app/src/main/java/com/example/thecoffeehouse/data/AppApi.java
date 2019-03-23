@@ -21,10 +21,10 @@ public interface AppApi {
     Single<StoreResponeObject> getListStore();
 
     @GET("api/v2/news")
-    Observable<List<ResponseNews>> getNews();
+   Single<List<ResponseNews>> getNews();
 
     @GET("api/v2/news_promotion")
-    Observable<List<ResponseForYou>> getForYou();
+    Single<List<ResponseForYou>> getForYou();
 
     @GET("api/v2/category/web")
     Observable<List<Category>> getCategory();
