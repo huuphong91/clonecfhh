@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.thecoffeehouse.R;
+import com.example.thecoffeehouse.main.OnUpdateListener;
 import com.example.thecoffeehouse.order.ConfirmDialogFragment;
 import com.example.thecoffeehouse.order.FormatPrice;
 import com.example.thecoffeehouse.order.cart.adpater.CartAdapter;
@@ -26,10 +27,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CartFragment extends DialogFragment implements CartFragmentView {
+public class CartFragment extends Fragment implements CartFragmentView {
     private RecyclerView recyclerView;
     private MapView mapView;
     private ImageView imgViewClose;
@@ -47,6 +49,7 @@ public class CartFragment extends DialogFragment implements CartFragmentView {
     private CartPresenterImp cartPresenter;
     private ConstraintLayout btnOrder;
     private long total = 0;
+    private OnUpdateListener onUpdateListener;
     private FormatPrice formatPrice = new FormatPrice ();
 
     public static CartFragment newInstance() {
@@ -60,6 +63,9 @@ public class CartFragment extends DialogFragment implements CartFragmentView {
         if (context instanceof OnOrderListCartListener) {
             mListener = (OnOrderListCartListener) context;
         }
+        if (context instanceof OnUpdateListener) {
+            onUpdateListener = (OnUpdateListener) context;
+        }
     }
 
     @Nullable
@@ -71,7 +77,7 @@ public class CartFragment extends DialogFragment implements CartFragmentView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
-        setStyle (DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Material_Light_NoActionBar_Fullscreen);
+//        setStyle (DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Material_Light_NoActionBar_Fullscreen);
 
     }
 
@@ -80,7 +86,7 @@ public class CartFragment extends DialogFragment implements CartFragmentView {
         super.onViewCreated (view, savedInstanceState);
         initViewID (view);
         initEvent ();
-        initData ();
+
     }
 
     private void initData() {
@@ -88,7 +94,10 @@ public class CartFragment extends DialogFragment implements CartFragmentView {
     }
 
     private void initEvent() {
-        imgViewClose.setOnClickListener (v -> CartFragment.this.dismiss ());
+        imgViewClose.setOnClickListener (v -> {
+//            CartFragment.this.dismiss ();
+            onUpdateListener.onUpdateFragment ();
+        });
         btnOrder.setOnClickListener (v -> ConfirmDialogFragment.newInstance ((int) total).show (getFragmentManager (), ""));
     }
 
@@ -138,7 +147,8 @@ public class CartFragment extends DialogFragment implements CartFragmentView {
     @Override
     public void onResume() {
         super.onResume ();
-        getDialog ().getWindow ().clearFlags (WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getDialog ().getWindow ().setStatusBarColor (getResources ().getColor (R.color.colorPrimaryDark));
+        initData ();
+//        getDialog ().getWindow ().clearFlags (WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        getDialog ().getWindow ().setStatusBarColor (getResources ().getColor (R.color.colorPrimaryDark));
     }
 }

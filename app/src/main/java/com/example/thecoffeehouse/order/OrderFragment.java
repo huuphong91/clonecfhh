@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.thecoffeehouse.Constant;
 import com.example.thecoffeehouse.R;
+import com.example.thecoffeehouse.main.FragmentInteractionListener;
 import com.example.thecoffeehouse.order.cart.CartFragment;
 import com.example.thecoffeehouse.order.cart.model.Cart;
 import com.example.thecoffeehouse.order.drinks.DrinksFragment;
@@ -42,6 +43,7 @@ public class OrderFragment extends Fragment implements OrderView {
     private TextView txtCartSize, txtTotal;
     private FloatingActionButton fabFilter;
     private FormatPrice formatPrice = new FormatPrice ();
+    private FragmentInteractionListener mListener;
 
     public static OrderFragment newInstance() {
         OrderFragment fragment = new OrderFragment ();
@@ -51,6 +53,9 @@ public class OrderFragment extends Fragment implements OrderView {
     @Override
     public void onAttach(Context context) {
         super.onAttach (context);
+        if (context instanceof FragmentInteractionListener) {
+            mListener = (FragmentInteractionListener) context;
+        }
     }
 
     @Nullable
@@ -81,7 +86,10 @@ public class OrderFragment extends Fragment implements OrderView {
                 SearchDialogFragment.newInstance ().show (mFragmentManager, "data"));
 
         constraintLayout.setOnClickListener (v ->
-                CartFragment.newInstance ().show (mFragmentManager, Constant.CART_FRAGMENT));
+        {
+//            CartFragment.newInstance ().show (mFragmentManager, Constant.CART_FRAGMENT);
+            mListener.onChangeFragment (CartFragment.newInstance (), Constant.CART_FRAGMENT);
+        });
         fabFilter.setOnClickListener (v -> {
 //            FilterDialogFragment.newInstance ().show (mFragmentManager, "as");
         });

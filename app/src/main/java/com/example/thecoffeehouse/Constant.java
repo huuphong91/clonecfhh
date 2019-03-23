@@ -24,4 +24,7 @@ public class Constant {
     public static final int REQUEST_PERMISSION_STORAGE = 4;
     public static final int REQUEST_PERMISSION_FINE_LOCATION = 5;
     public static final int REQUEST_PERMISSION_INTERNET = 6;
+    public static final String SMALL_SIZE = "nhỏ";
+    public static final String MEDIUM_SIZE = "vừa";
+    public static final String LARGE_SIZE = "lớn";
 }
