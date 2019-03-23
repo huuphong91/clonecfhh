@@ -31,6 +31,8 @@ import com.example.thecoffeehouse.profile.ProfileFragment;
 import com.example.thecoffeehouse.store.views.StoreFragment;
 import com.example.thecoffeehouse.update.UpdateFragment;
 import com.example.thecoffeehouse.update.editfirstname.EditFirstNameFragment;
+import com.example.thecoffeehouse.update.editgender.EditGenderFragment;
+import com.example.thecoffeehouse.update.editgender.EditGenderPresenter;
 import com.example.thecoffeehouse.update.editlastname.EditLastNameFragment;
 import com.facebook.accountkit.AccountKit;
 import com.facebook.accountkit.AccountKitCallback;
@@ -197,4 +199,5 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
     public void onBackPressed() {
         super.onBackPressed();
     }
+
 }

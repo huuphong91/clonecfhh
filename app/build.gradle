@@ -48,11 +48,15 @@ dependencies {
     //google maps
     implementation "com.google.android.gms:play-services-maps:$rootProject.googleMapsVersion"
     //room
-    implementation 'androidx.room:room-runtime:2.0.0-beta01'
-    annotationProcessor "androidx.room:room-compiler:2.0.0-beta01"
-    androidTestImplementation 'androidx.room:room-testing:2.0.0-beta01'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-beta01'
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.0.0-beta01"
+    def room_version = "2.1.0-alpha04"
+    def lifecycle_version = "2.0.0"
+    implementation "androidx.room:room-rxjava2:$room_version"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    androidTestImplementation "androidx.room:room-testing:$room_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+
     //rx
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
@@ -69,6 +73,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:16.1.0'
     implementation 'com.google.firebase:firebase-core:16.0.7'
     implementation 'com.google.firebase:firebase-database:16.1.0'
+    implementation 'com.google.firebase:firebase-storage:16.1.0'
     implementation 'com.google.android.gms:play-services-gcm:16.0.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
@@ -77,5 +82,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.github.StevenDXC:DxLoadingButton:2.1'
     implementation 'javax.inject:javax.inject:1'
+
+    implementation 'com.kaopiz:kprogresshud:1.2.0'
 }
 apply plugin: 'com.google.gms.google-services'

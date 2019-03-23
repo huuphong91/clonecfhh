@@ -11,6 +11,11 @@
     <string name="account_kit_client_token">6e40bce01a734393dabbf1d7d7090fdb</string>
     <string name="ak_login_protocol_scheme">ak6e40bce01a734393dabbf1d7d7090fdb</string>
     <string name="action_open_news"></string>
+    <string name="load_api_failed">Kết nối sever thất bại. Thử lại sau!</string>
+    <string name="show_direction">Chỉ đường tới đây</string>
+    <string name="detail">Chi tiết</string>
+    <string name="access_time">Giờ mở cửa</string>
+    <string name="contact">Liên hệ</string>
     <string name="radio_small">Nhỏ</string>
     <string name="radio_medium">Vừa</string>
     <string name="radio_large">Lớn</string>

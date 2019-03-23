@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.thecoffeehouse.Constant;
 import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.RxBus;
@@ -138,8 +139,8 @@ public class NewsFragment extends Fragment implements NewsView, ForYouView {
 
     private void loggedView(User user) {
         Toast.makeText(activity, "" + user.getLastName(), Toast.LENGTH_SHORT).show();
-        Bitmap bitmap = StringToBitMap(user.getImage());
-        mImgAccount.setImageBitmap(bitmap);
+
+        Glide.with(activity).load(user.getImage()).placeholder(R.drawable.img_bg_tch).into(mImgAccount);
         mTxtName.setText(user.getFirstName() + " " + user.getLastName());
         mTxtName.setVisibility(View.VISIBLE);
         mImgAccount.setOnClickListener(v -> {
@@ -194,17 +195,17 @@ public class NewsFragment extends Fragment implements NewsView, ForYouView {
             unLoginView();
         }
     }
-
-    private Bitmap StringToBitMap(String encodedString) {
-        try {
-            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch (Exception e) {
-            e.getMessage();
-            return null;
-        }
-    }
+//
+//    private Bitmap StringToBitMap(String encodedString) {
+//        try {
+//            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+//            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+//            return bitmap;
+//        } catch (Exception e) {
+//            e.getMessage();
+//            return null;
+//        }
+//    }
 
     @Override
     public void displayNews(List<ResponseNews> itemList) {
