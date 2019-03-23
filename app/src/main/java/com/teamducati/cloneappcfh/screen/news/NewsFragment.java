@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.teamducati.cloneappcfh.R;
+import com.teamducati.cloneappcfh.di.ActivityScoped;
 import com.teamducati.cloneappcfh.entity.News;
 import com.teamducati.cloneappcfh.entity.NewsPromotion;
 import com.teamducati.cloneappcfh.entity.User;
@@ -32,45 +33,60 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import dagger.Binds;
+import dagger.android.support.DaggerFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NewsFragment extends Fragment implements NewsContract.View {
-    private View view;
+@ActivityScoped
+public class NewsFragment extends DaggerFragment implements NewsContract.View {
 
-    private RecyclerView mRecyclerViewNewsPromotion;
+    @BindView(R.id.recycler_view_news_promotion)
+    RecyclerView mRecyclerViewNewsPromotion;
+    @BindView(R.id.recycler_view_news)
+    RecyclerView mRecyclerViewNews;
+    @BindView(R.id.img_news_notification_sign_out)
+    ImageView imgNotificationSignOut;
+    @BindView(R.id.img_news_notification_sign_in)
+    ImageView imgNotificationSignIn;
+    @BindView(R.id.btn_login)
+    Button btnLogin;
+    @BindView(R.id.swipe_refresh_layout_news)
+    SwipeRefreshLayout swipeRefreshLayoutLayout;
+    private BottomNavigationView bottomNavigationView;
+    @BindView(R.id.view_flipper)
+    ViewFlipper mViewLayoutActionBar;
+    @BindView(R.id.txt_name_news_login)
+    TextView mTxtNameNewsLogin;
+    @BindView(R.id.img_news_person)
+    ImageView mImgNewsPerson;
 
-    private RecyclerView mRecyclerViewNews;
+    @Inject
+    NewsPromotionListAdapter mAdapterNewsPromotion;
 
-    private NewsPromotionListAdapter mAdapterNewsPromotion;
+    @Inject
+    NewsListAdapter mAdapterNews;
 
-    private NewsListAdapter mAdapterNews;
-
-    private NewsContract.Presenter mPresenter;
+    @Inject
+    NewsContract.Presenter mPresenter;
 
     private MainViewPager mainViewPager;
 
-    private ImageView imgNotificationSignOut;
-
-    private ImageView imgNotificationSignIn;
-
-    private Button btnLogin;
-
-    private SwipeRefreshLayout swipeRefreshLayoutLayout;
-
-    private BottomNavigationView bottomNavigationView;
-
-    private ViewFlipper mViewLayoutActionBar;
-
     private User userObj;
-    private TextView mTxtNameNewsLogin;
-    private ImageView mImgNewsPerson;
 
+    private Unbinder unbinder;
+
+    @Inject
     public NewsFragment() {
         // Required empty public constructor
     }
@@ -82,8 +98,9 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_news, container, false);
-        initMappingViewId();
+        View view = inflater.inflate(R.layout.fragment_news, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        bottomNavigationView = getActivity().findViewById(R.id.navigation);
         initEvent();
         initShowStartupDialogNotification();
         initUI();
@@ -97,53 +114,35 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     }
 
     public void initRecyclerViewNewsPromotion() {
-        mRecyclerViewNewsPromotion = (RecyclerView) view.findViewById(R.id.recycler_view_news_promotion);
         mRecyclerViewNewsPromotion.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerViewNewsPromotion.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
     }
 
     public void initRecyclerViewNews() {
-        mRecyclerViewNews = (RecyclerView) view.findViewById(R.id.recycler_view_news);
         mRecyclerViewNews.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerViewNews.setLayoutManager(layoutManager);
+        mRecyclerViewNews.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void initEvent() {
         mainViewPager = new MainViewPager(getActivity(), null);
         btnLogin.setBackgroundResource(R.drawable.custom_button_selector);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bottomNavigationView.setSelectedItemId(R.id.navigation_account);
-            }
-        });
-        imgNotificationSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NewsNotificationDialogFragment newsNotificationDialogFragment =
-                        new NewsNotificationDialogFragment();
-                newsNotificationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
+        btnLogin.setOnClickListener(view -> bottomNavigationView.setSelectedItemId(R.id.navigation_account));
+        imgNotificationSignIn.setOnClickListener(view -> {
+            NewsNotificationDialogFragment newsNotificationDialogFragment =
+                    new NewsNotificationDialogFragment();
+            newsNotificationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
 
-            }
         });
-        imgNotificationSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NewsNotificationDialogFragment newsNotificationDialogFragment =
-                        new NewsNotificationDialogFragment();
-                newsNotificationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
+        imgNotificationSignOut.setOnClickListener(view -> {
+            NewsNotificationDialogFragment newsNotificationDialogFragment =
+                    new NewsNotificationDialogFragment();
+            newsNotificationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
 
-            }
         });
-        swipeRefreshLayoutLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mAdapterNews.notifyDataSetChanged();
-                mAdapterNewsPromotion.notifyDataSetChanged();
-                swipeRefreshLayoutLayout.setRefreshing(false);
-            }
+        swipeRefreshLayoutLayout.setOnRefreshListener(() -> {
+            mAdapterNews.notifyDataSetChanged();
+            mAdapterNewsPromotion.notifyDataSetChanged();
+            swipeRefreshLayoutLayout.setRefreshing(false);
         });
     }
 
@@ -165,11 +164,13 @@ public class NewsFragment extends Fragment implements NewsContract.View {
             mViewLayoutActionBar.setDisplayedChild(1);
         }
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(User event) {
         //data change
         initActionBar();
     }
+
     private void initShowStartupDialogNotification() {
         Intent intent = getActivity().getIntent();
         if (intent.getStringExtra("firebase_id") != null) {
@@ -188,43 +189,19 @@ public class NewsFragment extends Fragment implements NewsContract.View {
 
     @Override
     public void getListNewsPromotion(List<NewsPromotion> arrayList) {
-        mAdapterNewsPromotion = new NewsPromotionListAdapter(getActivity(), arrayList);
+        mAdapterNewsPromotion.setList(arrayList);
         mRecyclerViewNewsPromotion.setAdapter(mAdapterNewsPromotion);
     }
 
     @Override
     public void getListNews(List<News> arrayList) {
-        mAdapterNews = new NewsListAdapter(getActivity(), arrayList);
+        mAdapterNews.setList(arrayList);
         mRecyclerViewNews.setAdapter(mAdapterNews);
-    }
-
-    private void initMappingViewId() {
-        mRecyclerViewNewsPromotion = view.findViewById(R.id.recycler_view_news_promotion);
-        mRecyclerViewNews = view.findViewById(R.id.recycler_view_news);
-        imgNotificationSignIn = view.findViewById(R.id.img_news_notification_sign_in);
-        imgNotificationSignOut = view.findViewById(R.id.img_news_notification_sign_out);
-        btnLogin = view.findViewById(R.id.btn_login);
-        swipeRefreshLayoutLayout = view.findViewById(R.id.swipe_refresh_layout_news);
-        //bottomNavigation
-        bottomNavigationView = getActivity().findViewById(R.id.navigation);
-        mViewLayoutActionBar = view.findViewById(R.id.view_flipper);
-        mTxtNameNewsLogin = view.findViewById(R.id.txt_name_news_login);
-        mImgNewsPerson = view.findViewById(R.id.img_news_person);
-    }
-
-    @Override
-    public void setPresenter(NewsContract.Presenter presenter) {
-        mPresenter = presenter;
     }
 
     @Override
     public void getHandleSuccess() {
-        swipeRefreshLayoutLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayoutLayout.setRefreshing(false);
-            }
-        });
+        swipeRefreshLayoutLayout.setOnRefreshListener(() -> swipeRefreshLayoutLayout.setRefreshing(false));
     }
 
     @Override
@@ -235,7 +212,7 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.start();
+        mPresenter.takeView(this);
     }
 
     @Override
@@ -247,8 +224,15 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        mPresenter.dropView();
     }
 }

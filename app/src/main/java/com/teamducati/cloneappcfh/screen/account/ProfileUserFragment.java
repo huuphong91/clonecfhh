@@ -80,23 +80,23 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile_user, container, false);
         unbinder = ButterKnife.bind(this, view);
-        initData();
+//        initData();
         return view;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(User event) {
         //data change
-        initData();
+//        initData();
     }
 
-    private void initData() {
-        userObj = new User();
-        userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
-        if (!(userObj == null)) {
-            showUserDetail();
-        }
-    }
+//    private void initData() {
+//        userObj = new User();
+//        userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
+//        if (!(userObj == null)) {
+//            showUserDetail();
+//        }
+//    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -158,11 +158,6 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     @Override
     public void showLoginScreen() {
 
-    }
-
-    @Override
-    public void setPresenter(AccountContract.Presenter presenter) {
-        mPresenter = presenter;
     }
 
     @Override

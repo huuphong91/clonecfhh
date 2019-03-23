@@ -54,7 +54,7 @@ public class NotificationFirebaseMessagingService extends FirebaseMessagingServi
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        mPresenter = new NotificationPresenter(this, getApplicationContext());
+        mPresenter = new NotificationPresenter();
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         if (remoteMessage.getData().size() > 0) {
@@ -167,10 +167,4 @@ public class NotificationFirebaseMessagingService extends FirebaseMessagingServi
     public void getListNotification(List<Notification> arrayList) {
 
     }
-
-    @Override
-    public void setPresenter(NoticationContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
-
 }

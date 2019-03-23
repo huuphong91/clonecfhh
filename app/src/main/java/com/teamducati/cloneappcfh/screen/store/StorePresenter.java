@@ -5,6 +5,10 @@ import com.teamducati.cloneappcfh.entity.APIStoreMap.APIStore;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StatesItem;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StoresItem;
 import java.util.List;
+
+import javax.inject.Inject;
+
+import androidx.annotation.Nullable;
 import io.reactivex.Observable;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -13,12 +17,13 @@ import io.reactivex.schedulers.Schedulers;
 
 public class StorePresenter implements StoreContract.Presenter {
 
+    @Nullable
     private StoreContract.View mStoreView;
+
     private RetrofitFactory mRetrofitFactory;
 
-    public StorePresenter(StoreContract.View storeView) {
-        this.mStoreView = storeView;
-        mStoreView.setPresenter(this);
+    @Inject
+    public StorePresenter() {
         mRetrofitFactory = new RetrofitFactory();
     }
 
@@ -75,7 +80,12 @@ public class StorePresenter implements StoreContract.Presenter {
     }
 
     @Override
-    public void start() {
+    public void takeView(StoreContract.View view) {
+        mStoreView = view;
+    }
 
+    @Override
+    public void dropView() {
+        mStoreView = null;
     }
 }

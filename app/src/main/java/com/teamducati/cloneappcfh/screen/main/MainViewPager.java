@@ -1,5 +1,6 @@
 package com.teamducati.cloneappcfh.screen.main;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -18,6 +19,7 @@ public class MainViewPager extends ViewPager {
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (this.enabled) {

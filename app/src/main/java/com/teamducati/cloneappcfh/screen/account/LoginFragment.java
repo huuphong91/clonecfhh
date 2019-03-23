@@ -72,11 +72,6 @@ public class LoginFragment extends Fragment implements AccountContract.View {
     }
 
     @Override
-    public void setPresenter(AccountContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
-
-    @Override
     public void showLoginFail(String whyFail) {
         Toast.makeText(getContext(), whyFail, Toast.LENGTH_SHORT).show();
 

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.teamducati.cloneappcfh.R;
+import com.teamducati.cloneappcfh.di.ActivityScoped;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.Address;
 import com.teamducati.cloneappcfh.entity.MessageEvent;
 import com.teamducati.cloneappcfh.entity.api_order.DataItem;
@@ -32,6 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -43,11 +46,13 @@ import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import dagger.android.support.DaggerFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OrderFragment extends Fragment implements OrderContract.View {
+@ActivityScoped
+public class OrderFragment extends DaggerFragment implements OrderContract.View {
 
     public static final String TAG = OrderFragment.class.getName();
     private static int numberProductInCartCurrent;
@@ -75,11 +80,14 @@ public class OrderFragment extends Fragment implements OrderContract.View {
     @BindView(R.id.fabSortProduct)
     FloatingActionButton mSortProduct;
     private Unbinder unbinder;
-    private OrderContract.Presenter mPresenter;
+    @Inject
+    OrderContract.Presenter mPresenter;
+
     private ItemProductResponse itemProductResponse;
     private DialogFragment dialogFragment;
     private String mAddressCurrent = null;
 
+    @Inject
     public OrderFragment() {
 
     }
@@ -166,11 +174,6 @@ public class OrderFragment extends Fragment implements OrderContract.View {
         Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void setPresenter(OrderContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
-
     public void writeSharedPreferences(String objectGson) {
         SharedPreferences sharedPreferences = Utils.getSharedPreferencesInstance(this.getActivity());
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -194,6 +197,12 @@ public class OrderFragment extends Fragment implements OrderContract.View {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.takeView(this);
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
@@ -203,6 +212,7 @@ public class OrderFragment extends Fragment implements OrderContract.View {
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        mPresenter.dropView();
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

@@ -105,4 +105,11 @@ dependencies {
 
     //Circle Image
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    // Dagger dependencies
+    annotationProcessor "com.google.dagger:dagger-compiler:2.21"
+    implementation "com.google.dagger:dagger:2.21"
+    implementation "com.google.dagger:dagger-android:2.21"
+    implementation "com.google.dagger:dagger-android-support:2.21"
+    annotationProcessor "com.google.dagger:dagger-android-processor:2.21"
 }

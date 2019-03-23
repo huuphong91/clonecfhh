@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface StoreContract {
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends BasePresenter<View> {
         void onGetAllStore();
 
         void onGetAllProvince();

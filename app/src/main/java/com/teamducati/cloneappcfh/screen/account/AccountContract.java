@@ -6,7 +6,7 @@ import com.teamducati.cloneappcfh.utils.BaseView;
 
 public interface AccountContract {
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends BasePresenter<View> {
 
         void onLogin(User user);
 
@@ -15,7 +15,7 @@ public interface AccountContract {
         void updateUserProperty(User user);
     }
 
-    interface View extends BaseView<AccountContract.Presenter> {
+    interface View extends BaseView<Presenter> {
 
         void showUserDetail();
 

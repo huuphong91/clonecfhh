@@ -3,6 +3,8 @@ package com.teamducati.cloneappcfh.screen.main;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -12,12 +14,13 @@ public class MainFragmentsPagerAdapter extends FragmentStatePagerAdapter {
 
     private List<Fragment> mFragments;
 
-    public MainFragmentsPagerAdapter(FragmentManager fm) {
+    @Inject
+    MainFragmentsPagerAdapter(FragmentManager fm) {
         super(fm);
         mFragments = new ArrayList<>();
     }
 
-    public void addFragments(Fragment fragment) {
+    void addFragments(Fragment fragment) {
         mFragments.add(fragment);
     }
 

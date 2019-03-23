@@ -68,11 +68,6 @@ public class NewsNotificationActivity extends AppCompatActivity implements Notic
         mRecyclerView.setAdapter(mNotificationListAdapter);
     }
 
-    @Override
-    public void setPresenter(NoticationContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
-
     private void initMappingViewId() {
         mRecyclerView = findViewById(R.id.recycler_view_news_notification);
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout_notification);
@@ -83,8 +78,8 @@ public class NewsNotificationActivity extends AppCompatActivity implements Notic
     @Override
     protected void onResume() {
         super.onResume();
-        mPresenter = new NotificationPresenter(this, getApplication(), this);
-        mPresenter.start();
+        mPresenter = new NotificationPresenter();
+//        mPresenter.start();
     }
 }
 

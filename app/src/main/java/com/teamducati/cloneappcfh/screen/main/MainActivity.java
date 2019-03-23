@@ -21,38 +21,46 @@ import com.teamducati.cloneappcfh.screen.store.StoreFragment;
 import com.teamducati.cloneappcfh.screen.store.StorePresenter;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
 
-import java.util.Objects;
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.support.DaggerAppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends DaggerAppCompatActivity {
 
-    private static final int REQUEST_LOCATION_PERMISSION = 1;
     @BindView(R.id.navigation)
     BottomNavigationView mNavigationView;
     @BindView(R.id.viewPager)
     MainViewPager mViewPager;
 
-    private FusedLocationProviderClient mFusedLocation;
+    @Inject
+    NewsPresenter mNewsPresenter;
+    @Inject
+    OrderPresenter mOrderPresenter;
+    @Inject
+    StorePresenter mStorePresenter;
+    @Inject
+    AccountPresenter mAccountPresenter;
+    @Inject
+    NewsFragment mNewsFragment;
+    @Inject
+    OrderFragment mOrderFragment;
+    @Inject
+    StoreFragment mStoreFragment;
+    @Inject
+    AccountFragment mAccountFragment;
 
-    private NewsPresenter mNewsPresenter;
-    private OrderPresenter mOrderPresenter;
-    private StorePresenter mStorePresenter;
-    private AccountPresenter mAccountPresenter;
-
-    private MainFragmentsPagerAdapter mFragmentsPagerAdapter;
-
-    private NewsFragment mNewsFragment;
-    private OrderFragment mOrderFragment;
-    private StoreFragment mStoreFragment;
-    private AccountFragment mAccountFragment;
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
 
     private boolean isFirstClickOnOrderTab;
     private boolean isFirstClickOnStoreTab;
+
+    private MainFragmentsPagerAdapter mFragmentsPagerAdapter;
+
+    private FusedLocationProviderClient mFusedLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +71,18 @@ public class MainActivity extends AppCompatActivity {
         isFirstClickOnOrderTab = true;
         isFirstClickOnStoreTab = true;
 
+        mFragmentsPagerAdapter = MainFragmentsPagerAdapter_Factory.newMainFragmentsPagerAdapter(getSupportFragmentManager());
+
+        checkApiKeyOfPlaces();
+
+        mFusedLocation = LocationServices.getFusedLocationProviderClient(this);
+
+        initData();
+
+        initUI();
+    }
+
+    private void checkApiKeyOfPlaces() {
         String apiKey = getString(R.string.places_api_key);
 
         if (apiKey.equals("")) {
@@ -73,10 +93,6 @@ public class MainActivity extends AppCompatActivity {
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), apiKey);
         }
-
-        mFusedLocation = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(this));
-        initData();
-        initUI();
     }
 
     private void initData() {
@@ -90,29 +106,10 @@ public class MainActivity extends AppCompatActivity {
         //Set no swiping page in view pager
         mViewPager.setPagingEnabled(false);
 
-        createPagerAdapterAndMainFragments();
-
-        createPresenters();
-
         addFragmentToPagerAdapter();
 
         mNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mNavigationView.setItemIconTintList(null);
-    }
-
-    private void createPagerAdapterAndMainFragments() {
-        mFragmentsPagerAdapter = new MainFragmentsPagerAdapter(getSupportFragmentManager());
-        mNewsFragment = new NewsFragment();
-        mOrderFragment = new OrderFragment();
-        mStoreFragment = new StoreFragment();
-        mAccountFragment = new AccountFragment();
-    }
-
-    private void createPresenters() {
-        mNewsPresenter = new NewsPresenter(mNewsFragment);
-        mOrderPresenter = new OrderPresenter(mOrderFragment);
-        mStorePresenter = new StorePresenter(mStoreFragment);
-        mAccountPresenter = new AccountPresenter(this, mAccountFragment);
     }
 
     private void addFragmentToPagerAdapter() {
@@ -165,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             mFusedLocation.getLastLocation().addOnSuccessListener(location -> {
                 if (location != null && itemId == R.id.navigation_order) {
-                    // mStoreFragment.setLocation(location);
                     new FetchAddressTask(this).execute(location);
                 }
             });

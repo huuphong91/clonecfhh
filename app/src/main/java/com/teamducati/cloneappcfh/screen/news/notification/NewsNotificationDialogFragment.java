@@ -77,11 +77,6 @@ public class NewsNotificationDialogFragment extends DialogFragment implements No
         mRecyclerView.setAdapter(mNotificationListAdapter);
     }
 
-    @Override
-    public void setPresenter(NoticationContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
-
     private void initMappingViewId() {
         mRecyclerView = view.findViewById(R.id.recycler_view_news_notification);
         mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_notification);
@@ -96,8 +91,8 @@ public class NewsNotificationDialogFragment extends DialogFragment implements No
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
-        mPresenter = new NotificationPresenter(this, getActivity(), this);
-        mPresenter.start();
+//        mPresenter = new NotificationPresenter(this, getActivity(), this);
+
 
     }
 

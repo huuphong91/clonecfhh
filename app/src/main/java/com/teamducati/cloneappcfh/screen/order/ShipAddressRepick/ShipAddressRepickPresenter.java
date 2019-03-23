@@ -15,13 +15,7 @@ public class ShipAddressRepickPresenter implements ShipAddressRepickContract.Pre
 
     private List<String> addressList = new ArrayList<>();
 
-    ShipAddressRepickPresenter(ShipAddressRepickContract.View mView) {
-        this.mView = mView;
-        mView.setPresenter(this);
-    }
-
-    @Override
-    public void start() {
+    ShipAddressRepickPresenter() {
 
     }
 
@@ -42,5 +36,15 @@ public class ShipAddressRepickPresenter implements ShipAddressRepickContract.Pre
             }
             mView.showShipAddressResults(addressList);
         });
+    }
+
+    @Override
+    public void takeView(Object view) {
+
+    }
+
+    @Override
+    public void dropView() {
+
     }
 }

@@ -5,6 +5,9 @@ import android.util.Log;
 import com.teamducati.cloneappcfh.data.network.RetrofitFactory;
 import com.teamducati.cloneappcfh.entity.api_order.ItemProductResponse;
 
+import javax.inject.Inject;
+
+import androidx.annotation.Nullable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -12,18 +15,19 @@ import io.reactivex.schedulers.Schedulers;
 
 public class OrderPresenter implements OrderContract.Presenter {
 
-    private OrderContract.View mOrderView;
+    @Nullable
+    OrderContract.View mOrderView;
 
-    public OrderPresenter(OrderContract.View orderView) {
-        this.mOrderView = orderView;
-        mOrderView.setPresenter(this);
+    @Inject
+    public OrderPresenter() {
+
     }
 
-    @Override
-    public void start() {
-        Log.d(OrderFragment.TAG, "start: ");
-        onGetAllProductPresenter();
-    }
+//    @Override
+//    public void start() {
+//        Log.d(OrderFragment.TAG, "start: ");
+//        onGetAllProductPresenter();
+//    }
 
     @Override
     public void onGetAllProductPresenter() {
@@ -54,5 +58,15 @@ public class OrderPresenter implements OrderContract.Presenter {
                         Log.d(OrderFragment.TAG, "onComplete: ");
                     }
                 });
+    }
+
+    @Override
+    public void takeView(OrderContract.View view) {
+        mOrderView = view;
+    }
+
+    @Override
+    public void dropView() {
+        mOrderView = null;
     }
 }

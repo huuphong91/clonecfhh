@@ -6,7 +6,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.teamducati.cloneappcfh.entity.MessageEvent;
 
@@ -45,7 +44,6 @@ public class FetchAddressTask extends AsyncTask<Location, Void, String> {
             if (addresses == null || addresses.size() == 0) {
                 if (resultMessage.isEmpty()) {
                     resultMessage = "No address Found";
-                    Log.e("TAG", resultMessage);
                 }
             } else {
                 Address address = Objects.requireNonNull(addresses).get(0);

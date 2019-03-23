@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.teamducati.cloneappcfh.R;
+import com.teamducati.cloneappcfh.di.ActivityScoped;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StatesItem;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StoresItem;
 import com.teamducati.cloneappcfh.screen.store.adapter.ProvinceAdapter;
@@ -26,6 +27,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
+
+import javax.inject.Inject;
+
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -33,13 +37,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.support.DaggerFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StoreFragment extends Fragment implements StoreContract.View {
+@ActivityScoped
+public class StoreFragment extends DaggerFragment implements StoreContract.View {
 
-    private StoreContract.Presenter mPresenter;
+    @Inject
+    StoreContract.Presenter mPresenter;
+
     private SupportMapFragment mapFragment;
     private List<StoresItem> mApiStores;
     private List<StatesItem> mStatesItems;
@@ -68,6 +76,7 @@ public class StoreFragment extends Fragment implements StoreContract.View {
     @BindView(R.id.imgUpDown)
     ImageView mUpDown;
 
+    @Inject
     public StoreFragment() {
         // Required empty public constructor
     }
@@ -93,11 +102,6 @@ public class StoreFragment extends Fragment implements StoreContract.View {
         mRcvListStrore.setHasFixedSize(true);
         LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         mRcvListStrore.setLayoutManager(linearLayout);
-    }
-
-    @Override
-    public void setPresenter(StoreContract.Presenter presenter) {
-        mPresenter = presenter;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -189,8 +193,20 @@ public class StoreFragment extends Fragment implements StoreContract.View {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.takeView(this);
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.dropView();
     }
 }

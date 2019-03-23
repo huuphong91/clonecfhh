@@ -6,7 +6,7 @@ import com.teamducati.cloneappcfh.utils.BaseView;
 
 public interface OrderContract {
 
-    interface Presenter extends BasePresenter {
+    interface Presenter extends BasePresenter<View> {
         void onGetAllProductPresenter();
     }
 

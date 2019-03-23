@@ -18,34 +18,33 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class AccountPresenter implements AccountContract.Presenter {
 
-    private Context context;
-
+    @Nullable
     private AccountContract.View mAccountView;
 
     private User userObj;
 
-    public AccountPresenter(Context context, AccountContract.View accountView) {
-        this.context=context;
-        this.mAccountView = accountView;
-        mAccountView.setPresenter(this);
-        userObj=new User();
+    @Inject
+    public AccountPresenter() {
     }
 
-    @Override
-    public void start() {
-        userObj = ActivityUtils.getDataObject(context, userObj.getClass());
-        if (!(userObj==null)) {
-            mAccountView.showUserDetail();
-        } else {
-            mAccountView.showLoginScreen();
-        }
-    }
+//    @Override
+//    public void start() {
+//        userObj = ActivityUtils.getDataObject(context, userObj.getClass());
+//        if (!(userObj==null)) {
+//            mAccountView.showUserDetail();
+//        } else {
+//            mAccountView.showLoginScreen();
+//        }
+//    }
 
     @Override
     public void onLogin(User user) {
@@ -71,7 +70,7 @@ public class AccountPresenter implements AccountContract.Presenter {
                         if (userList.get(0).getUserName().equals(user.getUserName().trim().toLowerCase())
                                 && userList.get(0).getPassword().equals(user.getPassword().trim().toLowerCase())) {
                             Log.d("onDataChange: ", "data match");
-                            ActivityUtils.setDataObject(context, userList.get(0));
+//                            ActivityUtils.setDataObject(context, userList.get(0));
                             EventBus.getDefault().post(userList.get(0));
                             mAccountView.showUserDetail();
                         } else {
@@ -92,7 +91,7 @@ public class AccountPresenter implements AccountContract.Presenter {
 
     @Override
     public void onLogout() {
-        ActivityUtils.removeAllDataObject(context);
+//        ActivityUtils.removeAllDataObject(context);
         mAccountView.restartViewAccount();
 
     }
@@ -104,7 +103,7 @@ public class AccountPresenter implements AccountContract.Presenter {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myRef.child("User").setValue(user);
-                ActivityUtils.setDataObject(context, user);
+//                ActivityUtils.setDataObject(context, user);
                 EventBus.getDefault().post(user);
 
             }
@@ -114,6 +113,16 @@ public class AccountPresenter implements AccountContract.Presenter {
 
             }
         });
-        Toast.makeText(context, "updated successful", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "updated successful", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void takeView(AccountContract.View view) {
+        mAccountView = view;
+    }
+
+    @Override
+    public void dropView() {
+        mAccountView = null;
     }
 }

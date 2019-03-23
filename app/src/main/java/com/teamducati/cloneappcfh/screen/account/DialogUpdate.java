@@ -74,7 +74,7 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = View.inflate(getContext(), R.layout.dialog_update_profile, null);
         unbinder = ButterKnife.bind(this, view);
-        mPresenter=new AccountPresenter(getContext(),this);
+//        mPresenter=new AccountPresenter(getContext(),this);
         return view;
     }
 
@@ -177,10 +177,4 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
     public void showUpdateUserPropertyFail() {
 
     }
-
-    @Override
-    public void setPresenter(AccountContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
-
 }

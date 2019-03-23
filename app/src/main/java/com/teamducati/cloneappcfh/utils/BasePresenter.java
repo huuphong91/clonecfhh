@@ -1,7 +1,8 @@
 package com.teamducati.cloneappcfh.utils;
 
-public interface BasePresenter {
+public interface BasePresenter<T> {
 
-    void start();
+    void takeView(T view);
 
+    void dropView();
 }

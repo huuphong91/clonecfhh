@@ -22,45 +22,52 @@ public class NotificationPresenter implements NoticationContract.Presenter {
     private NotificationRepository notificationRepository;
     private LifecycleOwner lifecycleOwner;
     private Context application;
-    public NotificationPresenter(NoticationContract.View mNotificationNews, Context application ,
-                                 LifecycleOwner lifecycleOwner) {
-        this.mNotificationNews = mNotificationNews;
-        mNotificationNews.setPresenter(this);
-        this.lifecycleOwner = lifecycleOwner;
-        this.application = application;
-        mCompositeDisposable = new CompositeDisposable();
-        notificationRepository = new NotificationRepository(application);
+//    public NotificationPresenter(NoticationContract.View mNotificationNews, Context application ,
+//                                 LifecycleOwner lifecycleOwner) {
+//        this.mNotificationNews = mNotificationNews;
+//        mNotificationNews.setPresenter(this);
+//        this.lifecycleOwner = lifecycleOwner;
+//        this.application = application;
+//        mCompositeDisposable = new CompositeDisposable();
+//        notificationRepository = new NotificationRepository(application);
+//    }
+
+//    public NotificationPresenter(NoticationContract.View mNotificationNews, Context application ) {
+//        this.mNotificationNews = mNotificationNews;
+//        mNotificationNews.setPresenter(this);
+//        this.application = application;
+//        mCompositeDisposable = new CompositeDisposable();
+//        notificationRepository = new NotificationRepository(application);
+//    }
+
+    public NotificationPresenter() {
     }
 
-    public NotificationPresenter(NoticationContract.View mNotificationNews, Context application ) {
-        this.mNotificationNews = mNotificationNews;
-        mNotificationNews.setPresenter(this);
-        this.application = application;
-        mCompositeDisposable = new CompositeDisposable();
-        notificationRepository = new NotificationRepository(application);
-    }
 
-
-    @Override
-    public void start() {
-        onAllListNotification();
-    }
+//    @Override
+//    public void start() {
+//        onAllListNotification();
+//    }
 
     @Override
     public void onAllListNotification() {
         notificationRepository.getAllNotification().observe(lifecycleOwner,
-                new Observer<List<Notification>>() {
-            @Override
-            public void onChanged(@Nullable final List<Notification> listRoom) {
-                mNotificationNews.getListNotification(listRoom);
-
-            }
-        });
+                listRoom -> mNotificationNews.getListNotification(listRoom));
     }
 
     @Override
     public void onInsertListNotification(Notification notification) {
             notificationRepository.insert(notification);
+
+    }
+
+    @Override
+    public void takeView(Object view) {
+
+    }
+
+    @Override
+    public void dropView() {
 
     }
 }

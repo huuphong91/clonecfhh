@@ -9,18 +9,24 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.teamducati.cloneappcfh.R;
+import com.teamducati.cloneappcfh.di.ActivityScoped;
 import com.teamducati.cloneappcfh.entity.User;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
 
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.room.Insert;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import dagger.android.support.DaggerFragment;
 
-public class AccountFragment extends Fragment implements AccountContract.View {
+@ActivityScoped
+public class AccountFragment extends DaggerFragment implements AccountContract.View {
 
     @BindView(R.id.contentAccountFrame)
     FrameLayout mContentAccountFrame;
@@ -28,8 +34,11 @@ public class AccountFragment extends Fragment implements AccountContract.View {
     private Unbinder unbinder;
     private LoginFragment loginFragment;
     private ProfileUserFragment profileUserFragment;
-    private AccountContract.Presenter mPresenter;
 
+    @Inject
+    AccountContract.Presenter mPresenter;
+
+    @Inject
     public AccountFragment() {
         // Required empty public constructor
     }
@@ -39,12 +48,7 @@ public class AccountFragment extends Fragment implements AccountContract.View {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         unbinder = ButterKnife.bind(this, view);
-        initEvent();
         return view;
-    }
-
-    private void initEvent() {
-       mPresenter.start();
     }
 
     @Override
@@ -54,11 +58,23 @@ public class AccountFragment extends Fragment implements AccountContract.View {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.takeView(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.dropView();
+    }
+
+    @Override
     public void showUserDetail() {
-        profileUserFragment = ProfileUserFragment.newInstance();
-        profileUserFragment.setPresenter(mPresenter);
-        ActivityUtils.chooseFragmentWannaDisplay(getActivity().getSupportFragmentManager(), profileUserFragment,
-                R.id.contentAccountFrame);
+//        profileUserFragment = ProfileUserFragment.newInstance();
+//        profileUserFragment.setPresenter(mPresenter);
+//        ActivityUtils.chooseFragmentWannaDisplay(getActivity().getSupportFragmentManager(), profileUserFragment,
+//                R.id.contentAccountFrame);
 
     }
 
@@ -88,12 +104,7 @@ public class AccountFragment extends Fragment implements AccountContract.View {
         loginFragment = LoginFragment.newInstance();
         ActivityUtils.chooseFragmentWannaDisplay(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
                 loginFragment, R.id.contentAccountFrame);
-        loginFragment.setPresenter(mPresenter);
-    }
-
-    @Override
-    public void setPresenter(AccountContract.Presenter presenter) {
-        mPresenter = presenter;
+//        loginFragment.setPresenter(mPresenter);
     }
 
     @Override
@@ -101,4 +112,6 @@ public class AccountFragment extends Fragment implements AccountContract.View {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+
 }

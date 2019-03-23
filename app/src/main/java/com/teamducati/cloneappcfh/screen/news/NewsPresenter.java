@@ -7,6 +7,9 @@ import com.teamducati.cloneappcfh.entity.NewsPromotion;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import androidx.annotation.Nullable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -14,44 +17,48 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class NewsPresenter extends FirebaseMessagingService implements NewsContract.Presenter {
+
+    @Nullable
     private NewsContract.View mNewsView;
+
     private CompositeDisposable mCompositeDisposable;
-    private Disposable disposable;
-    private RetrofitFactory retrofitFactory;
 
-    public NewsPresenter(NewsContract.View newsView) {
-        this.mNewsView = newsView;
-        mNewsView.setPresenter(this);
+    @Inject
+    public NewsPresenter() {
         mCompositeDisposable = new CompositeDisposable();
-        retrofitFactory = new RetrofitFactory();
-
     }
 
     @Override
     public void onAllListNewsPromotion() {
-        retrofitFactory.getInstanceRetrofitInterface().getAllNewsPromotion()
+        RetrofitFactory.getInstanceRetrofitInterface().getAllNewsPromotion()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<NewsPromotion>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        mCompositeDisposable.add(d);
                     }
 
                     @Override
                     public void onNext(List<NewsPromotion> value) {
-                        mNewsView.getListNewsPromotion(value);
+                        if (mNewsView != null) {
+                            mNewsView.getListNewsPromotion(value);
+                        }
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        mNewsView.getHandleError();
+                        if (mNewsView != null) {
+                            mNewsView.getHandleError();
+                        }
                     }
 
                     @Override
                     public void onComplete() {
-                        mNewsView.getHandleSuccess();
+                        if (mNewsView != null) {
+                            mNewsView.getHandleSuccess();
+                        }
                     }
                 });
 
@@ -59,36 +66,48 @@ public class NewsPresenter extends FirebaseMessagingService implements NewsContr
 
     @Override
     public void onAllListNews() {
-        retrofitFactory.getInstanceRetrofitInterface().getAllNews()
+        RetrofitFactory.getInstanceRetrofitInterface().getAllNews()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<List<News>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        mCompositeDisposable.add(d);
                     }
 
                     @Override
                     public void onNext(List<News> value) {
-                        mNewsView.getListNews(value);
-
+                        if (mNewsView != null) {
+                            mNewsView.getListNews(value);
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        mNewsView.getHandleError();
+                        if (mNewsView != null) {
+                            mNewsView.getHandleError();
+                        }
                     }
 
                     @Override
                     public void onComplete() {
-                        mNewsView.getHandleSuccess();
+                        if (mNewsView != null) {
+                            mNewsView.getHandleSuccess();
+                        }
                     }
                 });
     }
 
     @Override
-    public void start() {
+    public void takeView(NewsContract.View view) {
+        mNewsView = view;
         onAllListNews();
         onAllListNewsPromotion();
+    }
+
+    @Override
+    public void dropView() {
+        mNewsView = null;
+        mCompositeDisposable.clear();
     }
 }

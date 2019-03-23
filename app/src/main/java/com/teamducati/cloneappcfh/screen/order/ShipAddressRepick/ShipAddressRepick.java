@@ -67,8 +67,6 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.RepickShipAddressFullScreen);
 
-        mPresenter = new ShipAddressRepickPresenter(this);
-
         placesClient = Places.createClient(Objects.requireNonNull(getActivity()));
 
         requestBuilder = FindAutocompletePredictionsRequest.builder()
@@ -140,11 +138,6 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
     public void showShipAddressResults(List<String> addressList) {
         repickShipAddressAdapter.displayShipAddressResults(addressList);
         addressList.clear();
-    }
-
-    @Override
-    public void setPresenter(ShipAddressRepickContract.Presenter presenter) {
-        mPresenter = presenter;
     }
 
     @Override

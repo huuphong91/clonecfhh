@@ -1,13 +1,11 @@
 package com.teamducati.cloneappcfh.screen.news.adapter;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
@@ -16,6 +14,8 @@ import com.teamducati.cloneappcfh.screen.news.newsdetails.NewsWebViewDetailsDial
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,19 +23,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class NewsPromotionListAdapter extends RecyclerView.Adapter<NewsPromotionListAdapter.NewsPromotionViewHolder> {
 
-    private Context context;
-    private int position;
-    private LayoutInflater mInflater;
     private List<NewsPromotion> mNewsPromotions;
 
-    public NewsPromotionListAdapter(Context context, List<NewsPromotion> mNewsPromotions) {
-        this.context = context;
-        this.mNewsPromotions = mNewsPromotions;
-        mInflater = LayoutInflater.from(context);
+    @Inject
+    public NewsPromotionListAdapter() {
     }
 
-    public void setPosition(int position) {
-        this.position = position;
+    public void setList(List<NewsPromotion> list) {
+        mNewsPromotions = list;
+        notifyDataSetChanged();
     }
 
     class NewsPromotionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
@@ -52,7 +48,7 @@ public class NewsPromotionListAdapter extends RecyclerView.Adapter<NewsPromotion
             itemView.setOnLongClickListener(this);
         }
 
-        public void setItemClickListener(ItemClickListener itemClickListener) {
+        void setItemClickListener(ItemClickListener itemClickListener) {
             this.itemClickListener = itemClickListener;
         }
 
@@ -71,9 +67,11 @@ public class NewsPromotionListAdapter extends RecyclerView.Adapter<NewsPromotion
 
     }
 
+    @NonNull
     @Override
-    public NewsPromotionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.recycler_item_row_news_promotion, parent, false);
+    public NewsPromotionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.recycler_item_row_news_promotion, parent, false);
         return new NewsPromotionViewHolder(itemView);
     }
 
@@ -81,31 +79,22 @@ public class NewsPromotionListAdapter extends RecyclerView.Adapter<NewsPromotion
     public void onBindViewHolder(@NonNull NewsPromotionViewHolder holder, int position) {
         final NewsPromotion newsPromotionObj = mNewsPromotions.get(position);
         holder.txtItemTilteNewsPromotion.setText(newsPromotionObj.getTitle());
-        Glide.with(context)
+        Glide.with(holder.itemView.getContext())
                 .load(newsPromotionObj.getImage())
                 .placeholder(R.drawable.common_full_open_on_phone)
                 .into(holder.imgItemImageNewsPromotion);
 
 
-        holder.setItemClickListener(new ItemClickListener() {
-            @Override
-            public void onClick(View view, int position, boolean isLongClick) {
-                if (isLongClick) {
-                    setPosition(position);
-                    Toast.makeText(context, "Long Click" + position, Toast.LENGTH_SHORT).show();
+        holder.setItemClickListener((view, position1, isLongClick) -> {
 
-                } else {
-                    AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                    NewsWebViewDetailsDialogFragment dialogFragmentDetails =
-                            new NewsWebViewDetailsDialogFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("url", mNewsPromotions.get(position).getUrl());
-                    bundle.putString("title", mNewsPromotions.get(position).getTitle());
-                    dialogFragmentDetails.setArguments(bundle);
-                    dialogFragmentDetails.show(activity.getSupportFragmentManager(), null);
-
-                }
-            }
+                AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                NewsWebViewDetailsDialogFragment dialogFragmentDetails =
+                        new NewsWebViewDetailsDialogFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("url", mNewsPromotions.get(position1).getUrl());
+                bundle.putString("title", mNewsPromotions.get(position1).getTitle());
+                dialogFragmentDetails.setArguments(bundle);
+                dialogFragmentDetails.show(activity.getSupportFragmentManager(), null);
         });
     }
 
@@ -115,8 +104,6 @@ public class NewsPromotionListAdapter extends RecyclerView.Adapter<NewsPromotion
             return mNewsPromotions.size();
         else return 0;
     }
-
-
 }
 
 
