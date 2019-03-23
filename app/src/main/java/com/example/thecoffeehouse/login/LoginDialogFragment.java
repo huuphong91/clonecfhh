@@ -37,6 +37,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class LoginDialogFragment extends Fragment implements IPresenterLoginContract.View {
 
@@ -182,11 +183,10 @@ public class LoginDialogFragment extends Fragment implements IPresenterLoginCont
         mEditTextPhone = view.findViewById(R.id.fragment_edt_phone);
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         presenter = new PresenterLogin(this);
-        activity.setSupportActionBar(toolbar);
     }
 
     private void initEvent() {
-        mImageDelete.setOnClickListener(v -> onUpdateListener.onUpdateFragment());
+        mImageDelete.setOnClickListener(v ->  onUpdateListener.onUpdateFragment());
 
         mButtonEmail.setOnClickListener(v -> {
             Toast.makeText(activity, "I'm Tan ", Toast.LENGTH_SHORT).show();
@@ -211,5 +211,9 @@ public class LoginDialogFragment extends Fragment implements IPresenterLoginCont
             numberPhone = mEditTextPhone.getText().toString();
             startLoginPage(LoginType.PHONE, numberPhone);
         });
+    }
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.popBackStack(fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-2).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 }

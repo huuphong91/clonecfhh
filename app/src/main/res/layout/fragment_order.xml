@@ -83,7 +83,9 @@
             android:background="@color/colorWhite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></com.google.android.material.tabs.TabLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            android:elevation="1dp">
+        </com.google.android.material.tabs.TabLayout>
 
         <FrameLayout
             android:id="@+id/order_frame_layout"
