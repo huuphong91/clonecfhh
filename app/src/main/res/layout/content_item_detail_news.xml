@@ -8,7 +8,7 @@
         android:layout_width="38dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:src="@drawable/ic_close"
+        android:src="@drawable/img_back"
         card_view:layout_constraintBottom_toTopOf="@id/webView"
         card_view:layout_constraintRight_toLeftOf="@+id/txtTitle"
         card_view:layout_constraintStart_toStartOf="parent"
@@ -16,6 +16,7 @@
 
     <TextView
         android:id="@+id/txtTitle"
+        android:background="@color/colorWhite"
         android:layout_width="500dp"
         android:layout_height="38dp"
         android:layout_marginLeft="8dp"

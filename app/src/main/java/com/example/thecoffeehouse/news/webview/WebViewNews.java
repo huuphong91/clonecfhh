@@ -43,17 +43,16 @@ public class WebViewNews extends DialogFragment  {
         txtTitle=rootView.findViewById(R.id.txtTitle);
         txtTitle.setText(news.getTitle());
         webView = rootView.findViewById(R.id.webView);
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(news.getUrl());
         imgbacknews=rootView.findViewById(R.id.imgBackNews);
         imgbacknews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                  dismiss();
-
             }
         });
         return rootView;
-
 
     }
 

@@ -1,13 +1,28 @@
 package com.example.thecoffeehouse.news;
 
-public class News {
-    private String content;
-    private int image;
-    private String title;
-    private String id;
-    private String url;
-    public News() { }
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
 
+@Entity(tableName = "News")
+public class News {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    private long id;
+    @ColumnInfo(name = "content")
+    @NonNull
+    private String content;
+    @ColumnInfo(name = "image")
+    @NonNull
+    private int image;
+    @ColumnInfo(name = "title")
+    @NonNull
+    private String title;
+    @ColumnInfo(name = "url")
+    @NonNull
+    private String url;
     public String getContent() {
         return content;
     }
@@ -32,11 +47,11 @@ public class News {
         this.title = title;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long  id) {
         this.id = id;
     }
 

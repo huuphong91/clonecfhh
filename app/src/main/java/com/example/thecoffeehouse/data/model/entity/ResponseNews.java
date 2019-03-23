@@ -4,44 +4,54 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class ResponseNews implements Serializable {
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity(tableName ="newsdata")
+
+public class ResponseNews implements Serializable {
 	@SerializedName("date")
 	private String date;
-
 	@SerializedName("button")
-	private Object button;
-
+	private String button;
+	@ColumnInfo(name = "image")
+	@NonNull
 	@SerializedName("image")
 	private String image;
 
 	@SerializedName("effects")
-	private Object effects;
+	private String effects;
 
 	@SerializedName("deeplink")
-	private Object deeplink;
+	private String deeplink;
 
 	@SerializedName("action")
-	private Object action;
+	private String action;
 
 	@SerializedName("shareUrl")
 	private String shareUrl;
-
+	@PrimaryKey()
+	@NonNull
+	@ColumnInfo(name = "id")
 	@SerializedName("id")
 	private String id;
-
+	@ColumnInfo(name = "title")
+	@NonNull
 	@SerializedName("title")
 	private String title;
-
+	@ColumnInfo(name = "url")
+	@NonNull
 	@SerializedName("url")
 	private String url;
-
+	@ColumnInfo(name = "content")
+	@NonNull
 	@SerializedName("content")
 	private String content;
 
 	@SerializedName("key")
-	private Object key;
-
+	private String key;
 	public void setDate(String date){
 		this.date = date;
 	}
@@ -50,11 +60,11 @@ public class ResponseNews implements Serializable {
 		return date;
 	}
 
-	public void setButton(Object button){
+	public void setButton(String button){
 		this.button = button;
 	}
 
-	public Object getButton(){
+	public String getButton(){
 		return button;
 	}
 
@@ -66,27 +76,27 @@ public class ResponseNews implements Serializable {
 		return image;
 	}
 
-	public void setEffects(Object effects){
+	public void setEffects(String effects){
 		this.effects = effects;
 	}
 
-	public Object getEffects(){
+	public String getEffects(){
 		return effects;
 	}
 
-	public void setDeeplink(Object deeplink){
+	public void setDeeplink(String deeplink){
 		this.deeplink = deeplink;
 	}
 
-	public Object getDeeplink(){
+	public String getDeeplink(){
 		return deeplink;
 	}
 
-	public void setAction(Object action){
+	public void setAction(String action){
 		this.action = action;
 	}
 
-	public Object getAction(){
+	public String getAction(){
 		return action;
 	}
 
@@ -130,38 +140,30 @@ public class ResponseNews implements Serializable {
 		return content;
 	}
 
-	public void setKey(Object key){
+	public void setKey(String key){
 		this.key = key;
 	}
 
-	public Object getKey(){
+	public String getKey(){
 		return key;
-	}
-	public ResponseNews( String id,	 String title,String content,String image, String url)
-	{
-		this.id=id;
-		this.title=title;
-		this.content=content;
-		this.image=image;
-		this.url=url;
 	}
 
 	@Override
- 	public String toString(){
-		return 
-			"Response{" + 
-			"date = '" + date + '\'' + 
-			",button = '" + button + '\'' + 
-			",image = '" + image + '\'' + 
-			",effects = '" + effects + '\'' + 
-			",deeplink = '" + deeplink + '\'' + 
-			",action = '" + action + '\'' + 
-			",shareUrl = '" + shareUrl + '\'' + 
-			",id = '" + id + '\'' + 
-			",title = '" + title + '\'' + 
-			",url = '" + url + '\'' + 
-			",content = '" + content + '\'' + 
-			",key = '" + key + '\'' + 
-			"}";
-		}
+	public String toString(){
+		return
+				"ResponseNews{" +
+						"date = '" + date + '\'' +
+						",button = '" + button + '\'' +
+						",image = '" + image + '\'' +
+						",effects = '" + effects + '\'' +
+						",deeplink = '" + deeplink + '\'' +
+						",action = '" + action + '\'' +
+						",shareUrl = '" + shareUrl + '\'' +
+						",id = '" + id + '\'' +
+						",title = '" + title + '\'' +
+						",url = '" + url + '\'' +
+						",content = '" + content + '\'' +
+						",key = '" + key + '\'' +
+						"}";
+	}
 }
