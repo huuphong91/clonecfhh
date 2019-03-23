@@ -33,4 +33,30 @@
         app:layout_constraintBottom_toBottomOf="@id/mapView"
         app:layout_constraintEnd_toEndOf="@id/mapView"
         app:layout_constraintStart_toStartOf="@id/mapView" />
+
+    <TextView
+        android:id="@+id/tvListDistric"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:textSize="16sp"
+        android:padding="8dp"
+        android:background="@drawable/bg_white_conner"
+        android:text="@string/where_do_u_want_to_go"
+        android:drawableEnd="@android:drawable/arrow_down_float"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvListDistric"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvListDistric"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,8 @@ package com.example.thecoffeehouse.store.views;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -11,7 +13,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.thecoffeehouse.R;
@@ -50,6 +54,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static androidx.core.content.ContextCompat.checkSelfPermission;
+import static androidx.core.content.ContextCompat.getDrawable;
 
 public class StoreFragment extends Fragment implements OnMapReadyCallback, StoreView, GoogleMap.OnMyLocationChangeListener {
 
@@ -60,8 +65,11 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
     private List<Store> listStore;
     private Location mCurentLocation;
     private List<Store> listStoreNearBy;
+    private List<StoreResponeObject.State> mListState;
     private RecyclerView rvListNearByStore;
+    private RecyclerView rvListState;
     private StoreHorizontalAdapter adapter;
+    private DistrictVerticalAdapter districtAdapter;
     private FloatingActionButton btnShowMyLocation;
     private StorePresenter presenter;
 
@@ -83,6 +91,7 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
         super.onCreate(savedInstanceState);
         listStoreNearBy = new ArrayList<>();
         listStore = new ArrayList<>();
+        mListState = new ArrayList<>();
     }
 
     @Override
@@ -102,8 +111,30 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
             }
         });
         initRecyclerView(view);
+        initDistricList(view);
+    }
 
-
+    private void initDistricList(View view) {
+        TextView tvShowDistric = view.findViewById(R.id.tvListDistric);
+        tvShowDistric.setTag(0);
+        tvShowDistric.setOnClickListener(v -> {
+            switch ((int) v.getTag()) {
+                case 0:
+                    rvListState.setVisibility(View.VISIBLE);
+                    rvListNearByStore.setVisibility(View.GONE);
+                    tvShowDistric.setCompoundDrawables(null, null, getResources().getDrawable(android.R.drawable.arrow_up_float),null);
+                    tvShowDistric.setTag(1);
+                    break;
+                case 1:
+                    rvListState.setVisibility(View.GONE);
+                    rvListNearByStore.setVisibility(View.VISIBLE);
+                    tvShowDistric.setCompoundDrawables( null, null, getResources().getDrawable(android.R.drawable.arrow_down_float),null);
+                    tvShowDistric.setTag(0);
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 
     @Override
@@ -120,14 +151,14 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
             mGoogleMap.setOnMyLocationChangeListener(this);
         }
         //mGoogleMap.setInfoWindowAdapter(new MapInfoWindow(getContext()));
-        //presenter.loadListStore();
+        presenter.loadListStore();
         presenter.loadListStoreFromDatabase();
     }
 
     private void initRecyclerView(View view) {
         adapter = new StoreHorizontalAdapter(getContext(), listStoreNearBy);
         rvListNearByStore = view.findViewById(R.id.rvListStoreNearBy);
-        rvListNearByStore.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        rvListNearByStore.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         rvListNearByStore.setAdapter(adapter);
         rvListNearByStore.setVisibility(View.VISIBLE);
         adapter.setItemClickListener((view1, position) -> {
@@ -135,6 +166,11 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(store.storeLat, store.storeLong), 13f));
             StoreDetailDialogFragment.getInstance(store).show(getFragmentManager(), StoreDetailDialogFragment.TAG);
         });
+        districtAdapter = new DistrictVerticalAdapter(mListState, getContext());
+        rvListState = view.findViewById(R.id.rvListDistric);
+        rvListState.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        rvListState.setHasFixedSize(true);
+        rvListState.setAdapter(districtAdapter);
     }
 
     @Override
@@ -187,28 +223,7 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
     @SuppressLint("CheckResult")
     @Override
     public void onStoreLoaded(StoreResponeObject responeObject) {
-        Observable.just(responeObject)
-                .flatMap(storeResponeObject -> Observable.fromIterable(storeResponeObject.listState))
-                .flatMap(state -> Observable.fromIterable(state.districts))
-                .flatMap(district -> Observable.fromIterable(district.stores))
-                .subscribe(store -> {
-                    listStore.add(store);
-                    Log.d(this.getClass().getName(), store.storeName);
-                    LatLng mLatLng = new LatLng(store.storeLat, store.storeLong);
-                    MarkerOptions markerOptions = new MarkerOptions().position(mLatLng);
-                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_map));
-                    markerOptions.title(store.storeName);
-                    markerOptions.snippet(store.storeAddress.full_address);
-                    mGoogleMap.addMarker(markerOptions);
-
-                });
-//        for (StoreResponeObject.State state : responeObject.listState) {
-//            for (StoreResponeObject.District distric : state.districts) {
-//                for (Store store : distric.stores) {
-//
-//                }
-//            }
-//        }
+        districtAdapter.setMlistState(responeObject.listState);
     }
 
     @Override
@@ -284,4 +299,6 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(address -> Log.d(TAG, "testGeocoder: size: " + address.getAddressLine(0)));
     }
+
+
 }
