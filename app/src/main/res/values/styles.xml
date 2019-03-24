@@ -7,6 +7,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -22,14 +23,12 @@
         <item name="android:windowEnterAnimation">@anim/slide_up</item>
         <item name="android:windowExitAnimation">@anim/slide_down</item>
         <item name="dialogCornerRadius">@dimen/abc_dialog_corner_radius_material</item>
-        <item name="windowActionModeOverlay">true</item>
-        <item name="android:paddingBottom">8dp</item>
     </style>
+
     <style name="DetailDialogFragment" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.SplashScreen" parent="AppTheme.NoActionBar">
-    </style>
+    <style name="AppTheme.SplashScreen" parent="AppTheme.NoActionBar"></style>
 
 </resources>

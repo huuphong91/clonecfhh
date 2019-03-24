@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.example.thecoffeehouse.R;
@@ -29,13 +30,14 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SearchDialogFragment extends DialogFragment implements SearchView{
+public class SearchDialogFragment extends DialogFragment implements SearchView {
 
     private EditText edtSearch;
     private OrderProductAdapter mAdapter;
     private RecyclerView mList;
     private SearchPresenter searchPresenter;
     private OnOrderListItemInteractionListener mListener;
+
     public static SearchDialogFragment newInstance() {
         SearchDialogFragment fragment = new SearchDialogFragment ();
         return fragment;
@@ -48,6 +50,7 @@ public class SearchDialogFragment extends DialogFragment implements SearchView{
             mListener = (OnOrderListItemInteractionListener) context;
         }
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -81,6 +84,9 @@ public class SearchDialogFragment extends DialogFragment implements SearchView{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (mList.getVisibility () == View.GONE) {
+                    mList.setVisibility (View.VISIBLE);
+                }
                 mAdapter.getFilter ().filter (s);
             }
 
@@ -100,6 +106,7 @@ public class SearchDialogFragment extends DialogFragment implements SearchView{
         mAdapter = new OrderProductAdapter (getContext (), itemList);
         mList.setAdapter (mAdapter);
         mAdapter.setListener (mListener);
+        mList.setVisibility (View.GONE);
     }
 
     @Override
@@ -115,5 +122,12 @@ public class SearchDialogFragment extends DialogFragment implements SearchView{
     @Override
     public void displayError(String s) {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume ();
+        getDialog ().getWindow ().clearFlags (WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getDialog ().getWindow ().setStatusBarColor (getResources ().getColor (R.color.colorPrimaryDark));
     }
 }
