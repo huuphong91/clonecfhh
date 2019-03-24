@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.User;
+import com.teamducati.cloneappcfh.utils.ActivityUtils;
 import com.teamducati.cloneappcfh.utils.Constants;
 
 import org.greenrobot.eventbus.EventBus;
@@ -98,7 +99,7 @@ public class DialogUpdate extends DialogFragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myRef.child("User").setValue(user);
-//                ActivityUtils.setDataObject(context, user);
+                ActivityUtils.setDataObject(getActivity(), user);
                 EventBus.getDefault().post(user);
             }
 

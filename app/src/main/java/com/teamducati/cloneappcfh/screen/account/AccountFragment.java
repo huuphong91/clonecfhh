@@ -65,10 +65,13 @@ public class AccountFragment extends DaggerFragment implements AccountContract.V
         loginFragment = (LoginFragment) Objects.requireNonNull(getActivity())
                 .getSupportFragmentManager()
                 .findFragmentById(R.id.contentAccountFrame);
-
-        if (loginFragment == null) {
+        User userLocalData=ActivityUtils.getDataObject(getActivity(),User.class);
+        if (loginFragment == null&&userLocalData==null) {
             loginFragment = LoginFragment_Factory.newLoginFragment();
             ActivityUtils.addFragmentToActivity(getActivity().getSupportFragmentManager(), loginFragment, R.id.contentAccountFrame);
+        }else{
+            showUserDetail(userLocalData);
+            //EventBus.getDefault().post(userLocalData);
         }
         Log.d(TAG, "onCreateView");
         return view;

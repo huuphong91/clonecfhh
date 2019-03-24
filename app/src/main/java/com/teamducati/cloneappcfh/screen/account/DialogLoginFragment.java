@@ -2,7 +2,6 @@ package com.teamducati.cloneappcfh.screen.account;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,8 @@ import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.User;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
 import com.teamducati.cloneappcfh.utils.Constants;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,9 +106,10 @@ public class DialogLoginFragment extends DialogFragment {
                     if (userList.size() > 0) {
                         if (userList.get(0).getUserName().equals(user.getUserName().trim().toLowerCase())
                                 && userList.get(0).getPassword().equals(user.getPassword().trim().toLowerCase())) {
-                            ActivityUtils.setDataObject(getActivity(), userList.get(0));
                             Intent userIntent = new Intent(Constants.ACTION_USER_RESULT);
                             userIntent.putExtra("User", userList.get(0));
+                            ActivityUtils.setDataObject(getActivity(), userList.get(0));
+                            EventBus.getDefault().post(user);
                             LocalBroadcastManager.getInstance(getActivity())
                                     .sendBroadcast(userIntent);
                             dismiss();

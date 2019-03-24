@@ -99,6 +99,7 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(User event) {
+        Log.d("Event",event.getFirstName());
         getUserInfo(event);
     }
 
