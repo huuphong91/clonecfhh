@@ -3,6 +3,12 @@ package com.example.thecoffeehouse.data;
 import android.annotation.SuppressLint;
 import android.app.Application;
 
+import com.example.thecoffeehouse.data.model.entity.ForYouDao;
+import com.example.thecoffeehouse.data.model.entity.ForYouDatabase;
+import com.example.thecoffeehouse.data.model.entity.NewsDataDao;
+import com.example.thecoffeehouse.data.model.entity.NewsDatabase;
+import com.example.thecoffeehouse.data.model.entity.ResponseForYou;
+import com.example.thecoffeehouse.data.model.entity.ResponseNews;
 import com.example.thecoffeehouse.data.model.product.Category;
 import com.example.thecoffeehouse.data.model.product.Order;
 import com.example.thecoffeehouse.data.model.store.Store;
@@ -22,16 +28,64 @@ import io.reactivex.schedulers.Schedulers;
 public class AppRespositoryImp implements AppRepository {
 
     private StoreDao storeDao;
-
+    private ForYouDao forYouDao;
+    private NewsDataDao newsDao;
     public AppRespositoryImp(Application app) {
         StoreDatabase database = StoreDatabase.getDatabase(app);
         this.storeDao = database.storeDao();
+        NewsDatabase databasenews = NewsDatabase.getDatabase(app);
+        this.newsDao = databasenews.newsDao();
+        ForYouDatabase databaseForYou=ForYouDatabase.getDatabase(app);
+        this.forYouDao=databaseForYou.forYouDao();
     }
 
     @Override
     public Observable<Order> getCartItem() {
         return ApiHandler.getInstance ().getAppApi ().getProduct ();
     }
+
+    @Override
+    public Single<List<ResponseNews>> getListForNewsFromDatabase() {
+        return newsDao.getNews();
+    }
+
+    @Override
+    public Single<List<ResponseNews>> getNews() {
+        return ApiHandler.getInstance().getAppApi().getNews();
+    }
+
+    @Override
+    public Flowable<Long> loadApiForNewsToDatabase() {
+        return  getNews().toFlowable()
+                .subscribeOn(Schedulers.io())
+                .flatMap(responseNews-> {
+                    newsDao.deleteAll();
+                    return Flowable.fromIterable(responseNews);
+                })
+                .flatMap(responseNews -> Flowable.fromCallable(() -> newsDao.insertNews(responseNews)));
+    }
+
+    @Override
+    public Single<List<ResponseForYou>> getListNewsFromDatabase() {
+        return forYouDao.getForYou();
+    }
+
+    @Override
+    public Single<List<ResponseForYou>> getForYou() {
+        return ApiHandler.getInstance().getAppApi().getForYou();
+    }
+
+    @Override
+    public Flowable<Long> loadApiNewsToDatabase() {
+        return  getForYou().toFlowable()
+                .subscribeOn(Schedulers.io())
+                .flatMap(responseForYou -> {
+                    forYouDao.deleteAll();
+                    return Flowable.fromIterable(responseForYou);
+                })
+                .flatMap(responseForYou -> Flowable.fromCallable(() ->forYouDao.insertForYouNews(responseForYou)));
+    }
+
     @Override
     public Single<StoreResponeObject> getListStore() {
         return ApiHandler.getInstance().getAppApi().getListStore();

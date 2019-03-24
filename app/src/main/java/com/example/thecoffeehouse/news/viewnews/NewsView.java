@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface NewsView {
     void displayNews(List<ResponseNews> newsReponseList);
+    void onError(Throwable throwable);
     Activity getActivity();
 }
