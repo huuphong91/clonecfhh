@@ -163,8 +163,7 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
         super.onResume();
         checkdataUser();
     }
-
-
+    
     @Override
     public void onChangeFragment(Fragment fragment, String tag) {
         loadFragment(fragment, tag);
