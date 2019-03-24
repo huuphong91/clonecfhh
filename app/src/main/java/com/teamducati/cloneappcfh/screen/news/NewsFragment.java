@@ -4,7 +4,6 @@ package com.teamducati.cloneappcfh.screen.news;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +30,6 @@ import com.teamducati.cloneappcfh.screen.news.notificationsdetails.NotificationD
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
 import com.teamducati.cloneappcfh.utils.Constants;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -49,7 +44,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import dagger.Binds;
 import dagger.android.support.DaggerFragment;
 
 /**
@@ -152,11 +146,31 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
             mAdapterNewsPromotion.notifyDataSetChanged();
             swipeRefreshLayoutLayout.setRefreshing(false);
         });
+        mTxtNameNewsLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomNavigationView.setSelectedItemId(R.id.navigation_account);
+            }
+        });
+        mImgNewsPerson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomNavigationView.setSelectedItemId(R.id.navigation_account);
+            }
+        });
     }
 
 
     private void initActionBar() {
-        mViewLayoutActionBar.setDisplayedChild(1);
+        userObj = new User();
+        userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
+        if (!(userObj == null)) {
+            mTxtNameNewsLogin.setText(userObj.getFirstName());
+            loadImage(userObj.getImgAvatarUrl(),mImgNewsPerson);
+            mViewLayoutActionBar.setDisplayedChild(0);
+        } else {
+            mViewLayoutActionBar.setDisplayedChild(1);
+        }
     }
 
     private void initShowStartupDialogNotification() {
@@ -199,16 +213,23 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
 
     @Override
     public void showUser(User user) {
+        //broadcast
         if (user != null) {
             mTxtNameNewsLogin.setText(user.getFirstName());
-            Glide.with(getContext())
-                    .load(user.getImgAvatarUrl())
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(mImgNewsPerson);
+            loadImage(user.getImgAvatarUrl(),mImgNewsPerson);
             mViewLayoutActionBar.setDisplayedChild(0);
+           // ActivityUtils.setDataObject(getActivity(),user);
         } else {
             mViewLayoutActionBar.setDisplayedChild(1);
         }
+    }
+    public void loadImage(String url,ImageView imageView) {
+        Glide.with(this)
+                .load(url)
+                .apply(RequestOptions.circleCropTransform())
+                .placeholder(R.drawable.user)
+                .error(R.drawable.user)
+                .into(imageView);
     }
 
     @Override

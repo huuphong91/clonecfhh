@@ -91,11 +91,10 @@ public class NewsNotificationDialogFragment extends DialogFragment implements No
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
-//        mPresenter = new NotificationPresenter(this, getActivity(), this);
-
+        mPresenter = new NotificationPresenter(this, getActivity(), this);
+        mPresenter.onAllListNotification();
 
     }
-
 
 }
 

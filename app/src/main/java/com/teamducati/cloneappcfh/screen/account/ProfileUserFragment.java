@@ -1,13 +1,8 @@
 package com.teamducati.cloneappcfh.screen.account;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,18 +11,30 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.User;
+import com.teamducati.cloneappcfh.utils.ActivityUtils;
 import com.teamducati.cloneappcfh.utils.Constants;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -69,9 +76,9 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
     private User user;
 
     private Uri filePath;
-    private User userObj;
-//    private FirebaseStorage storage;
-//    private StorageReference storageReference;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReferenceFromUrl(Constants.STORAGE_URL);
+    private Uri imageUri;
 
     @Inject
     public ProfileUserFragment() {
@@ -92,7 +99,7 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(User event) {
-       getUserInfo(event);
+        getUserInfo(event);
     }
 
     private void getUserInfo(User user) {
@@ -104,14 +111,19 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
             mEdtEmail.setText(user.getEmail());
             mEdtPhoneNumber.setText(user.getPhoneNumber());
             mEdtGender.setText(user.getGender());
-            loadImage(convertStringToBitmap(user.getImgAvatarUrl()),mImageAvatar);
+            loadImage(user.getImgAvatarUrl(), mImageAvatar);
         }
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initPresenter();
         setEventsClick();
+    }
+
+    private void initPresenter() {
     }
 
     private void setEventsClick() {
@@ -191,8 +203,6 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
                 break;
             case R.id.imgAvatar:
                 chooseImage();
-                Bitmap bm=((BitmapDrawable)mImageAvatar.getDrawable()).getBitmap();
-                uploadImage(bm);
                 break;
         }
     }
@@ -203,61 +213,94 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
     }
 
     private void chooseImage() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), Constants.PICK_IMAGE);
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, Constants.PICK_IMAGE);
     }
 
-    private void uploadImage(Bitmap bitmap) {
-        user.setImgAvatarUrl(convertBitmapToString(bitmap));
-//        mPresenter.updateUserProperty(user);
+    public void updateUserProperty(User userData) {
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
+        myRef.orderByChild("User").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                myRef.child("User").setValue(userData);
+                Intent userIntent = new Intent(Constants.ACTION_USER_RESULT);
+                userIntent.putExtra("User", userData);
+                ActivityUtils.setDataObject(getActivity(), userData);
+                EventBus.getDefault().post(user);
+                LocalBroadcastManager.getInstance(getActivity())
+                        .sendBroadcast(userIntent);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        Toast.makeText(getActivity(), "updated successful", Toast.LENGTH_SHORT).show();
     }
+
+    public void uploadImage(Uri imageUri) {
+        if (imageUri != null) {
+            // String imageName="image_"+System.currentTimeMillis()+".jpg";
+            //app only one user
+            String imageAvatarName = "image_avatar.jpg";
+            StorageReference childRef = storageRef.child(imageAvatarName);
+
+            //uploading the image
+            UploadTask uploadTask = childRef.putFile(imageUri);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    childRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Toast.makeText(getActivity(), "Upload Image successful", Toast.LENGTH_SHORT).show();
+                            user.setImgAvatarUrl(uri.toString());
+                            updateUserProperty(user);
+                        }
+                    });
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                    Toast.makeText(getActivity(), "Upload Image Failed -> " + e, Toast.LENGTH_SHORT).show();
+                    Log.d("UploadImage", e.toString());
+                }
+            });
+        } else {
+            Toast.makeText(getActivity(), "Select an image", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.PICK_IMAGE && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
-            filePath = data.getData();
             try {
-               Bitmap bitmapPickImage = MediaStore.Images.Media.getBitmap(ProfileUserFragment.this.getContext().
-                        getContentResolver(), filePath);
-                uploadImage(bitmapPickImage);
-                mImageAvatar.setImageBitmap(bitmapPickImage);
-            } catch (IOException e) {
+                imageUri = data.getData();
+                InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+                uploadImage(imageUri);
+            } catch (FileNotFoundException e) {
                 e.printStackTrace();
+                Toast.makeText(getActivity(), "Lỗi", Toast.LENGTH_LONG).show();
             }
+
+        } else {
+            Toast.makeText(getActivity(), "Bạn chưa chọn ảnh", Toast.LENGTH_LONG).show();
         }
     }
 
-
-    public String convertBitmapToString(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String temp = Base64.encodeToString(b, Base64.DEFAULT);
-        return temp;
-    }
-
-    public Bitmap convertStringToBitmap(String encodedString) {
-        try {
-            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch (Exception e) {
-            e.getMessage();
-            return null;
-        }
-    }
-
-    public void loadImage(Bitmap bitmap, ImageView imageView) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+    public void loadImage(String url, ImageView imageView) {
         Glide.with(this)
-                .asBitmap()
-                .load(stream.toByteArray())
+                .load(url)
+                .placeholder(R.drawable.user)
+                .error(R.drawable.user)
                 .into(imageView);
     }
 }

@@ -21,4 +21,6 @@ public class Constants {
     public static final String SHARED_PREFERENCES_CART_NAME = "SHARED_PREFERENCES_CART_NAME";
     public static final String KEY_PRODUCT_SHARED_PREF = "SHARED_PREFERENCES_CART_NAME";
     public static final int PICK_IMAGE = 1;
+    public static final String STORAGE_URL = "gs://thecoffeehouseproject-1d85c.appspot.com/";
+
 }

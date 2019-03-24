@@ -2,15 +2,6 @@ package com.teamducati.cloneappcfh.screen.account;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +17,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.User;
+import com.teamducati.cloneappcfh.utils.ActivityUtils;
 import com.teamducati.cloneappcfh.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class DialogLoginFragment extends DialogFragment {
 
@@ -106,7 +106,7 @@ public class DialogLoginFragment extends DialogFragment {
                     if (userList.size() > 0) {
                         if (userList.get(0).getUserName().equals(user.getUserName().trim().toLowerCase())
                                 && userList.get(0).getPassword().equals(user.getPassword().trim().toLowerCase())) {
-//                            ActivityUtils.setDataObject(context, userList.get(0));
+                            ActivityUtils.setDataObject(getActivity(), userList.get(0));
                             Intent userIntent = new Intent(Constants.ACTION_USER_RESULT);
                             userIntent.putExtra("User", userList.get(0));
                             LocalBroadcastManager.getInstance(getActivity())

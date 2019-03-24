@@ -27,7 +27,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
-import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -54,7 +53,7 @@ public class NotificationFirebaseMessagingService extends FirebaseMessagingServi
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        mPresenter = new NotificationPresenter();
+        mPresenter = new NotificationPresenter(this, getApplicationContext());
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         if (remoteMessage.getData().size() > 0) {
@@ -131,7 +130,7 @@ public class NotificationFirebaseMessagingService extends FirebaseMessagingServi
         }
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setSmallIcon(R.drawable.ic_launcher_tch)
                         .setLargeIcon(bitmapImage)
                         .setContentTitle(titleMessege)
                         .setStyle(new NotificationCompat.BigPictureStyle()
