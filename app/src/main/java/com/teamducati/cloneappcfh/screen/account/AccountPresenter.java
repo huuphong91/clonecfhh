@@ -47,73 +47,12 @@ public class AccountPresenter implements AccountContract.Presenter {
 //    }
 
     @Override
-    public void onLogin(User user) {
-        String username = user.getUserName();
-        String password = user.getPassword();
-        if (username.equals("") || password.equals("")) {
-            mAccountView.showLoginFail("please fulfill information");
-        } else {
-            List<User> userList = new ArrayList<>();
-            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference myRef = database;
-            Log.d(TAG, "onLogin: đ vô data");
-            myRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        Log.d("onDataChange: ", data.getKey());
-                        User user = data.getValue(User.class);
-                        userList.add(user);
-                    }
-                    if (userList.size() > 0) {
-                        Log.d("onDataChange: ", "data not null");
-                        if (userList.get(0).getUserName().equals(user.getUserName().trim().toLowerCase())
-                                && userList.get(0).getPassword().equals(user.getPassword().trim().toLowerCase())) {
-                            Log.d("onDataChange: ", "data match");
-//                            ActivityUtils.setDataObject(context, userList.get(0));
-                            EventBus.getDefault().post(userList.get(0));
-                            mAccountView.showUserDetail();
-                        } else {
-                            Log.d("onDataChange: ", "data not match");
-                            mAccountView.showLoginFail("check your information");
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-    }
-
-    @Override
     public void onLogout() {
 //        ActivityUtils.removeAllDataObject(context);
-        mAccountView.restartViewAccount();
+        if (mAccountView != null) {
+            mAccountView.restartViewAccount();
+        }
 
-    }
-
-    @Override
-    public void updateUserProperty(User user) {
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
-        myRef.orderByChild("User").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                myRef.child("User").setValue(user);
-//                ActivityUtils.setDataObject(context, user);
-                EventBus.getDefault().post(user);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-//        Toast.makeText(context, "updated successful", Toast.LENGTH_SHORT).show();
     }
 
     @Override

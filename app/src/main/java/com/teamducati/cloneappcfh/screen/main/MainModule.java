@@ -25,6 +25,7 @@ import com.teamducati.cloneappcfh.screen.store.StorePresenter;
 
 import dagger.Binds;
 import dagger.Module;
+import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 
 @Module

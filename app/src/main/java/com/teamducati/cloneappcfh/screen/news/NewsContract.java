@@ -2,6 +2,7 @@ package com.teamducati.cloneappcfh.screen.news;
 
 import com.teamducati.cloneappcfh.entity.News;
 import com.teamducati.cloneappcfh.entity.NewsPromotion;
+import com.teamducati.cloneappcfh.entity.User;
 import com.teamducati.cloneappcfh.utils.BasePresenter;
 import com.teamducati.cloneappcfh.utils.BaseView;
 
@@ -19,6 +20,7 @@ public interface NewsContract {
 
         void getHandleError();
 
+        void showUser(User user);
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -26,7 +28,5 @@ public interface NewsContract {
         void onAllListNewsPromotion();
 
         void onAllListNews();
-
-
     }
 }

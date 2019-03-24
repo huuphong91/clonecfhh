@@ -19,10 +19,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.User;
-import com.teamducati.cloneappcfh.utils.ActivityUtils;
 import com.teamducati.cloneappcfh.utils.Constants;
 
 import org.greenrobot.eventbus.EventBus;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class DialogUpdate extends DialogFragment implements AccountContract.View {
+public class DialogUpdate extends DialogFragment {
 
     @BindView(R.id.edtPropertyDialog)
     EditText mEdtPropertyDialog;
@@ -45,7 +46,9 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
     private Unbinder unbinder;
     private User user;
     private String title;
-    private AccountContract.Presenter mPresenter;
+
+    @Inject
+    AccountContract.Presenter mPresenter;
 
     public DialogUpdate() {
 
@@ -63,7 +66,6 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
         if (getArguments() != null) {
             title = getArguments().getString(Constants.KEY_BUNDLE_TITLE_UPDATE_USER);
             user = getArguments().getParcelable(Constants.KEY_BUNDLE_UPDATE_USER);
@@ -71,10 +73,9 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = View.inflate(getContext(), R.layout.dialog_update_profile, null);
         unbinder = ButterKnife.bind(this, view);
-//        mPresenter=new AccountPresenter(getContext(),this);
         return view;
     }
 
@@ -86,10 +87,27 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
         mBtnCloseDialog.setOnClickListener(v -> dismiss());
         mBtnUpdateDialog.setOnClickListener(v -> {
             updateProperty(title);
-            mPresenter.updateUserProperty(user);
+            updateUserProperty(user);
             dismiss();
-
         });
+    }
+
+    private void updateUserProperty(User user) {
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
+        myRef.orderByChild("User").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                myRef.child("User").setValue(user);
+//                ActivityUtils.setDataObject(context, user);
+                EventBus.getDefault().post(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        Toast.makeText(getContext(), "updated successful", Toast.LENGTH_SHORT).show();
     }
 
     private void setProperty(String title) {
@@ -145,36 +163,5 @@ public class DialogUpdate extends DialogFragment implements AccountContract.View
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-
-    @Override
-    public void showUserDetail() {
-
-    }
-
-    @Override
-    public void showLoginScreen() {
-
-    }
-
-    @Override
-    public void restartViewAccount() {
-
-    }
-
-    @Override
-    public void showLoginFail(String whyFail) {
-
-    }
-
-    @Override
-    public void showUpdateUserPropertySuccess() {
-
-    }
-
-    @Override
-    public void showUpdateUserPropertyFail() {
-
     }
 }

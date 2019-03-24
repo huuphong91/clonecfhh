@@ -8,16 +8,12 @@ public interface AccountContract {
 
     interface Presenter extends BasePresenter<View> {
 
-        void onLogin(User user);
-
         void onLogout();
-
-        void updateUserProperty(User user);
     }
 
     interface View extends BaseView<Presenter> {
 
-        void showUserDetail();
+        void showUserDetail(User user);
 
         void showLoginScreen();
 

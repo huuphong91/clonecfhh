@@ -2,6 +2,7 @@ package com.teamducati.cloneappcfh.screen.news;
 
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,21 +22,27 @@ import com.teamducati.cloneappcfh.entity.News;
 import com.teamducati.cloneappcfh.entity.NewsPromotion;
 import com.teamducati.cloneappcfh.entity.User;
 import com.teamducati.cloneappcfh.screen.main.MainViewPager;
+import com.teamducati.cloneappcfh.screen.main.UserBroadCast;
+import com.teamducati.cloneappcfh.screen.main.UserBroadCast_Factory;
 import com.teamducati.cloneappcfh.screen.news.adapter.NewsListAdapter;
 import com.teamducati.cloneappcfh.screen.news.adapter.NewsPromotionListAdapter;
 import com.teamducati.cloneappcfh.screen.news.notification.NewsNotificationDialogFragment;
 import com.teamducati.cloneappcfh.screen.news.notificationsdetails.NotificationDetailsDialogFragment;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
+import com.teamducati.cloneappcfh.utils.Constants;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -71,6 +78,8 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
     @BindView(R.id.img_news_person)
     ImageView mImgNewsPerson;
 
+    private UserBroadCast userBroadCast;
+
     @Inject
     NewsPromotionListAdapter mAdapterNewsPromotion;
 
@@ -91,15 +100,12 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
         // Required empty public constructor
     }
 
-    public static NewsFragment newInstance() {
-        return new NewsFragment();
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news, container, false);
         unbinder = ButterKnife.bind(this, view);
+        userBroadCast = UserBroadCast_Factory.newUserBroadCast(this);
         bottomNavigationView = getActivity().findViewById(R.id.navigation);
         initEvent();
         initShowStartupDialogNotification();
@@ -126,7 +132,9 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
     private void initEvent() {
         mainViewPager = new MainViewPager(getActivity(), null);
         btnLogin.setBackgroundResource(R.drawable.custom_button_selector);
-        btnLogin.setOnClickListener(view -> bottomNavigationView.setSelectedItemId(R.id.navigation_account));
+        btnLogin.setOnClickListener(view ->
+                bottomNavigationView.setSelectedItemId(R.id.navigation_account)
+        );
         imgNotificationSignIn.setOnClickListener(view -> {
             NewsNotificationDialogFragment newsNotificationDialogFragment =
                     new NewsNotificationDialogFragment();
@@ -148,27 +156,7 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
 
 
     private void initActionBar() {
-        //ActivityUtils.removeAllDataObject(getActivity());
-        userObj = new User();
-        userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
-        if (!(userObj == null)) {
-            Log.d("Data", userObj.toString());
-            mTxtNameNewsLogin.setText(userObj.getFirstName());
-            Glide.with(getContext())
-                    .load(userObj.getImgAvatarUrl())
-                    .apply(RequestOptions.circleCropTransform())
-                    .into(mImgNewsPerson);
-            mViewLayoutActionBar.setDisplayedChild(0);
-        } else {
-            Log.d("Data", "null data");
-            mViewLayoutActionBar.setDisplayedChild(1);
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(User event) {
-        //data change
-        initActionBar();
+        mViewLayoutActionBar.setDisplayedChild(1);
     }
 
     private void initShowStartupDialogNotification() {
@@ -210,6 +198,20 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
     }
 
     @Override
+    public void showUser(User user) {
+        if (user != null) {
+            mTxtNameNewsLogin.setText(user.getFirstName());
+            Glide.with(getContext())
+                    .load(user.getImgAvatarUrl())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(mImgNewsPerson);
+            mViewLayoutActionBar.setDisplayedChild(0);
+        } else {
+            mViewLayoutActionBar.setDisplayedChild(1);
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         mPresenter.takeView(this);
@@ -218,9 +220,16 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
     @Override
     public void onStart() {
         super.onStart();
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
+        IntentFilter intentFilter = new IntentFilter(Constants.ACTION_USER_RESULT);
+        intentFilter.addAction(Constants.ACTION_LOG_OUT);
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
+                .registerReceiver(userBroadCast, intentFilter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).unregisterReceiver(userBroadCast);
     }
 
     @Override
@@ -232,7 +241,6 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
         mPresenter.dropView();
     }
 }

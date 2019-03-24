@@ -1,6 +1,5 @@
 package com.teamducati.cloneappcfh.screen.account;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +16,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
-import com.teamducati.cloneappcfh.di.FragmentScoped;
 import com.teamducati.cloneappcfh.entity.User;
-import com.teamducati.cloneappcfh.utils.ActivityUtils;
 import com.teamducati.cloneappcfh.utils.Constants;
 
 import org.greenrobot.eventbus.EventBus;
@@ -31,21 +28,23 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import dagger.android.support.DaggerFragment;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ProfileUserFragment extends Fragment implements AccountContract.View, View.OnClickListener {
+public class ProfileUserFragment extends Fragment implements View.OnClickListener {
 
+    private static final String TAG = "Profile";
     @BindView(R.id.btn_close)
     ImageButton mBtnClose;
     @BindView(R.id.btnLogOut)
@@ -65,8 +64,9 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     @BindView(R.id.imgAvatar)
     ImageView mImageAvatar;
 
-    private User user;
     private Unbinder unbinder;
+
+    private User user;
 
     private Uri filePath;
     private User userObj;
@@ -77,36 +77,35 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     public ProfileUserFragment() {
     }
 
-    public static ProfileUserFragment newInstance() {
-        return new ProfileUserFragment();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile_user, container, false);
         unbinder = ButterKnife.bind(this, view);
-//        initData();
+        Bundle bundle = getArguments();
+        User user = null;
+        if (bundle != null) {
+            user = bundle.getParcelable("User");
+        }
+        getUserInfo(user);
         return view;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(User event) {
-        //data change
-//        initData();
+       getUserInfo(event);
     }
 
-//    private void initData() {
-//        userObj = new User();
-//        userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
-//        if (!(userObj == null)) {
-//            showUserDetail();
-//        }
-//    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    private void getUserInfo(User user) {
+        if (user != null) {
+            this.user = user;
+            mEdtFirstName.setText(user.getFirstName());
+            mEdtLastName.setText(user.getLastName());
+            mEdtBirthdate.setText(user.getBirthday());
+            mEdtEmail.setText(user.getEmail());
+            mEdtPhoneNumber.setText(user.getPhoneNumber());
+            mEdtGender.setText(user.getGender());
+            loadImage(convertStringToBitmap(user.getImgAvatarUrl()),mImageAvatar);
+        }
     }
 
     @Override
@@ -129,53 +128,18 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     }
 
     @Override
-    public void showUserDetail() {
-        this.user = userObj;
-        mEdtFirstName.setText(user.getFirstName());
-        mEdtLastName.setText(user.getLastName());
-        mEdtBirthdate.setText(user.getBirthday());
-        mEdtEmail.setText(user.getEmail());
-        mEdtPhoneNumber.setText(user.getPhoneNumber());
-        mEdtGender.setText(user.getGender());
-        loadImage(convertStringToBitmap(user.getImgAvatarUrl()),mImageAvatar);
-
-
-    }
-
-    @Override
-    public void restartViewAccount() {
-
-    }
-
-    @Override
-    public void showLoginFail(String whyFail) {
-
-    }
-
-    @Override
-    public void showUpdateUserPropertySuccess() {
-    }
-
-    @Override
-    public void showUpdateUserPropertyFail() {
-    }
-
-    @Override
-    public void showLoginScreen() {
-
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart");
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
         EventBus.getDefault().unregister(this);
     }
 
@@ -183,34 +147,47 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        Log.d(TAG, "onDestroyView");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_close:
-//                mPresenter.onLogout();
+                sendBroadCastLogOut();
                 break;
             case R.id.btnLogOut:
-//                mPresenter.onLogout();
+                sendBroadCastLogOut();
                 break;
             case R.id.edtFirstName:
-                DialogUpdate.newInstance(user, "First name").show(getFragmentManager(), "Update");
+                DialogUpdate.newInstance(user, "First name").show(getChildFragmentManager(), "Update");
                 break;
             case R.id.edtBirthDate:
-                DialogUpdate.newInstance(user, "Birthdate").show(getFragmentManager(), "Update");
+                DialogUpdate.newInstance(user, "Birthdate").show(getChildFragmentManager(), "Update");
                 break;
 //            case R.id.edtEmail:
 //                DialogUpdate.newInstance(user, "Email").show(getFragmentManager(), "Update");
 //                break;
             case R.id.edtGender:
-                DialogUpdate.newInstance(user, "Gender").show(getFragmentManager(), "Update");
+                DialogUpdate.newInstance(user, "Gender").show(getChildFragmentManager(), "Update");
                 break;
             case R.id.edtPhoneNumber:
-                DialogUpdate.newInstance(user, "Phone number").show(getFragmentManager(), "Update");
+                DialogUpdate.newInstance(user, "Phone number").show(getChildFragmentManager(), "Update");
                 break;
             case R.id.edtLastName:
-                DialogUpdate.newInstance(user, "Last name").show(getFragmentManager(), "Update");
+                DialogUpdate.newInstance(user, "Last name").show(getChildFragmentManager(), "Update");
                 break;
             case R.id.imgAvatar:
                 chooseImage();
@@ -218,6 +195,11 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
                 uploadImage(bm);
                 break;
         }
+    }
+
+    private void sendBroadCastLogOut() {
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
+                .sendBroadcast(new Intent(Constants.ACTION_LOG_OUT));
     }
 
     private void chooseImage() {
@@ -278,5 +260,4 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
                 .load(stream.toByteArray())
                 .into(imageView);
     }
-
 }
