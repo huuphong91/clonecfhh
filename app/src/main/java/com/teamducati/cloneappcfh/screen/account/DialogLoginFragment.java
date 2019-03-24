@@ -35,7 +35,6 @@ import butterknife.Unbinder;
 
 public class DialogLoginFragment extends DialogFragment {
 
-    private static final String TAG = "DialogLogin";
     private Unbinder unbinder;
 
     @BindView(R.id.btnLogin)
@@ -136,6 +135,5 @@ public class DialogLoginFragment extends DialogFragment {
     public void onDestroy() {
         super.onDestroy();
         destroyInstance();
-        Log.d(TAG, "onDestroy");
     }
 }

@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -52,7 +51,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class ProfileUserFragment extends Fragment implements View.OnClickListener {
 
-    private static final String TAG = "Profile";
     @BindView(R.id.btn_close)
     ImageButton mBtnClose;
     @BindView(R.id.btnLogOut)
@@ -79,7 +77,6 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
     private Uri filePath;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl(Constants.STORAGE_URL);
-
     private Uri imageUri;
     private ProgressDialog progressDialog;
 
@@ -145,7 +142,6 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart");
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -154,7 +150,6 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop");
         EventBus.getDefault().unregister(this);
     }
 
@@ -162,19 +157,6 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        Log.d(TAG, "onDestroyView");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy");
     }
 
     @Override
@@ -244,10 +226,11 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
     }
 
     public void uploadImage(Uri imageUri) {
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("Upload Image...");
-        progressDialog.show();
+
         if (imageUri != null) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("Upload Image, please wait...");
+            progressDialog.show();
             // String imageName="image_"+System.currentTimeMillis()+".jpg";
             //app only one user
             String imageAvatarName = "image_avatar.jpg";
@@ -256,27 +239,19 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
             //uploading the image
             UploadTask uploadTask = childRef.putFile(imageUri);
 
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            uploadTask.addOnSuccessListener(taskSnapshot -> childRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    childRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            Toast.makeText(getActivity(), "Upload Image successful", Toast.LENGTH_SHORT).show();
-                            user.setImgAvatarUrl(uri.toString());
-                            updateUserProperty(user);
-                            progressDialog.dismiss();
-                        }
-                    });
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getActivity(), "Upload Image Failed -> " + e, Toast.LENGTH_SHORT).show();
-                    Log.d("UploadImage", e.toString());
+                public void onSuccess(Uri uri) {
+                    Toast.makeText(getActivity(), "Upload Image successful", Toast.LENGTH_SHORT).show();
+                    user.setImgAvatarUrl(uri.toString());
+                    updateUserProperty(user);
                     progressDialog.dismiss();
                 }
+            })).addOnFailureListener(e -> {
+
+                Toast.makeText(getActivity(), "Upload Image Failed -> " + e, Toast.LENGTH_SHORT).show();
+                Log.d("UploadImage", e.toString());
+                progressDialog.dismiss();
             });
         } else {
             Toast.makeText(getActivity(), "Select an image", Toast.LENGTH_SHORT).show();
