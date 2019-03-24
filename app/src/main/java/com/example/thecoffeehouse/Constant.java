@@ -19,8 +19,6 @@ public class Constant {
     public static final String TAG_DRINKS = "DRINKS";
     public static final String TAG_FOOD = "FOOD";
     public static final String EDIT_PROFILE_FRAGMENT = "editProfileFragment";
-    public static final String TAG_DRINKS = "Thức uống";
-    public static final String TAG_FOOD = "Món nổi bật";
     public static final String SMALL_SIZE = "nhỏ";
     public static final String MEDIUM_SIZE = "vừa";
     public static final String LARGE_SIZE = "lớn";

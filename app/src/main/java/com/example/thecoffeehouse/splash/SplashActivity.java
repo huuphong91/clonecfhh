@@ -29,54 +29,54 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        presenter = new SplashPresenterImp(getApplication(), this);
-        Completable.complete()
-                .delay(3000, TimeUnit.MILLISECONDS)
-                .doOnComplete(() -> {
-                    presenter.loadStore();
-                    presenter.loadNews();
-                    presenter.loadpromotionNews();
-                    setAnimation();
+        super.onCreate (savedInstanceState);
+        setContentView (R.layout.activity_splash);
+        presenter = new SplashPresenterImp (getApplication (), this);
+        Completable.complete ()
+                .delay (3000, TimeUnit.MILLISECONDS)
+                .doOnComplete (() -> {
+                    presenter.loadStore ();
+                    presenter.loadNews ();
+                    presenter.loadpromotionNews ();
+                    setAnimation ();
                 })
-                .subscribe();
+                .subscribe ();
     }
 
     @Override
     public void onLoadStoreSuccess() {
-        Log.d(TAG, "onLoadStoreSuccess: ");
+        Log.d (TAG, "onLoadStoreSuccess: ");
         isStoreLoaded = true;
-        checkLoadResult();
+        checkLoadResult ();
     }
 
     @Override
     public void onLoadNewsSuccess() {
-        Log.d(TAG, "onLoadNewsSuccess: ");
+        Log.d (TAG, "onLoadNewsSuccess: ");
         isNewsLoaded = true;
-        checkLoadResult();
+        checkLoadResult ();
     }
 
     @Override
     public void OnLoadNewsPromotionSuccess() {
-        Log.d(TAG, "OnLoadNewsPromotionSuccess: ");
+        Log.d (TAG, "OnLoadNewsPromotionSuccess: ");
         isPromotionLoaded = true;
-        checkLoadResult();
+        checkLoadResult ();
     }
 
     @Override
     public void OnError(Throwable throwable) {
-        Log.e(TAG, "OnError: " + throwable.getLocalizedMessage());
-        Toast.makeText(this, throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-        startActivity();
-        finish();
+        Log.e (TAG, "OnError: " + throwable.getLocalizedMessage ());
+        Toast.makeText (this, throwable.getLocalizedMessage (), Toast.LENGTH_SHORT).show ();
+        startActivity ();
+        finish ();
     }
 
     private void startActivity() {
-        Intent i = new Intent(SplashActivity.this, MainActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SplashActivity.this);
-        startActivity(i, options.toBundle());
+        Intent i = new Intent (SplashActivity.this, MainActivity.class);
+        i.setFlags (Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation (SplashActivity.this);
+        startActivity (i, options.toBundle ());
     }
 
     private void setAnimation() {
@@ -86,12 +86,14 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
             explode.setInterpolator (new AccelerateDecelerateInterpolator ());
             getWindow ().setExitTransition (explode);
             getWindow ().setEnterTransition (explode);
+        }
     }
 
     private void checkLoadResult() {
         if (isNewsLoaded && isStoreLoaded && isPromotionLoaded) {
-            startActivity();
-            finish();
+            startActivity ();
+            finish ();
         }
     }
+
 }

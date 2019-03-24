@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.thecoffeehouse.Constant;
 import com.example.thecoffeehouse.R;
-import com.example.thecoffeehouse.data.model.User.User;
+import com.example.thecoffeehouse.data.model.user.User;
 import com.example.thecoffeehouse.main.OnUpdateListener;
 import com.example.thecoffeehouse.order.cart.CartInstance;
 import com.example.thecoffeehouse.order.cart.database.CartViewModel;

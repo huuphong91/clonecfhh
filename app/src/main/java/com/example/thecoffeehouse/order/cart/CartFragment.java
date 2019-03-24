@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.thecoffeehouse.Constant;
 import com.example.thecoffeehouse.R;
-import com.example.thecoffeehouse.data.model.User.User;
+import com.example.thecoffeehouse.data.model.user.User;
 import com.example.thecoffeehouse.main.MainActivity;
 import com.example.thecoffeehouse.main.OnUpdateListener;
 import com.example.thecoffeehouse.order.ConfirmDialogFragment;
