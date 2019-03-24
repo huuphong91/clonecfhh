@@ -89,14 +89,14 @@ public class AppRespositoryImp implements AppRepository {
 
     @Override
     public Flowable<Long> loadApiNewsToDatabase() {
-        return  getForYou().toFlowable()
-                .subscribeOn(Schedulers.io())
-                .flatMap(responseForYou -> {
-                    forYouDao.deleteAll();
-                    return Flowable.fromIterable(responseForYou);
+        return getForYou ().toFlowable ()
+                .subscribeOn (Schedulers.io ())
+                .flatMap (responseForYou -> {
+                    forYouDao.deleteAll ();
+                    return Flowable.fromIterable (responseForYou);
                 })
-                .flatMap(responseForYou -> Flowable.fromCallable(() ->forYouDao.insertForYouNews(responseForYou)));
-
+                .flatMap (responseForYou -> Flowable.fromCallable (() -> forYouDao.insertForYouNews (responseForYou)));
+    }
     @Override
     public void insertNotification(Notification notification) {
         Single.fromCallable(() -> notificationDAO.insertNotification(notification))
