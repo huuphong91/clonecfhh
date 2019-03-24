@@ -2,21 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/bg_map_color"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/tvStateName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="0dp"
         android:text="tvStateName"
         android:padding="8dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/moca_rs_pinkish_grey_four" />
 </LinearLayout>

@@ -18,7 +18,7 @@ public interface AppRepository {
 
     Single<List<Store>> getListStoreFromDatabase();
 
-    Flowable<Long> loadApiToDatabase();
+    Flowable<List<Long>> loadApiToDatabase();
 
     Observable<Order> getProduct();
 

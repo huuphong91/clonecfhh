@@ -103,10 +103,10 @@ public class StoreDetailDialogFragment extends DialogFragment {
         adapter.notifyDataSetChanged();
     }
 
+    @SuppressLint("SetTextI18n")
     private void initStoreInfomation(View view) {
         toolbarTitle = view.findViewById(R.id.tvToolbarTitle);
         toolbarTitle.setText(mStore.storeName);
-
         tvStoreFullAdress = view.findViewById(R.id.tvStoreFullAddress);
         tvStoreFullAdress.setText(mStore.storeAddress.full_address);
         tvContactPhone = view.findViewById(R.id.tvContactPhone);
@@ -128,7 +128,6 @@ public class StoreDetailDialogFragment extends DialogFragment {
 
     private void initMapView(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mMapView = view.findViewById(R.id.mapViewMini);
-        //GoogleMapOptions options = new GoogleMapOptions().liteMode(true);
         mMapView.onCreate(savedInstanceState);
         mMapView.getMapAsync(googleMap -> {
             mMapView.setClickable(false);

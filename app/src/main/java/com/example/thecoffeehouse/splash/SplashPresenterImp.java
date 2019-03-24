@@ -29,7 +29,6 @@ public class SplashPresenterImp implements SplashPresenter {
 
                     Log.d(TAG, "loadStore: added" + longs);
 
-                }, throwable -> {
-                }, view::onLoadStoreSuccess);
+                }, view::onLoadError, view::onLoadStoreSuccess);
     }
 }

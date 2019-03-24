@@ -8,6 +8,7 @@ import android.transition.Slide;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.Toast;
 
 import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.main.MainActivity;
@@ -38,24 +39,26 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
         finish ();
     }
 
+    @Override
+    public void onLoadError(Throwable throwable) {
+        Log.e(TAG, "onLoadError: "+throwable.getLocalizedMessage());
+        startActivity ();
+//        startActivity (new Intent (SplashActivity.this, MainActivity.class));
+        finish ();
+    }
+
     private void startActivity() {
         Intent i = new Intent (SplashActivity.this, MainActivity.class);
-        if (Build.VERSION.SDK_INT > 20) {
-            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation (SplashActivity.this);
-            startActivity (i, options.toBundle ());
-        } else {
-            startActivity (i);
-        }
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation (SplashActivity.this);
+        startActivity (i, options.toBundle ());
     }
 
     private void setAnimation() {
-        if (Build.VERSION.SDK_INT > 20) {
-            Slide slide = new Slide ();
-            slide.setSlideEdge (Gravity.LEFT);
-            slide.setDuration (400);
-            slide.setInterpolator (new AccelerateDecelerateInterpolator ());
-            getWindow ().setExitTransition (slide);
-            getWindow ().setEnterTransition (slide);
-        }
+        Slide slide = new Slide ();
+        slide.setSlideEdge (Gravity.LEFT);
+        slide.setDuration (400);
+        slide.setInterpolator (new AccelerateDecelerateInterpolator ());
+        getWindow ().setExitTransition (slide);
+        getWindow ().setEnterTransition (slide);
     }
 }

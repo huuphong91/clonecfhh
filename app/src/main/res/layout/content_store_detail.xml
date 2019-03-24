@@ -2,12 +2,11 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/vpStoreImageSlider"
@@ -68,9 +67,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@color/moca_rs_pinkish_grey_four"
+            android:background="@color/bg_map_color"
             android:padding="8dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:text="@string/detail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -163,7 +162,8 @@
                 android:autoLink="phone"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 app:layout_constraintStart_toEndOf="@id/iconContact"
-                app:layout_constraintTop_toBottomOf="@id/tv_contact" />
+                app:layout_constraintTop_toBottomOf="@id/tv_contact"
+                android:paddingBottom="16dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

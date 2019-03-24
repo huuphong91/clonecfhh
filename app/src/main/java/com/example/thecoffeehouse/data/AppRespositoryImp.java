@@ -50,8 +50,8 @@ public class AppRespositoryImp implements AppRepository {
 
     @SuppressLint("CheckResult")
     @Override
-    public Flowable<Long> loadApiToDatabase() {
-        getListStore().toFlowable()
+    public Flowable<List<Long>> loadApiToDatabase() {
+        return getListStore().toFlowable()
                 .subscribeOn(Schedulers.io())
                 .flatMap(storeResponeObject -> {
                     storeDao.deleteAll();
@@ -61,23 +61,23 @@ public class AppRespositoryImp implements AppRepository {
                 .flatMap(district -> Flowable.fromCallable(() -> storeDao.insertStores(district.stores)));
 
 
-        return getListStore().subscribeOn(Schedulers.io())
-                .toObservable()
-                .flatMap(new Function<StoreResponeObject, ObservableSource<StoreResponeObject.State>>() {
-                    @Override
-                    public ObservableSource<StoreResponeObject.State> apply(StoreResponeObject storeResponeObject) throws Exception {
-                        storeDao.deleteAll();
-                        return Observable.fromIterable(storeResponeObject.listState);
-                    }
-                }).flatMap(state -> Observable.fromIterable(state.districts))
-                .flatMap(district -> Observable.fromIterable(district.stores))
-                .flatMap(new Function<Store, ObservableSource<Long>>() {
-                    @Override
-                    public ObservableSource<Long> apply(Store store) throws Exception {
-                        long result = storeDao.insertStore(store);
-                        return Observable.just(result);
-                    }
-                }).toFlowable(BackpressureStrategy.BUFFER);
+//        return getListStore().subscribeOn(Schedulers.io())
+//                .toObservable()
+//                .flatMap(new Function<StoreResponeObject, ObservableSource<StoreResponeObject.State>>() {
+//                    @Override
+//                    public ObservableSource<StoreResponeObject.State> apply(StoreResponeObject storeResponeObject) throws Exception {
+//                        storeDao.deleteAll();
+//                        return Observable.fromIterable(storeResponeObject.listState);
+//                    }
+//                }).flatMap(state -> Observable.fromIterable(state.districts))
+//                .flatMap(district -> Observable.fromIterable(district.stores))
+//                .flatMap(new Function<Store, ObservableSource<Long>>() {
+//                    @Override
+//                    public ObservableSource<Long> apply(Store store) throws Exception {
+//                        long result = storeDao.insertStore(store);
+//                        return Observable.just(result);
+//                    }
+//                }).toFlowable(BackpressureStrategy.BUFFER);
 
 
 
