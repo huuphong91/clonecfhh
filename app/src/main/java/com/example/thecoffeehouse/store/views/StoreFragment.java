@@ -3,6 +3,7 @@ package com.example.thecoffeehouse.store.views;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 import static androidx.core.content.ContextCompat.checkSelfPermission;
@@ -305,7 +307,7 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
                 .toObservable()
                 .flatMap(Observable::fromIterable)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(address -> Log.d(TAG, "testGeocoder: size: " + address.getAddressLine(0)));
+                .subscribe(address -> Log.d(TAG, "testGeocoder: size: " + address.getAddressLine(0)),throwable -> {});
     }
 
 

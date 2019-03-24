@@ -25,18 +25,18 @@ public class ForYouPresenterImpl implements ForYouPresenter {
         Disposable disposable = mAppRepository.getForYou()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(newsforyou::displayForYou,newsforyou::onError);
-                compositeDisposable.add(disposable);
+                .subscribe(newsforyou::displayForYou, newsforyou::onError);
+        compositeDisposable.add(disposable);
     }
+
     @Override
     public void loadListNewsFromDatabase() {
         Disposable disposable = mAppRepository.getListNewsFromDatabase()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(newsforyou::displayForYou,newsforyou::onError);
+                .subscribe(newsforyou::displayForYou, newsforyou::onError);
         compositeDisposable.add(disposable);
     }
-
 
 
     @Override

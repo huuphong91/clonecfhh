@@ -36,6 +36,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -78,10 +79,31 @@ public class NewsFragment extends Fragment implements NewsView, ForYouView {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news, container, false);
+        return view;
+    }
+
+    private void getForYouList() {
+        forYouPresenter.loadListNewsFromDatabase();
+    }
+
+    private void getNewsList() {
+        newsPresenter.loadNewsForFromDatabase();
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         initView(view);
         final RecyclerView recyclerView = view.findViewById(R.id.for_you_recycleview);
         final RecyclerView recyclerViewNews = view.findViewById(R.id.news_recycleview);
-        swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swiper_fresh);
+        swipeRefreshLayout = view.findViewById(R.id.swiper_fresh);
         List<ResponseNews> listNews = new ArrayList<>();
         List<ResponseForYou> listForYou = new ArrayList<>();
         adapter = new NewsAdapterForYou(getContext(), listForYou, getFragmentManager());
@@ -97,57 +119,29 @@ public class NewsFragment extends Fragment implements NewsView, ForYouView {
         recyclerViewNews.setAdapter(adapter2);
         adapter.notifyDataSetChanged();
         adapter2.notifyDataSetChanged();
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-                recyclerView.setLayoutManager(mLayoutManager);
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
-                recyclerView.setAdapter(adapter);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            RecyclerView.LayoutManager mLayoutManager1 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+            recyclerView.setLayoutManager(mLayoutManager1);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(adapter);
 
-                RecyclerView.LayoutManager mNewsLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-                recyclerViewNews.setLayoutManager(mNewsLayoutManager);
-                recyclerViewNews.setItemAnimator(new DefaultItemAnimator());
-                recyclerViewNews.setAdapter(adapter2);
-                adapter.notifyDataSetChanged();
-                adapter2.notifyDataSetChanged();
-                swipeRefreshLayout.getDrawingTime();
-                swipeRefreshLayout.setRefreshing(false);
-            }
+            RecyclerView.LayoutManager mNewsLayoutManager1 = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+            recyclerViewNews.setLayoutManager(mNewsLayoutManager1);
+            recyclerViewNews.setItemAnimator(new DefaultItemAnimator());
+            recyclerViewNews.setAdapter(adapter2);
+            adapter.notifyDataSetChanged();
+            adapter2.notifyDataSetChanged();
+            swipeRefreshLayout.getDrawingTime();
+            swipeRefreshLayout.setRefreshing(false);
         });
-        return view;
-    }
-
-    private void getForYouList() {
-
-       forYouPresenter.loadListNewsFromDatabase();
-    }
-
-    private void getNewsList() {
-
-        newsPresenter.loadNewsForFromDatabase();
-    }
-     private  void getOnlineNews()
-     {
-         newsPresenter.getNews();
-         forYouPresenter.getForYou();
-
-     }
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         setupNews();
     }
 
     public void setupNews() {
         newsPresenter = new NewsPresenterImpl(this);
         forYouPresenter = new ForYouPresenterImpl(this);
+        getNewsList();
+        getForYouList();
     }
 
     private void initView(View view) {
@@ -189,8 +183,6 @@ public class NewsFragment extends Fragment implements NewsView, ForYouView {
     @Override
     public void onResume() {
         super.onResume();
-        getNewsList();
-        getForYouList();
         checkUserLogin();
     }
 
@@ -235,25 +227,21 @@ public class NewsFragment extends Fragment implements NewsView, ForYouView {
     public void displayNews(List<ResponseNews> itemList) {
         List<ResponseNews> list = new ArrayList<>();
         if (itemList != null) {
-            for (ResponseNews item : itemList) {
-                list.add(item);
-            }
+            list.addAll(itemList);
         }
         adapter2.setValues(list);
     }
 
     @Override
     public void onError(Throwable throwable) {
-
+        Toast.makeText(activity, "Something wrong! Try a gain.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void displayForYou(List<ResponseForYou> for_you_itemlist) {
         List<ResponseForYou> listforyou = new ArrayList<>();
         if (for_you_itemlist != null) {
-            for (ResponseForYou item : for_you_itemlist) {
-                listforyou.add(item);
-            }
+            listforyou.addAll(for_you_itemlist);
         }
         adapter.setValues(listforyou);
     }

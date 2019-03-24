@@ -1,4 +1,5 @@
 package com.example.thecoffeehouse.data.model.entity;
+
 import com.google.gson.annotations.SerializedName;
 
 import org.reactivestreams.Publisher;
@@ -11,160 +12,160 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName ="foryounews")
+@Entity(tableName = "foryounews")
 public class ResponseForYou implements Serializable {
-	@SerializedName("date")
-	private String date;
-	@SerializedName("button")
-	private String button;
-	@ColumnInfo(name = "image")
-	@NonNull
-	@SerializedName("image")
-	private String image;
+    @SerializedName("date")
+    private String date;
+    @SerializedName("button")
+    private String button;
+    @ColumnInfo(name = "image")
+    @NonNull
+    @SerializedName("image")
+    private String image;
 
-	@SerializedName("effects")
-	private String effects;
+    @SerializedName("effects")
+    private String effects;
 
-	@SerializedName("deeplink")
-	private String deeplink;
+    @SerializedName("deeplink")
+    private String deeplink;
 
-	@SerializedName("action")
-	private String action;
+    @SerializedName("action")
+    private String action;
 
-	@SerializedName("shareUrl")
-	private String shareUrl;
-	@PrimaryKey()
-	@NonNull
-	@ColumnInfo(name = "id")
-	@SerializedName("id")
-	private String id;
-	@ColumnInfo(name = "title")
-	@NonNull
-	@SerializedName("title")
-	private String title;
-	@ColumnInfo(name = "url")
-	@NonNull
-	@SerializedName("url")
-	private String url;
-	@ColumnInfo(name = "content")
-	@NonNull
-	@SerializedName("content")
-	private String content;
+    @SerializedName("shareUrl")
+    private String shareUrl;
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "id")
+    @SerializedName("id")
+    private String id;
+    @ColumnInfo(name = "title")
+    @NonNull
+    @SerializedName("title")
+    private String title;
+    @ColumnInfo(name = "url")
+    @NonNull
+    @SerializedName("url")
+    private String url;
+    @ColumnInfo(name = "content")
+    @SerializedName("content")
+    private String content;
 
-	@SerializedName("key")
-	private String key;
-	public void setDate(String date){
-		this.date = date;
-	}
+    @SerializedName("key")
+    private String key;
 
-	public String getDate(){
-		return date;
-	}
+    public void setDate(String date) {
+        this.date = date;
+    }
 
-	public void setButton(String button){
-		this.button = button;
-	}
+    public String getDate() {
+        return date;
+    }
 
-	public String getButton(){
-		return button;
-	}
+    public void setButton(String button) {
+        this.button = button;
+    }
 
-	public void setImage(String image){
-		this.image = image;
-	}
+    public String getButton() {
+        return button;
+    }
 
-	public String getImage(){
-		return image;
-	}
+    public void setImage(String image) {
+        this.image = image;
+    }
 
-	public void setEffects(String effects){
-		this.effects = effects;
-	}
+    public String getImage() {
+        return image;
+    }
 
-	public String getEffects(){
-		return effects;
-	}
+    public void setEffects(String effects) {
+        this.effects = effects;
+    }
 
-	public void setDeeplink(String deeplink){
-		this.deeplink = deeplink;
-	}
+    public String getEffects() {
+        return effects;
+    }
 
-	public String getDeeplink(){
-		return deeplink;
-	}
+    public void setDeeplink(String deeplink) {
+        this.deeplink = deeplink;
+    }
 
-	public void setAction(String action){
-		this.action = action;
-	}
+    public String getDeeplink() {
+        return deeplink;
+    }
 
-	public String getAction(){
-		return action;
-	}
+    public void setAction(String action) {
+        this.action = action;
+    }
 
-	public void setShareUrl(String shareUrl){
-		this.shareUrl = shareUrl;
-	}
+    public String getAction() {
+        return action;
+    }
 
-	public String getShareUrl(){
-		return shareUrl;
-	}
+    public void setShareUrl(String shareUrl) {
+        this.shareUrl = shareUrl;
+    }
 
-	public void setId(String id){
-		this.id = id;
-	}
+    public String getShareUrl() {
+        return shareUrl;
+    }
 
-	public String getId(){
-		return id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setTitle(String title){
-		this.title = title;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getTitle(){
-		return title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void setUrl(String url){
-		this.url = url;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public String getUrl(){
-		return url;
-	}
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	public void setContent(String content){
-		this.content = content;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public String getContent(){
-		return content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public void setKey(String key){
-		this.key = key;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public String getKey(){
-		return key;
-	}
+    public void setKey(String key) {
+        this.key = key;
+    }
 
-	@Override
- 	public String toString(){
-		return
-			"ResponseForYou{" +
-			"date = '" + date + '\'' +
-			",button = '" + button + '\'' +
-			",image = '" + image + '\'' +
-			",effects = '" + effects + '\'' +
-			",deeplink = '" + deeplink + '\'' +
-			",action = '" + action + '\'' +
-			",shareUrl = '" + shareUrl + '\'' +
-			",id = '" + id + '\'' +
-			",title = '" + title + '\'' +
-			",url = '" + url + '\'' +
-			",content = '" + content + '\'' +
-			",key = '" + key + '\'' +
-			"}";
-	}
+    public String getKey() {
+        return key;
+    }
+
+    @Override
+    public String toString() {
+        return
+                "ResponseForYou{" +
+                        "date = '" + date + '\'' +
+                        ",button = '" + button + '\'' +
+                        ",image = '" + image + '\'' +
+                        ",effects = '" + effects + '\'' +
+                        ",deeplink = '" + deeplink + '\'' +
+                        ",action = '" + action + '\'' +
+                        ",shareUrl = '" + shareUrl + '\'' +
+                        ",id = '" + id + '\'' +
+                        ",title = '" + title + '\'' +
+                        ",url = '" + url + '\'' +
+                        ",content = '" + content + '\'' +
+                        ",key = '" + key + '\'' +
+                        "}";
+    }
 }

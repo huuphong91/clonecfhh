@@ -11,24 +11,24 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class NewsPresenterImpl implements NewsPresenter {
-    private  NewsView newsView;
+    private NewsView newsView;
     private CompositeDisposable compositeDisposableNews;
     private AppRespositoryImp mAppRepositoryImplNews;
+
     public NewsPresenterImpl(NewsView newsView) {
 
-        mAppRepositoryImplNews=new AppRespositoryImp(newsView.getActivity().getApplication());
-        this.newsView =newsView;
+        mAppRepositoryImplNews = new AppRespositoryImp(newsView.getActivity().getApplication());
+        this.newsView = newsView;
         compositeDisposableNews = new CompositeDisposable();
     }
 
     @Override
-    public void getNews()
-    {
+    public void getNews() {
         Disposable disposable = mAppRepositoryImplNews.getNews()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(newsView::displayNews,newsView::onError);
-                 compositeDisposableNews.add(disposable);
+                .subscribe(newsView::displayNews, newsView::onError);
+        compositeDisposableNews.add(disposable);
     }
 
     @Override
@@ -36,12 +36,9 @@ public class NewsPresenterImpl implements NewsPresenter {
         Disposable disposable = mAppRepositoryImplNews.getListForNewsFromDatabase()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(newsView::displayNews,newsView::onError);
-      compositeDisposableNews.add(disposable);
+                .subscribe(newsView::displayNews, newsView::onError);
+        compositeDisposableNews.add(disposable);
     }
-
-
-    @SuppressLint("CheckResult")
 
 
     @Override
