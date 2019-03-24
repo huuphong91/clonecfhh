@@ -74,7 +74,6 @@ public class DrinksFragment extends Fragment implements DrinksView {
 
     @Override
     public void showToast(String s) {
-        Toast.makeText (getContext (), s, Toast.LENGTH_SHORT).show ();
     }
 
     @Override
@@ -84,7 +83,6 @@ public class DrinksFragment extends Fragment implements DrinksView {
 
     @Override
     public void displayError(String s) {
-        Toast.makeText (getContext (), s, Toast.LENGTH_SHORT).show ();
     }
 
     private void getProduct() {

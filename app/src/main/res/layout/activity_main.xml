@@ -26,7 +26,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="0dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorWhite"
             app:itemIconTint="@drawable/navigation_selector"
             app:itemTextColor="@drawable/navigation_selector"
             app:labelVisibilityMode="labeled"

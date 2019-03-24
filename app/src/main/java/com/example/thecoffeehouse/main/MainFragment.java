@@ -2,11 +2,7 @@ package com.example.thecoffeehouse.main;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.thecoffeehouse.R;
-import com.example.thecoffeehouse.data.model.User.User;
+import com.example.thecoffeehouse.data.model.user.User;
 import com.example.thecoffeehouse.news.NewsFragment;
 import com.example.thecoffeehouse.order.OrderFragment;
 import com.example.thecoffeehouse.profile.ProfileFragment;
 import com.example.thecoffeehouse.store.views.StoreFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -100,9 +93,7 @@ public class MainFragment extends Fragment {
         String json = mPrefs.getString ("myObject", null);
         User user = gson.fromJson (json, User.class);
         if (json != null) {
-            Toast.makeText (getContext (), "Co roi" + user.getFirstName (), Toast.LENGTH_SHORT).show ();
         } else {
-            Toast.makeText (getContext (), "Rong", Toast.LENGTH_SHORT).show ();
         }
     }
 

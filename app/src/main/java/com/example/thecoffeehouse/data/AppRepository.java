@@ -1,5 +1,6 @@
 package com.example.thecoffeehouse.data;
 
+import com.example.thecoffeehouse.data.model.notification.Notification;
 import com.example.thecoffeehouse.data.model.product.Category;
 import com.example.thecoffeehouse.data.model.product.Order;
 import com.example.thecoffeehouse.data.model.store.Store;
@@ -25,4 +26,7 @@ public interface AppRepository {
     Observable<List<Category>> getCategory();
 
     Observable<Order> getCartItem();
+
+    void insertNotification(Notification notification);
+
 }

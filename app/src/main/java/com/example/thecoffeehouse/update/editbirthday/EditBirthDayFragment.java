@@ -106,7 +106,6 @@ public class EditBirthDayFragment extends Fragment implements IEditBirhDayContra
     public void onChangeBirthdayFail(String messege) {
         mButtonCommit.loadingFailed();
         mButtonCommit.reset();
-        Toast.makeText(getContext(), messege, Toast.LENGTH_SHORT).show();
     }
 
 
