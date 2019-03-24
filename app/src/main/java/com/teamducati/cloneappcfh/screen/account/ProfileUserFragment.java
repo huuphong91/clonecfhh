@@ -51,7 +51,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class ProfileUserFragment extends Fragment implements View.OnClickListener {
 
-    private static final String TAG = "Profile";
     @BindView(R.id.btn_close)
     ImageButton mBtnClose;
     @BindView(R.id.btnLogOut)
@@ -142,7 +141,6 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart");
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
@@ -151,7 +149,6 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop");
         EventBus.getDefault().unregister(this);
     }
 
@@ -159,19 +156,6 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        Log.d(TAG, "onDestroyView");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy");
     }
 
     @Override
@@ -250,26 +234,17 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
             //uploading the image
             UploadTask uploadTask = childRef.putFile(imageUri);
 
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            uploadTask.addOnSuccessListener(taskSnapshot -> childRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    childRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            Toast.makeText(getActivity(), "Upload Image successful", Toast.LENGTH_SHORT).show();
-                            user.setImgAvatarUrl(uri.toString());
-                            updateUserProperty(user);
-                        }
-                    });
-
+                public void onSuccess(Uri uri) {
+                    Toast.makeText(getActivity(), "Upload Image successful", Toast.LENGTH_SHORT).show();
+                    user.setImgAvatarUrl(uri.toString());
+                    updateUserProperty(user);
                 }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
+            })).addOnFailureListener(e -> {
 
-                    Toast.makeText(getActivity(), "Upload Image Failed -> " + e, Toast.LENGTH_SHORT).show();
-                    Log.d("UploadImage", e.toString());
-                }
+                Toast.makeText(getActivity(), "Upload Image Failed -> " + e, Toast.LENGTH_SHORT).show();
+                Log.d("UploadImage", e.toString());
             });
         } else {
             Toast.makeText(getActivity(), "Select an image", Toast.LENGTH_SHORT).show();

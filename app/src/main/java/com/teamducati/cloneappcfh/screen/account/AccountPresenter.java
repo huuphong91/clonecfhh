@@ -36,16 +36,6 @@ public class AccountPresenter implements AccountContract.Presenter {
     public AccountPresenter() {
     }
 
-//    @Override
-//    public void start() {
-//        userObj = ActivityUtils.getDataObject(context, userObj.getClass());
-//        if (!(userObj==null)) {
-//            mAccountView.showUserDetail();
-//        } else {
-//            mAccountView.showLoginScreen();
-//        }
-//    }
-
     @Override
     public void onLogout() {
 //        ActivityUtils.removeAllDataObject(context);

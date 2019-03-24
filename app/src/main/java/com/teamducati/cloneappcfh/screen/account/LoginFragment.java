@@ -28,7 +28,6 @@ import dagger.android.support.DaggerFragment;
 
 public class LoginFragment extends Fragment {
 
-    private static final String TAG = "Login";
     @BindView(R.id.btnDialogLogin)
     Button mBtnLogin;
 
@@ -43,7 +42,6 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         unbinder = ButterKnife.bind(this, view);
-        Log.d(TAG, "onCreateView");
         return view;
     }
 
@@ -54,37 +52,11 @@ public class LoginFragment extends Fragment {
             dialogLoginFragment = DialogLoginFragment_Factory.newDialogLoginFragment();
             dialogLoginFragment.show(Objects.requireNonNull(getChildFragmentManager()), "dialoglogin");
         });
-        Log.d(TAG, "onViewCreated");
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        Log.d(TAG, "onDestroyView");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy");
     }
 }
