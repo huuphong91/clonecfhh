@@ -1,5 +1,6 @@
 package com.teamducati.cloneappcfh.screen.account;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -78,7 +79,9 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
     private Uri filePath;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl(Constants.STORAGE_URL);
+
     private Uri imageUri;
+    private ProgressDialog progressDialog;
 
     @Inject
     public ProfileUserFragment() {
@@ -241,6 +244,9 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
     }
 
     public void uploadImage(Uri imageUri) {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Upload Image...");
+        progressDialog.show();
         if (imageUri != null) {
             // String imageName="image_"+System.currentTimeMillis()+".jpg";
             //app only one user
@@ -259,6 +265,7 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
                             Toast.makeText(getActivity(), "Upload Image successful", Toast.LENGTH_SHORT).show();
                             user.setImgAvatarUrl(uri.toString());
                             updateUserProperty(user);
+                            progressDialog.dismiss();
                         }
                     });
 
@@ -266,13 +273,14 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-
                     Toast.makeText(getActivity(), "Upload Image Failed -> " + e, Toast.LENGTH_SHORT).show();
                     Log.d("UploadImage", e.toString());
+                    progressDialog.dismiss();
                 }
             });
         } else {
             Toast.makeText(getActivity(), "Select an image", Toast.LENGTH_SHORT).show();
+            progressDialog.dismiss();
         }
     }
 

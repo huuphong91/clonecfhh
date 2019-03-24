@@ -1,6 +1,7 @@
 package com.teamducati.cloneappcfh.screen.account;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -49,6 +50,7 @@ public class DialogUpdate extends DialogFragment {
 
     @Inject
     AccountContract.Presenter mPresenter;
+    private ProgressDialog progressDialog;
 
     public DialogUpdate() {
 
@@ -93,18 +95,21 @@ public class DialogUpdate extends DialogFragment {
     }
 
     private void updateUserProperty(User user) {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Upload Profile...");
+        progressDialog.show();
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
         myRef.orderByChild("User").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myRef.child("User").setValue(user);
-//                ActivityUtils.setDataObject(context, user);
                 EventBus.getDefault().post(user);
+                progressDialog.dismiss();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                progressDialog.dismiss();
             }
         });
         Toast.makeText(getContext(), "updated successful", Toast.LENGTH_SHORT).show();
