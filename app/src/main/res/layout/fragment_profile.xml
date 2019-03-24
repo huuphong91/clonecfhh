@@ -17,20 +17,21 @@
                 android:id="@+id/frag_profile_tb_login"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <ImageView
-                    android:id="@+id/frag_profile_image"
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/frag_profile_imgUser"
                     android:layout_centerVertical="true"
                     android:src="@drawable/img_user_white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
                 <TextView
+                    android:textSize="20dp"
+                    android:id="@+id/frag_profile_tvLogin"
                     android:textStyle="bold"
                     android:layout_marginLeft="10dp"
                     android:layout_centerVertical="true"
-                    android:textColor="#FFFF"
-                    android:textSize="20sp"
+                    android:textColor="#FFF"
                     android:text="Đăng nhập"
-                    android:layout_toRightOf="@+id/frag_profile_image"
+                    android:layout_toRightOf="@+id/frag_profile_imgUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>

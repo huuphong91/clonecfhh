@@ -50,17 +50,21 @@ public class NewsAdapterForYou extends RecyclerView.Adapter<NewsAdapterForYou.My
         public void onBindViewHolder (final MyViewHolder holder, int position) {
             final ResponseForYou album = mListNews.get(position);
             holder.title_bold_you.setText(album.getTitle());
-            Glide.with(mContext).load(album.getImage()).into(holder.thumbnail);
-            holder.thumbnail.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            Glide.with(mContext).load(album.getImage()).placeholder(R.mipmap.store_placeholder).into(holder.thumbnail);
+            holder.thumbnail.setOnClickListener(v -> {
+                try {
                     WebViewForYou.newInstance(album).show(manager, "NewsForyou");
+                }catch (Exception e)
+                {
+
                 }
             });
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            holder.itemView.setOnClickListener(view -> {
+                try {
                     WebViewForYou.newInstance(album).show(manager, "NewsForyou");
+                }catch (Exception e)
+                {
+
                 }
             });
         }

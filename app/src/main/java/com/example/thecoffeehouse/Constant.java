@@ -15,6 +15,9 @@ public class Constant {
     public static final String EDIT_FNAME_FRAGMENT = "editFNameFragment";
     public static final String MAIN_FRAGMENT = "mainFragment";
     public static final String BOTTOM_SHEET = "bottomSheetFragment";
+    public static final String NOTIFICATION_FRAGMENT = "notificationFragment";
+    public static final String TAG_DRINKS = "DRINKS";
+    public static final String TAG_FOOD = "FOOD";
     public static final String EDIT_PROFILE_FRAGMENT = "editProfileFragment";
     public static final String TAG_DRINKS = "Thức uống";
     public static final String TAG_FOOD = "Món nổi bật";

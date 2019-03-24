@@ -1,8 +1,7 @@
 package com.example.thecoffeehouse.login;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.SharedPreferences;
-import com.example.thecoffeehouse.data.model.User.User;
+import com.example.thecoffeehouse.data.model.user.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

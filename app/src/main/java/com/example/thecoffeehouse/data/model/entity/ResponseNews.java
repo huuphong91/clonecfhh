@@ -32,7 +32,7 @@ public class ResponseNews implements Serializable {
 
 	@SerializedName("shareUrl")
 	private String shareUrl;
-	@PrimaryKey()
+	@PrimaryKey
 	@NonNull
 	@ColumnInfo(name = "id")
 	@SerializedName("id")
@@ -46,7 +46,6 @@ public class ResponseNews implements Serializable {
 	@SerializedName("url")
 	private String url;
 	@ColumnInfo(name = "content")
-	@NonNull
 	@SerializedName("content")
 	private String content;
 

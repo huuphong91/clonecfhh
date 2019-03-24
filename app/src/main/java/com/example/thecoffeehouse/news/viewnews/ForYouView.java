@@ -9,5 +9,7 @@ import java.util.List;
 
 public interface ForYouView {
     void displayForYou(List<ResponseForYou> responseForYouList);
+    void onError(Throwable throwable);
     Activity getActivity();
+
 }

@@ -135,7 +135,7 @@ public class DetailDialogFragment extends DialogFragment {
                 DetailDialogFragment.this.dismiss ();
                 Toast.makeText (getContext (), String.format ("%s - Đã được thêm vào", dataItem.getProductName ()), Toast.LENGTH_SHORT).show ();
             } else {
-                Toast.makeText (getContext (), "Thử lại", Toast.LENGTH_SHORT).show ();
+                Toast.makeText (getContext (), "Chưa chọn size", Toast.LENGTH_SHORT).show ();
             }
         });
         radSmall.setOnCheckedChangeListener ((buttonView, isChecked) -> {
