@@ -1,14 +1,13 @@
 package com.example.thecoffeehouse.main;
 
-import android.accounts.Account;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Base64;
+import android.transition.Explode;
+import android.transition.Slide;
 import android.util.Log;
-import android.view.MenuItem;
+import android.view.Gravity;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Toast;
 
 import com.example.thecoffeehouse.Constant;
@@ -17,10 +16,8 @@ import com.example.thecoffeehouse.data.model.User.User;
 import com.example.thecoffeehouse.data.model.product.DataItem;
 import com.example.thecoffeehouse.firstupdate.FirstUpdateFragment;
 import com.example.thecoffeehouse.login.LoginDialogFragment;
-import com.example.thecoffeehouse.news.News;
 import com.example.thecoffeehouse.news.NewsFragment;
 import com.example.thecoffeehouse.order.OrderFragment;
-//import com.example.thecoffeehouse.order.adapter.OnOrderListItemInteractionListener;
 import com.example.thecoffeehouse.order.adapter.OnOrderListItemInteractionListener;
 import com.example.thecoffeehouse.order.cart.CartFragment;
 import com.example.thecoffeehouse.order.cart.CartInstance;
@@ -35,24 +32,11 @@ import com.example.thecoffeehouse.profile.ProfileFragment;
 import com.example.thecoffeehouse.store.views.StoreFragment;
 import com.example.thecoffeehouse.update.UpdateFragment;
 import com.example.thecoffeehouse.update.editfirstname.EditFirstNameFragment;
-import com.example.thecoffeehouse.update.editgender.EditGenderFragment;
-import com.example.thecoffeehouse.update.editgender.EditGenderPresenter;
 import com.example.thecoffeehouse.update.editlastname.EditLastNameFragment;
-import com.facebook.accountkit.AccountKit;
-import com.facebook.accountkit.AccountKitCallback;
-import com.facebook.accountkit.AccountKitError;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -74,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.fragment_main);
+        setAnimation ();
         initView ();
         addFragment (MainFragment.newInstance ());
         initData ();
@@ -108,9 +93,24 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
 
     private void loadFragment(Fragment fragment, String tag) {
         mFragmentManager.beginTransaction ()
+                .setCustomAnimations (R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                 .replace (R.id.content_main, fragment, tag)
                 .addToBackStack (tag)
                 .commit ();
+    }
+
+    private void setAnimation() {
+        if (Build.VERSION.SDK_INT > 20) {
+            Explode explode = new Explode ();
+            explode.setDuration (700);
+            explode.setInterpolator (new AccelerateDecelerateInterpolator ());
+            Slide slide = new Slide ();
+            slide.setSlideEdge (Gravity.LEFT);
+            slide.setDuration (400);
+            slide.setInterpolator (new AccelerateDecelerateInterpolator ());
+            getWindow ().setExitTransition (explode);
+            getWindow ().setEnterTransition (explode);
+        }
     }
 
     //get HashKey's application
@@ -223,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
         if (fragment instanceof MainFragment) {
             finish ();
         }
+        overridePendingTransition (R.anim.abc_slide_out_bottom, R.anim.abc_slide_in_bottom);
 //        super.onBackPressed();
     }
 

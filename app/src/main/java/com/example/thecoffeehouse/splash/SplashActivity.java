@@ -1,8 +1,13 @@
 package com.example.thecoffeehouse.splash;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.transition.Slide;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.main.MainActivity;
@@ -20,6 +25,7 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_splash);
+        setAnimation ();
         presenter = new SplashPresenterImp (getApplication (), this);
         presenter.loadStore ();
     }
@@ -27,7 +33,29 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
     @Override
     public void onLoadStoreSuccess() {
         Log.d (TAG, "onLoadStoreSuccess: ");
-        startActivity (new Intent (SplashActivity.this, MainActivity.class));
+        startActivity ();
+//        startActivity (new Intent (SplashActivity.this, MainActivity.class));
         finish ();
+    }
+
+    private void startActivity() {
+        Intent i = new Intent (SplashActivity.this, MainActivity.class);
+        if (Build.VERSION.SDK_INT > 20) {
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation (SplashActivity.this);
+            startActivity (i, options.toBundle ());
+        } else {
+            startActivity (i);
+        }
+    }
+
+    private void setAnimation() {
+        if (Build.VERSION.SDK_INT > 20) {
+            Slide slide = new Slide ();
+            slide.setSlideEdge (Gravity.LEFT);
+            slide.setDuration (400);
+            slide.setInterpolator (new AccelerateDecelerateInterpolator ());
+            getWindow ().setExitTransition (slide);
+            getWindow ().setEnterTransition (slide);
+        }
     }
 }

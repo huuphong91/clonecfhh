@@ -173,6 +173,11 @@ public class CartDetail extends DialogFragment implements CartDetailView {
                 if (count == 0) {
                     if (size.toLowerCase ().equals (cartItem.getSize ().toLowerCase ())) {
                         cartDetailPresenter.removeCartItem (cartItem);
+                        if (CartInstance.getInstance ().getListCart ().size () == 1) {
+                            CartDetail.this.dismiss ();
+                            mListener.onUpdateFragment ();
+                            return;
+                        }
                     }
                 } else {
                     Cart item = newCartItem ();
@@ -183,11 +188,6 @@ public class CartDetail extends DialogFragment implements CartDetailView {
                         Toast.makeText (getContext (), dataItem.getProductName () + " Được thêm vào",
                                 Toast.LENGTH_SHORT).show ();
                     }
-                }
-                if (CartInstance.getInstance ().getListCart ().size () == 1) {
-                    CartDetail.this.dismiss ();
-                    mListener.onUpdateFragment ();
-                    return;
                 }
                 CartDetail.this.dismiss ();
             } else {
