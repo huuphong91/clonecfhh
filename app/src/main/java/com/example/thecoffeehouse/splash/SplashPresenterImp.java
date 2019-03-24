@@ -29,7 +29,30 @@ public class SplashPresenterImp implements SplashPresenter {
 
                     Log.d(TAG, "loadStore: added" + longs);
 
-                }, throwable -> {
-                }, view::onLoadStoreSuccess);
+                }, view::OnError, view::onLoadStoreSuccess);
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void loadNews() {
+        repository.loadApiForNewsToDatabase().observeOn(AndroidSchedulers.mainThread())
+                .subscribe(longs -> {
+
+                    Log.d(TAG, "loadStore: added" + longs);
+
+                }, view::OnError
+                , view::onLoadNewsSuccess);
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void loadpromotionNews() {
+        repository.loadApiNewsToDatabase().observeOn(AndroidSchedulers.mainThread())
+                .subscribe(longs -> {
+
+                    Log.d(TAG, "loadStore: added" + longs);
+
+                }, view::OnError
+                , view::OnLoadNewsPromotionSuccess);
     }
 }

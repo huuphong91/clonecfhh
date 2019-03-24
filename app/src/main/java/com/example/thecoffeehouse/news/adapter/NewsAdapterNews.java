@@ -53,13 +53,21 @@ public class NewsAdapterNews extends RecyclerView.Adapter<NewsAdapterNews.MyView
         holder.thumbnail_news.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WebViewNews.newInstance(album).show(manager,"NewsDetail");
+                try {
+                    WebViewNews.newInstance(album).show(manager, "NewsDetail");
+                }catch (Exception e)
+                {
+
+                }
             }
         });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            WebViewNews.newInstance(album).show(manager,"NewsDetail");
+                try {
+                    WebViewNews.newInstance(album).show(manager, "NewsDetail");
+                }catch (Exception e)
+                {}
             }
         });
     }

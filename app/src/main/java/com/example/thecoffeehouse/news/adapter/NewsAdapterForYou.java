@@ -54,13 +54,23 @@ public class NewsAdapterForYou extends RecyclerView.Adapter<NewsAdapterForYou.My
             holder.thumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    WebViewForYou.newInstance(album).show(manager, "NewsForyou");
+                    try {
+                        WebViewForYou.newInstance(album).show(manager, "NewsForyou");
+                    }catch (Exception e)
+                    {
+
+                    }
                 }
             });
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    WebViewForYou.newInstance(album).show(manager, "NewsForyou");
+                    try {
+                        WebViewForYou.newInstance(album).show(manager, "NewsForyou");
+                    }catch (Exception e)
+                    {
+
+                    }
                 }
             });
         }

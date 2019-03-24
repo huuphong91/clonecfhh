@@ -28,6 +28,8 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
         setAnimation ();
         presenter = new SplashPresenterImp (getApplication (), this);
         presenter.loadStore ();
+        presenter.loadNews();
+        presenter.loadpromotionNews();
     }
 
     @Override
@@ -36,6 +38,28 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
         startActivity ();
 //        startActivity (new Intent (SplashActivity.this, MainActivity.class));
         finish ();
+    }
+
+    @Override
+    public void onLoadNewsSuccess() {
+        Log.d (TAG, "onLoadStoreSuccess: ");
+        startActivity ();
+//        startActivity (new Intent (SplashActivity.this, MainActivity.class));
+        finish ();
+    }
+
+    @Override
+    public void OnLoadNewsPromotionSuccess() {
+        Log.d (TAG, "onLoadStoreSuccess: ");
+        startActivity ();
+//        startActivity (new Intent (SplashActivity.this, MainActivity.class));
+        finish ();
+    }
+
+    @Override
+    public void OnError(Throwable throwable) {
+        startActivity();
+        finish();
     }
 
     private void startActivity() {

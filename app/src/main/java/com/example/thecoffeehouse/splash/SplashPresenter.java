@@ -4,4 +4,6 @@ import io.reactivex.Flowable;
 
 public interface SplashPresenter {
     void loadStore();
+    void loadNews ();
+    void loadpromotionNews();
 }
