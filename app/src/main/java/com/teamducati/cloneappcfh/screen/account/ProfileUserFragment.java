@@ -193,6 +193,8 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
     }
 
     private void sendBroadCastLogOut() {
+        //remove data login
+        ActivityUtils.removeAllDataObject(getActivity());
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
                 .sendBroadcast(new Intent(Constants.ACTION_LOG_OUT));
     }
