@@ -30,6 +30,10 @@ import com.teamducati.cloneappcfh.screen.news.notificationsdetails.NotificationD
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
 import com.teamducati.cloneappcfh.utils.Constants;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -93,7 +97,11 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
     public NewsFragment() {
         // Required empty public constructor
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(User event) {
+        //check data change
+       initActionBar();
+    }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -241,6 +249,9 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
     @Override
     public void onStart() {
         super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         IntentFilter intentFilter = new IntentFilter(Constants.ACTION_USER_RESULT);
         intentFilter.addAction(Constants.ACTION_LOG_OUT);
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
@@ -250,6 +261,7 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
     @Override
     public void onStop() {
         super.onStop();
+        EventBus.getDefault().unregister(this);
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext())).unregisterReceiver(userBroadCast);
     }
 
@@ -262,6 +274,7 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         mPresenter.dropView();
     }
 }
