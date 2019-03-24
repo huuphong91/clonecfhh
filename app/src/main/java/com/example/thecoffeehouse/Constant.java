@@ -10,6 +10,7 @@ public class Constant {
     public static final String LOGIN_FRAGMENT = "loginFragment";
     public static final String FIRST_UPDATE_FRAGMENT = "firstupdateFragment";
     public static final String CART_FRAGMENT = "cartFragment";
+    public static final String NOTIFICATION_FRAGMENT = "notificationFragment";
     public static String UPDATE_FRAGMENT = "updateFragment";
     public static String EDIT_LNAME_FRAGMENT = "editLNameFragment";
     public static String EDIT_FNAME_FRAGMENT = "editFNameFragment";

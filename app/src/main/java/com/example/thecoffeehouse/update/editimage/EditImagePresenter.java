@@ -1,18 +1,13 @@
 package com.example.thecoffeehouse.update.editimage;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.thecoffeehouse.R;
-import com.example.thecoffeehouse.data.model.User.User;
-import com.example.thecoffeehouse.update.editfirstname.IEditFirstNameContract;
+import com.example.thecoffeehouse.data.model.user.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -66,7 +61,6 @@ public class EditImagePresenter implements IEditImageContract.Presenter {
         mImageRef.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(callback.getContextt(), "Xoa thanh cong", Toast.LENGTH_SHORT).show();
                 Calendar calendar = Calendar.getInstance();
                 mFilePathImage = mStorageRef.child("image").child("image"+calendar.getTimeInMillis()+".png");
                 ByteArrayOutputStream baosImage = new ByteArrayOutputStream();
@@ -77,7 +71,6 @@ public class EditImagePresenter implements IEditImageContract.Presenter {
                 uploadTaskImage.addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(callback.getContextt(), "That bai", Toast.LENGTH_SHORT).show();
                         callback.onChangeFail("Fail");
                     }
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

@@ -2,6 +2,7 @@ package com.example.thecoffeehouse.data;
 
 import com.example.thecoffeehouse.data.model.entity.ResponseForYou;
 import com.example.thecoffeehouse.data.model.entity.ResponseNews;
+import com.example.thecoffeehouse.data.model.notification.Notification;
 import com.example.thecoffeehouse.data.model.product.Category;
 import com.example.thecoffeehouse.data.model.product.Order;
 import com.example.thecoffeehouse.data.model.store.Store;
@@ -38,4 +39,6 @@ public interface AppRepository {
     Single<List<ResponseForYou>> getForYou();
 
     Flowable<Long> loadApiNewsToDatabase();
+    void insertNotification(Notification notification);
+
 }

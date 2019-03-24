@@ -114,10 +114,8 @@ public class LoginDialogFragment extends Fragment implements IPresenterLoginCont
         if (requestCode == REQUEST_CODE) {
             AccountKitLoginResult accountKitLoginResult = data.getParcelableExtra(AccountKitLoginResult.RESULT_KEY);
             if (accountKitLoginResult.getError() != null) {
-                Toast.makeText(activity, "" + accountKitLoginResult.getError().getErrorType().getMessage(), Toast.LENGTH_SHORT).show();
                 return;
             } else if (accountKitLoginResult.wasCancelled()) {
-                Toast.makeText(activity, "CANCEL", Toast.LENGTH_SHORT).show();
                 return;
             } else {
                 presenter.checkFirstLogin(numberPhone);
@@ -194,13 +192,14 @@ public class LoginDialogFragment extends Fragment implements IPresenterLoginCont
         });
 
         mButtonFB.setOnClickListener(v -> {
-            SharedPreferences mPrefs = getContext().getSharedPreferences("dataUser", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = mPrefs.edit();
-            editor.clear();
-            editor.commit();
-            AccountKit.logOut();
-            Log.d(TAG, "initEvent: ");
-            onUpdateListener.onUpdateFragment();
+//            SharedPreferences mPrefs = getContext().getSharedPreferences("dataUser", Context.MODE_PRIVATE);
+//            SharedPreferences.Editor editor = mPrefs.edit();
+//            editor.clear();
+//            editor.commit();
+//            AccountKit.logOut();
+//            Log.d(TAG, "initEvent: ");
+//            onUpdateListener.onUpdateFragment();
+            Toast.makeText(activity, "Hello EveryBody", Toast.LENGTH_SHORT).show();
         });
 
         mButtonCommit.setOnClickListener(v -> {

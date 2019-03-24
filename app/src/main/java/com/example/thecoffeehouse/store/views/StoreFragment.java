@@ -255,7 +255,6 @@ public class StoreFragment extends Fragment implements OnMapReadyCallback, Store
     @Override
     public void onError(Throwable throwable) {
         Log.e(this.getClass().getName(), throwable.getLocalizedMessage());
-        Toast.makeText(getContext(), getResources().getText(R.string.load_api_failed), Toast.LENGTH_SHORT).show();
     }
 
     @Override
