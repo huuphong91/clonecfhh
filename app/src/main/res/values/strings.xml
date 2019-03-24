@@ -24,4 +24,7 @@
     <string name="filter_cate_title">Danh mục món</string>
     <string name="where_do_u_want_to_go">Bạn muốn đến đâu?</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

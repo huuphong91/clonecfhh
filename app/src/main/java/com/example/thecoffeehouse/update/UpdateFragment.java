@@ -2,7 +2,6 @@ package com.example.thecoffeehouse.update;
 
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -15,7 +14,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +26,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.thecoffeehouse.Constant;
 import com.example.thecoffeehouse.R;
-import com.example.thecoffeehouse.data.model.User.User;
+import com.example.thecoffeehouse.data.model.user.User;
 import com.example.thecoffeehouse.main.FragmentInteractionListener;
 import com.example.thecoffeehouse.main.IIIII;
 import com.example.thecoffeehouse.main.OnUpdateListener;
@@ -71,7 +69,6 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
     private AppCompatActivity activity;
     private FragmentInteractionListener mListener;
     private OnUpdateListener onUpdateListener;
-    private IIIII iiiii;
 
     public static UpdateFragment newInstance() {
         UpdateFragment fragment = new UpdateFragment();
@@ -92,13 +89,11 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Light_NoActionBar);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_update, container, false);
         initView(view);
         checkdataUser();
@@ -128,15 +123,11 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
 
     private void initEvents() {
         mRelChangeLastName.setOnClickListener(v -> {
-//            EditLastNameFragment.newInstance(user.getPhoneNumber(),user.getLastName()).show(getActivity().getSupportFragmentManager(), Constant.EDIT_NAME_FRAGMENT);
-//            getDialog().dismiss();
             mListener.onChangeFragment(EditLastNameFragment.newInstance(user.getPhoneNumber(), user.getLastName()), Constant.EDIT_LNAME_FRAGMENT);
         });
 
         mRelChangeFirstName.setOnClickListener(v -> {
             mListener.onChangeFragment(EditFirstNameFragment.newInstance(user.getPhoneNumber(), user.getFirstName()), Constant.EDIT_FNAME_FRAGMENT);
-//            EditFirstNameFragment.newInstance(user.getPhoneNumber(),user.getFirstName()).show(getActivity().getSupportFragmentManager(), Constant.EDIT_NAME_FRAGMENT);
-//            getDialog().dismiss();
         });
 
         mRelChangeBirthDay.setOnClickListener(v -> {
@@ -149,18 +140,11 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
         });
 
         mRelChangeGendle.setOnClickListener(v -> {
-//            dialogBox();
-            mListener.onChangeFragment(EditGenderFragment.newInstance(user.getPhoneNumber()),Constant.BOTTOM_SHEET);
-//            iiiii.iiiiii(EditGenderFragment.newInstance(user.getPhoneNumber()),Constant.BOTTOM_SHEET);
+            mListener.onChangeFragment(EditGenderFragment.newInstance(user.getPhoneNumber()), Constant.BOTTOM_SHEET);
         });
 
         mImageViewBack.setOnClickListener(v -> {
-
-//            Intent newIntent = new Intent(getContext(), MainActivity.class);
-//            newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(newIntent);
-            Log.d( "initEvents: ", "----");
+            Log.d("initEvents: ", "----");
             onUpdateListener.onUpdateFragment();
         });
 
@@ -176,18 +160,14 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
         String json = mPrefs.getString("myObject", null);
         user = gson.fromJson(json, User.class);
         if (json != null) {
-            Toast.makeText(getActivity(), "Co roi" + user.getFirstName(), Toast.LENGTH_SHORT).show();
             mTextViewLastName.setText(user.getLastName());
             mTextViewFirstName.setText(user.getFirstName());
             mTextViewBirthDay.setText(user.getBirthday());
             mTextViewPhone.setText(user.getPhoneNumber());
             mTextViewGendle.setText(user.getGender());
-            Glide.with(getContext()).load(user.getImage()).placeholder(R.drawable.img_bg_tch).into(mImageViewUser);
-        } else {
-            Toast.makeText(getActivity(), "Rong", Toast.LENGTH_SHORT).show();
+            Glide.with(getContext()).load(user.getImage()).placeholder(R.mipmap.store_placeholder).into(mImageViewUser);
         }
     }
-
 
 
     @Override
@@ -218,7 +198,7 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
                 final InputStream imageStream = getContext().getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                 mImageViewUser.setImageBitmap(selectedImage);
-                presenter.editImage(user.getPhoneNumber(),user.getImage(),selectedImage);
+                presenter.editImage(user.getPhoneNumber(), user.getImage(), selectedImage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_LONG).show();

@@ -1,137 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
     android:id="@+id/profile_container"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+
+        android:background="#FFF"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/fab_margin">
+
         <LinearLayout
-            android:paddingTop="10dp"
-            android:background="#FFF"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:weightSum="10"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:src="@drawable/img_star"
-                    android:layout_weight="8"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-                <TextView
-                    android:gravity="center_vertical"
+            android:paddingTop="10dp">
 
-                    android:text="The Coffee House Rewards"
-                    android:layout_weight="2"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="8"
+                    android:src="@drawable/staroneoo" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:text="The Coffee House Rewards" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="15dp"
-                android:weightSum="10"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:src="@drawable/img_music"
-                    android:layout_weight="8"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-                <TextView
-                    android:gravity="center_vertical"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
 
-                    android:text="Nhạc đang phát"
-                    android:layout_weight="2"
+                <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="8"
+                    android:src="@drawable/img_music" />
+
+                <TextView
+                    android:layout_width="match_parent"
+
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:text="Nhạc đang phát" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="15dp"
-                android:weightSum="10"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
                 <ImageView
-                    android:src="@drawable/img_hourglass"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="8"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:src="@drawable/img_hourglass" />
+
                 <TextView
-                    android:gravity="center_vertical"
-                    android:text="Lịch sử"
-                    android:layout_weight="2"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:text="Lịch sử" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="15dp"
-                android:weightSum="10"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
                 <ImageView
-                    android:src="@drawable/img_pay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="8"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:src="@drawable/img_pay" />
+
                 <TextView
-                    android:gravity="center_vertical"
-                    android:text="Thanh Toán"
-                    android:layout_weight="2"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:text="Thanh Toán" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="15dp"
-                android:weightSum="10"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
                 <ImageView
-                    android:src="@drawable/img_float"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="8"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:src="@drawable/img_float" />
+
                 <TextView
-                    android:gravity="center_vertical"
-                    android:text="Giúp Đỡ"
-                    android:layout_weight="2"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:text="Giúp Đỡ" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="15dp"
-                android:weightSum="10"
-                android:orientation="horizontal"
+
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
                 <ImageView
-                    android:src="@drawable/img_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="8"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:src="@drawable/img_setting" />
+
                 <TextView
-                    android:gravity="center_vertical"
-                    android:text="Cài Đặt"
-                    android:layout_weight="2"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:text="Cài Đặt" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/frag_profile_logout"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="8"
+                    android:src="@drawable/img_logout" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:text="Đăng xuất" />
             </LinearLayout>
         </LinearLayout>
-
-    </ScrollView>
+    </LinearLayout>
 </FrameLayout>

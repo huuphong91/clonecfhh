@@ -2,10 +2,7 @@ package com.example.thecoffeehouse.news;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +15,8 @@ import com.bumptech.glide.Glide;
 import com.example.thecoffeehouse.Constant;
 import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.RxBus;
-import com.example.thecoffeehouse.data.model.User.User;
+import com.example.thecoffeehouse.data.AppRespositoryImp;
+import com.example.thecoffeehouse.data.model.user.User;
 import com.example.thecoffeehouse.data.model.entity.ResponseForYou;
 import com.example.thecoffeehouse.data.model.entity.ResponseNews;
 import com.example.thecoffeehouse.login.LoginDialogFragment;
@@ -31,6 +29,7 @@ import com.example.thecoffeehouse.news.presenter.NewsPresenter;
 import com.example.thecoffeehouse.news.presenter.NewsPresenterImpl;
 import com.example.thecoffeehouse.news.viewnews.ForYouView;
 import com.example.thecoffeehouse.news.viewnews.NewsView;
+import com.example.thecoffeehouse.notification.NotificationFragment;
 import com.example.thecoffeehouse.update.UpdateFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -137,11 +136,18 @@ public class NewsFragment extends Fragment implements NewsView, ForYouView {
         mPrefs = activity.getSharedPreferences("dataUser", Context.MODE_PRIVATE);
         mDataRef = FirebaseDatabase.getInstance().getReference("Users");
         mUser = new User();
+//        AppRespositoryImp appRespositoryImp = new AppRespositoryImp(getActivity().getApplication());
+//        mImgNotification.setOnClickListener(v -> appRespositoryImp.getNotification(this));
+        mImgNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onChangeFragment(NotificationFragment.newInstance(), Constant.NOTIFICATION_FRAGMENT);
+            }
+        });
     }
 
     private void loggedView(User user) {
-        Toast.makeText(activity, "" + user.getLastName(), Toast.LENGTH_SHORT).show();
-        Glide.with(activity).load(user.getImage()).placeholder(R.drawable.img_bg_tch).into(mImgAccount);
+        Glide.with(activity).load(user.getImage()).placeholder(R.mipmap.store_placeholder).into(mImgAccount);
         mTxtName.setText(user.getFirstName() + " " + user.getLastName());
         mTxtName.setVisibility(View.VISIBLE);
         mImgAccount.setOnClickListener(v -> {

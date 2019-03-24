@@ -1,14 +1,13 @@
 package com.example.thecoffeehouse.firstupdate;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Base64;
 import com.example.thecoffeehouse.R;
-import com.example.thecoffeehouse.data.model.User.User;
+import com.example.thecoffeehouse.data.model.user.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
