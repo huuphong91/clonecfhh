@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import static com.facebook.accountkit.internal.AccountKitController.getApplicationContext;
 
-@Database(entities = {ResponseNews.class},version =1,exportSchema = false)
+@Database(entities = {ResponseNews.class}, version = 2, exportSchema = false)
 public abstract class NewsDatabase extends RoomDatabase {
     public abstract NewsDataDao newsDao();
 
@@ -23,7 +23,7 @@ public abstract class NewsDatabase extends RoomDatabase {
             synchronized (NewsDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context,
-                            NewsDatabase.class,"thecoffeehousenews")
+                            NewsDatabase.class, "thecoffeehousenews")
                             .fallbackToDestructiveMigration()
                             .addCallback(sRoomDatabaseCallback)
                             .build();

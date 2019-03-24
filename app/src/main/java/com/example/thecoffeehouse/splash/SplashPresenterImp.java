@@ -16,7 +16,7 @@ public class SplashPresenterImp implements SplashPresenter {
     private SplashView view;
 
 
-    public SplashPresenterImp(Application application, SplashView view) {
+    SplashPresenterImp(Application application, SplashView view) {
         this.view = view;
         repository = new AppRespositoryImp(application);
     }
@@ -26,10 +26,25 @@ public class SplashPresenterImp implements SplashPresenter {
     public void loadStore() {
         repository.loadApiToDatabase().observeOn(AndroidSchedulers.mainThread())
                 .subscribe(longs -> {
-
                     Log.d(TAG, "loadStore: added" + longs);
+                }, view::OnError, view::onLoadStoreSuccess);
+    }
 
-                }, throwable -> {
-                }, view::onLoadStoreSuccess);
+    @SuppressLint("CheckResult")
+    @Override
+    public void loadNews() {
+        repository.loadApiForNewsToDatabase().observeOn(AndroidSchedulers.mainThread())
+                .subscribe(longs -> {
+                    Log.d(TAG, "loadNews: added" + longs);
+                }, view::OnError, view::onLoadNewsSuccess);
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void loadpromotionNews() {
+        repository.loadApiNewsToDatabase().observeOn(AndroidSchedulers.mainThread())
+                .subscribe(longs -> {
+                    Log.d(TAG, "promotionNews: added" + longs);
+                }, view::OnError, view::OnLoadNewsPromotionSuccess);
     }
 }

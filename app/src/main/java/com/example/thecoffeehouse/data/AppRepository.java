@@ -1,5 +1,7 @@
 package com.example.thecoffeehouse.data;
 
+import com.example.thecoffeehouse.data.model.entity.ResponseForYou;
+import com.example.thecoffeehouse.data.model.entity.ResponseNews;
 import com.example.thecoffeehouse.data.model.notification.Notification;
 import com.example.thecoffeehouse.data.model.product.Category;
 import com.example.thecoffeehouse.data.model.product.Order;
@@ -19,7 +21,7 @@ public interface AppRepository {
 
     Single<List<Store>> getListStoreFromDatabase();
 
-    Flowable<Long> loadApiToDatabase();
+    Flowable<List<Long>> loadApiToDatabase();
 
     Observable<Order> getProduct();
 
@@ -27,6 +29,16 @@ public interface AppRepository {
 
     Observable<Order> getCartItem();
 
+    Single<List<ResponseNews>> getListForNewsFromDatabase();
+
+    Single<List<ResponseNews>> getNews();
+
+    Flowable<Long> loadApiForNewsToDatabase();
+    Single<List<ResponseForYou>> getListNewsFromDatabase();
+
+    Single<List<ResponseForYou>> getForYou();
+
+    Flowable<Long> loadApiNewsToDatabase();
     void insertNotification(Notification notification);
 
 }

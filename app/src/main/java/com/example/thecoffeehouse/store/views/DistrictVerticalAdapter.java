@@ -28,6 +28,7 @@ public class DistrictVerticalAdapter extends RecyclerView.Adapter<DistrictVertic
     private List<StoreResponeObject.State> mlistState;
     private List<Object> mListItem;
     private Context context;
+    private OnItemClickListener listener;
 
     public DistrictVerticalAdapter(List<StoreResponeObject.State> mlistState, Context context) {
         this.mlistState = mlistState;
@@ -45,8 +46,14 @@ public class DistrictVerticalAdapter extends RecyclerView.Adapter<DistrictVertic
     @NonNull
     @Override
     public DistrictViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_district, parent, false);
-        return new DistrictViewholder(view);
+        if (viewType == TYPE_STATE) {
+            View view = LayoutInflater.from(context).inflate(R.layout.item_state, parent, false);
+            return new DistrictViewholder(view);
+        } else {
+            View view = LayoutInflater.from(context).inflate(R.layout.item_district, parent, false);
+            return new DistrictViewholder(view);
+        }
+
     }
 
     @Override
@@ -55,15 +62,14 @@ public class DistrictVerticalAdapter extends RecyclerView.Adapter<DistrictVertic
         if (getItemViewType(position) == TYPE_STATE) {
             StoreResponeObject.State state = (StoreResponeObject.State) mListItem.get(position);
             holder.tvStateName.setText(state.stateName);
-            holder.tvStateName.setPadding(0, 0, 0, 0);
-            holder.tvStateName.setBackgroundColor(Color.parseColor("#d0d0d0"));
         } else {
             StoreResponeObject.District district = (StoreResponeObject.District) mListItem.get(position);
             holder.tvStateName.setText(district.districtName);
-            DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-            holder.tvStateName.setPadding((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, metrics), 0, 0, 0);
-            holder.tvStateName.setBackgroundColor(Color.WHITE);
         }
+
+        holder.tvStateName.setOnClickListener(v -> {
+            listener.onClick(v,mListItem.get(position));
+        });
     }
 
     @Override
@@ -105,5 +111,13 @@ public class DistrictVerticalAdapter extends RecyclerView.Adapter<DistrictVertic
             Log.d(TAG, "getItemCount: " + mListItem.size());
         }
         notifyDataSetChanged();
+    }
+
+    void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
+    }
+
+    interface OnItemClickListener {
+        void onClick(View v, Object item);
     }
 }
