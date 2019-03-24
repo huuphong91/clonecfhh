@@ -2,4 +2,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <corners android:radius="@dimen/fab_margin" />
     <solid android:color="@color/colorPrimary"/>
+    <padding android:bottom="@dimen/fab_margin"/>
 </shape>

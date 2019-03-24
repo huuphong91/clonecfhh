@@ -59,10 +59,7 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
         super.onCreate (savedInstanceState);
         setContentView (R.layout.fragment_main);
         setAnimation ();
-        initView ();
-        addFragment (MainFragment.newInstance ());
-        initData ();
-        Log.d ("onCreate: ", getResources ().getDisplayMetrics ().densityDpi + "----");
+
     }
 
     private void initData() {
@@ -79,9 +76,7 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
         mFragmentManager = getSupportFragmentManager ();
         mFragmentBackstackStateManager = new FragmentBackstackStateManager ();
         mFragmentBackstackStateManager.apply (mFragmentManager);
-
         mPrefs = getSharedPreferences ("dataUser", MODE_PRIVATE);
-
     }
 
     private void addFragment(Fragment fragment) {
@@ -104,10 +99,6 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
             Explode explode = new Explode ();
             explode.setDuration (700);
             explode.setInterpolator (new AccelerateDecelerateInterpolator ());
-            Slide slide = new Slide ();
-            slide.setSlideEdge (Gravity.LEFT);
-            slide.setDuration (400);
-            slide.setInterpolator (new AccelerateDecelerateInterpolator ());
             getWindow ().setExitTransition (explode);
             getWindow ().setEnterTransition (explode);
         }
@@ -130,22 +121,26 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
 //        }
 //    }
 
-
-    private void checkdataUser() {
-        Gson gson = new Gson ();
-        String json = mPrefs.getString ("myObject", null);
-        User user = gson.fromJson (json, User.class);
-        if (json != null) {
-            Toast.makeText (MainActivity.this, "Co roi" + user.getFirstName (), Toast.LENGTH_SHORT).show ();
-        } else {
-            Toast.makeText (this, "Rong", Toast.LENGTH_SHORT).show ();
-        }
-    }
+//
+//    private void checkdataUser() {
+//        Gson gson = new Gson ();
+//        String json = mPrefs.getString ("myObject", null);
+//        User user = gson.fromJson (json, User.class);
+//        if (json != null) {
+//            Toast.makeText (MainActivity.this, "Co roi" + user.getFirstName (), Toast.LENGTH_SHORT).show ();
+//        } else {
+//            Toast.makeText (this, "Rong", Toast.LENGTH_SHORT).show ();
+//        }
+//    }
 
     @Override
     protected void onResume() {
         super.onResume ();
-        checkdataUser ();
+        initView ();
+        addFragment (MainFragment.newInstance ());
+        initData ();
+        Log.d ("onCreate: ", getResources ().getDisplayMetrics ().densityDpi + "----");
+//        checkdataUser ();
     }
 
 
@@ -156,9 +151,7 @@ public class MainActivity extends AppCompatActivity implements FragmentInteracti
 
     @Override
     public void onUpdateFragment() {
-//        clearStack ();
         onBackPressed ();
-//        onBackPressed();
     }
 
     @Override

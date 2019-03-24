@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">The coffee house fake</string>
+    <string name="app_name">TheCoffeeHouse FAKE</string>
     <string name="title_news">Tin tức</string>
     <string name="title_order">Đặt hàng</string>
     <string name="title_store">Cửa hàng</string>
@@ -23,5 +23,9 @@
     <string name="button_remove_from_cart">Bỏ chọn món</string>
     <string name="filter_cate_title">Danh mục món</string>
     <string name="where_do_u_want_to_go">Bạn muốn đến đâu?</string>
+    <string name="gps_not_found_title">Thông báo</string>
+    <string name="gps_not_found_message">Bạn nên bật Dịch vụ Định vị để TheCoffeeHouse FAKE có thể tìm kiếm các địa điểm gần bạn</string>
+    <string name="gps_yes">Bật định vị</string>
+    <string name="gps_no">Không</string>
 
 </resources>
