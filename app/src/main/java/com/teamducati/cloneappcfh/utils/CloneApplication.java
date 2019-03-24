@@ -1,4 +1,4 @@
-package com.teamducati.cloneappcfh;
+package com.teamducati.cloneappcfh.utils;
 
 import com.teamducati.cloneappcfh.di.DaggerAppComponent;
 

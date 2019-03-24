@@ -14,12 +14,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.di.ActivityScoped;
-import com.teamducati.cloneappcfh.entity.APIStoreMap.Address;
 import com.teamducati.cloneappcfh.entity.MessageEvent;
 import com.teamducati.cloneappcfh.entity.api_order.DataItem;
 import com.teamducati.cloneappcfh.entity.api_order.ItemProductResponse;
 import com.teamducati.cloneappcfh.screen.main.MainActivity;
-import com.teamducati.cloneappcfh.screen.order.ShipAddressRepick.ShipAddressRepick;
+import com.teamducati.cloneappcfh.screen.order.shipaddressrepick.ShipAddressRepick;
 import com.teamducati.cloneappcfh.screen.order.ordersearch.OrderSearchDialogFragment;
 import com.teamducati.cloneappcfh.utils.Constants;
 import com.teamducati.cloneappcfh.utils.Utils;
@@ -80,6 +79,7 @@ public class OrderFragment extends DaggerFragment implements OrderContract.View 
     @BindView(R.id.fabSortProduct)
     FloatingActionButton mSortProduct;
     private Unbinder unbinder;
+
     @Inject
     OrderContract.Presenter mPresenter;
 
@@ -88,9 +88,7 @@ public class OrderFragment extends DaggerFragment implements OrderContract.View 
     private String mAddressCurrent = null;
 
     @Inject
-    public OrderFragment() {
-
-    }
+    public OrderFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

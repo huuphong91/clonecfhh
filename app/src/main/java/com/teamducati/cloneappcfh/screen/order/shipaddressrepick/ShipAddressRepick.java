@@ -1,4 +1,4 @@
-package com.teamducati.cloneappcfh.screen.order.ShipAddressRepick;
+package com.teamducati.cloneappcfh.screen.order.shipaddressrepick;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -18,6 +18,8 @@ import com.teamducati.cloneappcfh.screen.order.adapter.RepickShipAddressAdapter;
 import java.util.List;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -26,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import dagger.android.support.DaggerDialogFragment;
 
 public class ShipAddressRepick extends DialogFragment implements ShipAddressRepickContract.View {
 
@@ -66,6 +69,8 @@ public class ShipAddressRepick extends DialogFragment implements ShipAddressRepi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.RepickShipAddressFullScreen);
+
+        mPresenter = new ShipAddressRepickPresenter(this);
 
         placesClient = Places.createClient(Objects.requireNonNull(getActivity()));
 

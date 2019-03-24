@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
+import com.teamducati.cloneappcfh.di.FragmentScoped;
 import com.teamducati.cloneappcfh.entity.User;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
 import com.teamducati.cloneappcfh.utils.Constants;
@@ -31,12 +32,15 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import dagger.android.support.DaggerFragment;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -63,12 +67,13 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
 
     private User user;
     private Unbinder unbinder;
-    private AccountContract.Presenter mPresenter;
+
     private Uri filePath;
     private User userObj;
 //    private FirebaseStorage storage;
 //    private StorageReference storageReference;
 
+    @Inject
     public ProfileUserFragment() {
     }
 
@@ -184,10 +189,10 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_close:
-                mPresenter.onLogout();
+//                mPresenter.onLogout();
                 break;
             case R.id.btnLogOut:
-                mPresenter.onLogout();
+//                mPresenter.onLogout();
                 break;
             case R.id.edtFirstName:
                 DialogUpdate.newInstance(user, "First name").show(getFragmentManager(), "Update");
@@ -224,7 +229,7 @@ public class ProfileUserFragment extends Fragment implements AccountContract.Vie
 
     private void uploadImage(Bitmap bitmap) {
         user.setImgAvatarUrl(convertBitmapToString(bitmap));
-        mPresenter.updateUserProperty(user);
+//        mPresenter.updateUserProperty(user);
 
     }
 

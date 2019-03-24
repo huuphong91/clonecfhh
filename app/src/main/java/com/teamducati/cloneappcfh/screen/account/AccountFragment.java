@@ -23,6 +23,7 @@ import androidx.room.Insert;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import dagger.Lazy;
 import dagger.android.support.DaggerFragment;
 
 @ActivityScoped
@@ -32,8 +33,9 @@ public class AccountFragment extends DaggerFragment implements AccountContract.V
     FrameLayout mContentAccountFrame;
 
     private Unbinder unbinder;
-    private LoginFragment loginFragment;
+
     private ProfileUserFragment profileUserFragment;
+    private LoginFragment loginFragment;
 
     @Inject
     AccountContract.Presenter mPresenter;
@@ -48,13 +50,28 @@ public class AccountFragment extends DaggerFragment implements AccountContract.V
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         unbinder = ButterKnife.bind(this, view);
+        addFragmentToActivity();
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    private void addFragmentToActivity() {
+        ProfileUserFragment profileUserFragment = (ProfileUserFragment) Objects.requireNonNull(getActivity())
+                .getSupportFragmentManager()
+                .findFragmentById(R.id.contentAccountFrame);
+        if (profileUserFragment == null) {
+            profileUserFragment = ProfileUserFragment_Factory.newProfileUserFragment();
+            ActivityUtils.addFragmentToActivity(Objects.requireNonNull(getActivity())
+                    .getSupportFragmentManager(),profileUserFragment,R.id.contentAccountFrame);
+        }
 
+        LoginFragment loginFragment = (LoginFragment) Objects.requireNonNull(getActivity())
+                .getSupportFragmentManager()
+                .findFragmentById(R.id.contentAccountFrame);
+        if (loginFragment == null) {
+            loginFragment = LoginFragment_Factory.newLoginFragment();
+            ActivityUtils.addFragmentToActivity(Objects.requireNonNull(getActivity())
+                    .getSupportFragmentManager(),loginFragment,R.id.contentAccountFrame);
+        }
     }
 
     @Override
@@ -63,19 +80,19 @@ public class AccountFragment extends DaggerFragment implements AccountContract.V
         mPresenter.takeView(this);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mPresenter.dropView();
-    }
 
     @Override
     public void showUserDetail() {
-//        profileUserFragment = ProfileUserFragment.newInstance();
-//        profileUserFragment.setPresenter(mPresenter);
-//        ActivityUtils.chooseFragmentWannaDisplay(getActivity().getSupportFragmentManager(), profileUserFragment,
-//                R.id.contentAccountFrame);
+        ActivityUtils.chooseFragmentWannaDisplay(Objects.requireNonNull(getActivity()).getSupportFragmentManager()
+                ,profileUserFragment
+                ,R.id.contentAccountFrame);
+    }
 
+    @Override
+    public void showLoginScreen() {
+        ActivityUtils.chooseFragmentWannaDisplay(Objects.requireNonNull(getActivity()).getSupportFragmentManager()
+                ,loginFragment
+                ,R.id.contentAccountFrame);
     }
 
     @Override
@@ -83,15 +100,14 @@ public class AccountFragment extends DaggerFragment implements AccountContract.V
         ActivityUtils.restartAllFragmentDisplay(getActivity());
     }
 
-
     @Override
     public void showLoginFail(String whyFail) {
-        loginFragment.showLoginFail(whyFail);
+//        loginFragment.showLoginFail(whyFail);
     }
 
     @Override
     public void showUpdateUserPropertySuccess() {
-        profileUserFragment.showUpdateUserPropertySuccess();
+//        profileUserFragment.showUpdateUserPropertySuccess();
     }
 
     @Override
@@ -100,18 +116,14 @@ public class AccountFragment extends DaggerFragment implements AccountContract.V
     }
 
     @Override
-    public void showLoginScreen() {
-        loginFragment = LoginFragment.newInstance();
-        ActivityUtils.chooseFragmentWannaDisplay(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
-                loginFragment, R.id.contentAccountFrame);
-//        loginFragment.setPresenter(mPresenter);
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.dropView();
+    }
 }

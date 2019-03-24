@@ -1,4 +1,4 @@
-package com.teamducati.cloneappcfh.screen.order.ShipAddressRepick;
+package com.teamducati.cloneappcfh.screen.order.shipaddressrepick;
 
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;

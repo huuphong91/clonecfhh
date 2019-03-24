@@ -2,7 +2,7 @@ package com.teamducati.cloneappcfh.di;
 
 import android.app.Application;
 
-import com.teamducati.cloneappcfh.CloneApplication;
+import com.teamducati.cloneappcfh.utils.CloneApplication;
 
 import javax.inject.Singleton;
 
