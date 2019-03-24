@@ -27,6 +27,10 @@
 
     <style name="DetailDialogFragment" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="windowNoTitle">true</item>
+        <item name="android:layout_above">@+id/fab_filter</item>
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
 
     <style name="AppTheme.SplashScreen" parent="AppTheme.NoActionBar"></style>

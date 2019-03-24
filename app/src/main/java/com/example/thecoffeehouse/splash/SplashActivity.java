@@ -4,6 +4,7 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.transition.Explode;
 import android.transition.Slide;
 import android.util.Log;
 import android.view.Gravity;
@@ -79,12 +80,12 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
     }
 
     private void setAnimation() {
-        Slide slide = new Slide();
-        slide.setSlideEdge(Gravity.LEFT);
-        slide.setDuration(400);
-        slide.setInterpolator(new AccelerateDecelerateInterpolator());
-        getWindow().setExitTransition(slide);
-        getWindow().setEnterTransition(slide);
+        if (Build.VERSION.SDK_INT > 20) {
+            Explode explode = new Explode ();
+            explode.setDuration (700);
+            explode.setInterpolator (new AccelerateDecelerateInterpolator ());
+            getWindow ().setExitTransition (explode);
+            getWindow ().setEnterTransition (explode);
     }
 
     private void checkLoadResult() {

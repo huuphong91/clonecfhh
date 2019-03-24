@@ -1,6 +1,7 @@
 package com.example.thecoffeehouse.order.cart;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,15 +10,24 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.thecoffeehouse.Constant;
 import com.example.thecoffeehouse.R;
+import com.example.thecoffeehouse.data.model.User.User;
+import com.example.thecoffeehouse.main.MainActivity;
 import com.example.thecoffeehouse.main.OnUpdateListener;
 import com.example.thecoffeehouse.order.ConfirmDialogFragment;
 import com.example.thecoffeehouse.order.FormatPrice;
 import com.example.thecoffeehouse.order.cart.adpater.CartAdapter;
 import com.example.thecoffeehouse.order.cart.adpater.OnOrderListCartListener;
 import com.example.thecoffeehouse.order.cart.model.Cart;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
 
 import java.util.ArrayList;
@@ -33,7 +43,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class CartFragment extends Fragment implements CartFragmentView {
     private RecyclerView recyclerView;
-    private MapView mapView;
+    private MapView mMapView;
     private ImageView imgViewClose;
     private EditText edtUsername;
     private EditText edtPhoneNumber;
@@ -51,6 +61,8 @@ public class CartFragment extends Fragment implements CartFragmentView {
     private long total = 0;
     private OnUpdateListener onUpdateListener;
     private FormatPrice formatPrice = new FormatPrice ();
+    private SharedPreferences mSharedPrefs;
+    private double latitude, longitude;
 
     public static CartFragment newInstance() {
         CartFragment fragment = new CartFragment ();
@@ -78,7 +90,6 @@ public class CartFragment extends Fragment implements CartFragmentView {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
 //        setStyle (DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Material_Light_NoActionBar_Fullscreen);
-
     }
 
     @Override
@@ -86,7 +97,23 @@ public class CartFragment extends Fragment implements CartFragmentView {
         super.onViewCreated (view, savedInstanceState);
         initViewID (view);
         initEvent ();
+        checkdataUser ();
+        setupMapView (savedInstanceState);
 
+    }
+
+    private void setupMapView(Bundle savedInstanceState) {
+        mMapView.onCreate (savedInstanceState);
+        mMapView.getMapAsync (googleMap -> {
+            googleMap.getUiSettings ().setMapToolbarEnabled (false);
+            googleMap.getUiSettings ().setMyLocationButtonEnabled (false);
+            googleMap.getUiSettings ().setZoomControlsEnabled (false);
+            MarkerOptions markerOptions = new MarkerOptions ();
+            markerOptions.position (new LatLng (latitude, longitude));
+            markerOptions.icon (BitmapDescriptorFactory.fromResource (R.drawable.ic_marker_map));
+            googleMap.addMarker (markerOptions);
+            googleMap.moveCamera (CameraUpdateFactory.newLatLngZoom (new LatLng (latitude, longitude), 14f));
+        });
     }
 
     private void initData() {
@@ -95,16 +122,21 @@ public class CartFragment extends Fragment implements CartFragmentView {
 
     private void initEvent() {
         imgViewClose.setOnClickListener (v -> {
-//            CartFragment.this.dismiss ();
             onUpdateListener.onUpdateFragment ();
         });
-        btnOrder.setOnClickListener (v -> ConfirmDialogFragment.newInstance ((int) total).show (getFragmentManager (), ""));
+        btnOrder.setOnClickListener (v -> {
+            if (!"".equals (edtUsername.getText ().toString ()) && !"".equals (edtPhoneNumber.getText ().toString ())) {
+                ConfirmDialogFragment.newInstance ((int) total, edtUsername.getText ().toString (), edtPhoneNumber.getText ().toString ()).show (getFragmentManager (), "");
+            } else {
+                Toast.makeText (getContext (), "Điền thông tin giao hàng!", Toast.LENGTH_SHORT).show ();
+            }
+        });
     }
 
     private void initViewID(View view) {
         cartPresenter = new CartPresenterImp (getActivity ().getApplication (), this);
         imgViewClose = view.findViewById (R.id.img_view_close);
-        mapView = view.findViewById (R.id.img_view_map_cart);
+        mMapView = view.findViewById (R.id.img_view_map_cart);
         edtUsername = view.findViewById (R.id.edt_user_name);
         edtPhoneNumber = view.findViewById (R.id.edt_phone);
         btnChange = view.findViewById (R.id.btn_change);
@@ -122,6 +154,7 @@ public class CartFragment extends Fragment implements CartFragmentView {
         recyclerView.setAdapter (mCartAdapter);
         mCartAdapter.setListener (mListener);
         btnOrder = view.findViewById (R.id.btn_book);
+        mSharedPrefs = getContext ().getSharedPreferences ("dataUser", Context.MODE_PRIVATE);
     }
 
     @Override
@@ -148,7 +181,41 @@ public class CartFragment extends Fragment implements CartFragmentView {
     public void onResume() {
         super.onResume ();
         initData ();
-//        getDialog ().getWindow ().clearFlags (WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        getDialog ().getWindow ().setStatusBarColor (getResources ().getColor (R.color.colorPrimaryDark));
+        mMapView.onResume ();
+    }
+
+    private void checkdataUser() {
+        Gson gson = new Gson ();
+        String json = mSharedPrefs.getString ("myObject", null);
+        if (json != null) {
+            User user = gson.fromJson (json, User.class);
+            if (user != null) {
+                edtUsername.setText (user.getFirstName () + " " + user.getLastName ());
+                edtPhoneNumber.setText (user.getPhoneNumber ());
+            }
+        }
+        SharedPreferences sharedPreferences = getContext ().getSharedPreferences (Constant.USER_LOCATION, Context.MODE_PRIVATE);
+        String address = sharedPreferences.getString (Constant.LAST_KNOWN_LOCATION, "");
+        longitude = sharedPreferences.getFloat (Constant.CURRENT_LONGITUDE, 106.6297f);
+        latitude = sharedPreferences.getFloat (Constant.CURRENT_LATITUDE, 10.8231f);
+        tvAddress.setText (address);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart ();
+        mMapView.onStart ();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop ();
+        mMapView.onStop ();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy ();
+        mMapView.onDestroy ();
     }
 }
