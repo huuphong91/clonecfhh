@@ -112,6 +112,11 @@ public class LoginDialogFragment extends Fragment implements IPresenterLoginCont
             if (accountKitLoginResult.getError () != null) {
                 return;
             } else if (accountKitLoginResult.wasCancelled ()) {
+                mButtonCommit.loadingFailed ();
+                mButtonCommit.reset ();
+//                new Handler ().postDelayed (() -> {
+//                    mButtonCommit.reset ();
+//                }, 500);
                 return;
             } else {
                 presenter.checkFirstLogin (numberPhone);

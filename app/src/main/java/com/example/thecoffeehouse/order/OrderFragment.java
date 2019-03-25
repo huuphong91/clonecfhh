@@ -15,7 +15,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.thecoffeehouse.CheckNetworkState;
 import com.example.thecoffeehouse.Constant;
 import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.main.FragmentInteractionListener;
@@ -141,7 +143,7 @@ public class OrderFragment extends Fragment implements OrderView,
         rotate_forward = AnimationUtils.loadAnimation (getContext (), R.anim.rotate_forward);
         rotate_backward = AnimationUtils.loadAnimation (getContext (), R.anim.rotate_backward);
 
-        getLocation ();
+
     }
 
     private TabLayout.OnTabSelectedListener onTabSelectedListener = new TabLayout.OnTabSelectedListener () {
@@ -207,7 +209,13 @@ public class OrderFragment extends Fragment implements OrderView,
     @Override
     public void onResume() {
         super.onResume ();
-        initData ();
+        if (CheckNetworkState.getInstance (getActivity ().getApplication ()).checkNetwork ()) {
+            initData ();
+            getLocation ();
+        } else {
+            Toast.makeText (getContext (), "Không có kết nối internet" , Toast.LENGTH_SHORT).show ();
+        }
+
     }
 
     private void getLocation() {
