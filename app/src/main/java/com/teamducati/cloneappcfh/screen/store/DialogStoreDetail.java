@@ -49,12 +49,15 @@ public class DialogStoreDetail {
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             mStroreDetail.addView(imageView);
         }
+
         mStroreDetail.setFlipInterval(5000);
         mStroreDetail.setAutoStart(true);
-        Animation animation_in_right = AnimationUtils.loadAnimation(context, R.anim.slide_in_right);
-        Animation animation_out_right = AnimationUtils.loadAnimation(context, R.anim.slide_out_left);
-        mStroreDetail.setInAnimation(animation_in_right);
-        mStroreDetail.setOutAnimation(animation_out_right);
+        if(listImage.size()>1){
+            Animation animation_in_right = AnimationUtils.loadAnimation(context, R.anim.slide_in_right);
+            Animation animation_out_right = AnimationUtils.loadAnimation(context, R.anim.slide_out_left);
+            mStroreDetail.setInAnimation(animation_in_right);
+            mStroreDetail.setOutAnimation(animation_out_right);
+        }
 
         TextView mNameStoreMap = dialog.findViewById(R.id.txtNameStroreDetail);
         mNameStoreMap.setText(name);
