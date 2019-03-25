@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.teamducati.cloneappcfh.R;
+import com.teamducati.cloneappcfh.utils.Constants;
 
 import androidx.fragment.app.DialogFragment;
 
@@ -57,8 +58,8 @@ public class NewsWebViewDetailsDialogFragment extends DialogFragment {
     private void initData() {
         bundle = this.getArguments();
         if (bundle != null) {
-            mUrl = bundle.getString("url");
-            mTitle = bundle.getString("title");
+            mUrl = bundle.getString(Constants.KEY_BUNDLE_WEB_VIEW_URL);
+            mTitle = bundle.getString(Constants.KEY_BUNDLE_WEB_VIEW_TITLE);
 
         }
     }

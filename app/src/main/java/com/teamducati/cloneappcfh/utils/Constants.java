@@ -23,4 +23,16 @@ public class Constants {
     public static final int PICK_IMAGE = 1;
     public static final String STORAGE_URL = "gs://thecoffeehouseproject-1d85c.appspot.com/";
 
+    public static final String FIREBASE_ID="firebase_id";
+    public static final String FIREBASE_TITLE="firebase_title";
+    public static final String FIREBASE_CONTENT="firebase_content";
+    public static final String FIREBASE_IMAGE_URL="firebase_url";
+
+    public static final String KEY_BUNDLE_FIREBASE_TITLE="title_notification";
+    public static final String KEY_BUNDLE_FIREBASE_CONTENT="content_notification";
+    public static final String KEY_BUNDLE_FIREBASE_IMAGE_URL="image_notification";
+
+    public static final String KEY_BUNDLE_WEB_VIEW_TITLE="title";
+    public static final String KEY_BUNDLE_WEB_VIEW_URL="url";
+
 }

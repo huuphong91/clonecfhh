@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.Notification;
 import com.teamducati.cloneappcfh.screen.news.notificationsdetails.NotificationDetailsDialogFragment;
+import com.teamducati.cloneappcfh.utils.Constants;
 
 import java.util.List;
 
@@ -95,9 +96,9 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
                     NotificationDetailsDialogFragment newsNotificationDialogFragment =
                             new NotificationDetailsDialogFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putString("title_notification",NotificationObj.getTilte());
-                    bundle.putString("content_notification", NotificationObj.getContent());
-                    bundle.putString("image_notification", NotificationObj.getUrl());
+                    bundle.putString(Constants.KEY_BUNDLE_FIREBASE_TITLE,NotificationObj.getTilte());
+                    bundle.putString(Constants.KEY_BUNDLE_FIREBASE_CONTENT, NotificationObj.getContent());
+                    bundle.putString(Constants.KEY_BUNDLE_FIREBASE_IMAGE_URL, NotificationObj.getUrl());
                     newsNotificationDialogFragment.setArguments(bundle);
                     newsNotificationDialogFragment.show(activity.getSupportFragmentManager(), null);
 

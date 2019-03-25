@@ -11,7 +11,7 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="@dimen/margin_material_16dp"
                 android:src="@drawable/ic_person_grey_700_24dp" />
 
             <Button
@@ -19,7 +19,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="@dimen/margin_material_16dp"
                 android:layout_toRightOf="@id/img_news_person"
                 android:background="@drawable/custom_button"
                 android:text="Đăng Nhập"
@@ -33,6 +33,6 @@
                 android:layout_height="24dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
+                android:layout_marginRight="@dimen/margin_material_16dp"
                 android:src="@drawable/ic_notifications_grey_800_24dp" />
         </RelativeLayout>

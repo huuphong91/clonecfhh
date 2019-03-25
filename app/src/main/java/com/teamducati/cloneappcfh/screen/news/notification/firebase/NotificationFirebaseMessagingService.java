@@ -36,6 +36,7 @@ import com.teamducati.cloneappcfh.entity.Notification;
 import com.teamducati.cloneappcfh.screen.main.MainActivity;
 import com.teamducati.cloneappcfh.screen.news.notification.NoticationContract;
 import com.teamducati.cloneappcfh.screen.news.notification.NotificationPresenter;
+import com.teamducati.cloneappcfh.utils.Constants;
 
 import java.util.Date;
 import java.util.List;
@@ -70,13 +71,13 @@ public class NotificationFirebaseMessagingService extends FirebaseMessagingServi
 
             sendNotification(remoteMessage.getNotification().getBody(),
                     remoteMessage.getNotification().getTitle(),
-                    remoteMessage.getData().get("firebase_url"));
+                    remoteMessage.getData().get(Constants.FIREBASE_IMAGE_URL));
 
             mPresenter.onInsertListNotification(new Notification(
-                    remoteMessage.getData().get("firebase_title"),
-                    remoteMessage.getData().get("firebase_content"),
+                    remoteMessage.getData().get(Constants.FIREBASE_TITLE),
+                    remoteMessage.getData().get(Constants.FIREBASE_CONTENT),
                     new Date().toString(),
-                    remoteMessage.getData().get("firebase_url")
+                    remoteMessage.getData().get(Constants.FIREBASE_IMAGE_URL)
             ));
 
         }
@@ -156,10 +157,10 @@ public class NotificationFirebaseMessagingService extends FirebaseMessagingServi
     }
 
     public void sendDataNotification(Intent intent, String title, String content, String url) {
-        intent.putExtra("firebase_id", "123456789fpt");
-        intent.putExtra("firebase_title", title);
-        intent.putExtra("firebase_content", content);
-        intent.putExtra("firebase_url", url);
+        intent.putExtra(Constants.FIREBASE_ID, "123456789fpt");
+        intent.putExtra(Constants.FIREBASE_TITLE, title);
+        intent.putExtra(Constants.FIREBASE_CONTENT, content);
+        intent.putExtra(Constants.FIREBASE_IMAGE_URL, url);
     }
 
     @Override

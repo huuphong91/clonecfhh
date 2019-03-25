@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.News;
 import com.teamducati.cloneappcfh.screen.news.newsdetails.NewsWebViewDetailsDialogFragment;
+import com.teamducati.cloneappcfh.utils.Constants;
 
 import java.util.List;
 
@@ -56,14 +57,14 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.NewsVi
 
         holder.setItemClickListener((view, position1, isLongClick) -> {
 
-                AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                NewsWebViewDetailsDialogFragment dialogFragmentDetails =
-                        new NewsWebViewDetailsDialogFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("url", mNewss.get(position1).getUrl());
-                bundle.putString("title", mNewss.get(position1).getTitle());
-                dialogFragmentDetails.setArguments(bundle);
-                dialogFragmentDetails.show(activity.getSupportFragmentManager(), null);
+            AppCompatActivity activity = (AppCompatActivity) view.getContext();
+            NewsWebViewDetailsDialogFragment newsWebViewDetailsDialogFragment =
+                    new NewsWebViewDetailsDialogFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString(Constants.KEY_BUNDLE_WEB_VIEW_URL, mNewss.get(position1).getUrl());
+            bundle.putString(Constants.KEY_BUNDLE_WEB_VIEW_TITLE, mNewss.get(position1).getTitle());
+            newsWebViewDetailsDialogFragment.setArguments(bundle);
+            newsWebViewDetailsDialogFragment.show(activity.getSupportFragmentManager(), null);
         });
     }
 

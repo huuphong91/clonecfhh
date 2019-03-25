@@ -20,7 +20,6 @@ import com.teamducati.cloneappcfh.di.ActivityScoped;
 import com.teamducati.cloneappcfh.entity.News;
 import com.teamducati.cloneappcfh.entity.NewsPromotion;
 import com.teamducati.cloneappcfh.entity.User;
-import com.teamducati.cloneappcfh.screen.main.MainViewPager;
 import com.teamducati.cloneappcfh.screen.main.UserBroadCast;
 import com.teamducati.cloneappcfh.screen.main.UserBroadCast_Factory;
 import com.teamducati.cloneappcfh.screen.news.adapter.NewsListAdapter;
@@ -54,7 +53,7 @@ import dagger.android.support.DaggerFragment;
  * A simple {@link Fragment} subclass.
  */
 @ActivityScoped
-public class NewsFragment extends DaggerFragment implements NewsContract.View {
+public class NewsFragment extends DaggerFragment implements NewsContract.View, View.OnClickListener {
 
     @BindView(R.id.recycler_view_news_promotion)
     RecyclerView mRecyclerViewNewsPromotion;
@@ -80,16 +79,15 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
 
     @Inject
     NewsPromotionListAdapter mAdapterNewsPromotion;
-
     @Inject
     NewsListAdapter mAdapterNews;
-
     @Inject
     NewsContract.Presenter mPresenter;
 
-    private MainViewPager mainViewPager;
-
     private User userObj;
+
+    private NewsNotificationDialogFragment newsNotificationDialogFragment;
+
 
     private Unbinder unbinder;
 
@@ -97,18 +95,20 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
     public NewsFragment() {
         // Required empty public constructor
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(User event) {
         //check data change
-       initActionBar();
+        initActionBar();
     }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news, container, false);
         unbinder = ButterKnife.bind(this, view);
-        userBroadCast = UserBroadCast_Factory.newUserBroadCast(this);
-        bottomNavigationView = getActivity().findViewById(R.id.navigation);
+        initMappingViewId();
+        initBroadCastLogout();
         initEvent();
         initShowStartupDialogNotification();
         initUI();
@@ -121,6 +121,9 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
         initRecyclerViewNewsPromotion();
     }
 
+    private void initBroadCastLogout() {
+        userBroadCast = UserBroadCast_Factory.newUserBroadCast(this);
+    }
     public void initRecyclerViewNewsPromotion() {
         mRecyclerViewNewsPromotion.setHasFixedSize(true);
         mRecyclerViewNewsPromotion.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
@@ -132,49 +135,22 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
     }
 
     private void initEvent() {
-        mainViewPager = new MainViewPager(getActivity(), null);
-        btnLogin.setBackgroundResource(R.drawable.custom_button_selector);
-        btnLogin.setOnClickListener(view ->
-                bottomNavigationView.setSelectedItemId(R.id.navigation_account)
-        );
-        imgNotificationSignIn.setOnClickListener(view -> {
-            NewsNotificationDialogFragment newsNotificationDialogFragment =
-                    new NewsNotificationDialogFragment();
-            newsNotificationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
-
-        });
-        imgNotificationSignOut.setOnClickListener(view -> {
-            NewsNotificationDialogFragment newsNotificationDialogFragment =
-                    new NewsNotificationDialogFragment();
-            newsNotificationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
-
-        });
+        btnLogin.setOnClickListener(this);
+        imgNotificationSignIn.setOnClickListener(this);
+        imgNotificationSignOut.setOnClickListener(this);
+        mTxtNameNewsLogin.setOnClickListener(this);
+        mImgNewsPerson.setOnClickListener(this);
         swipeRefreshLayoutLayout.setOnRefreshListener(() -> {
-            mAdapterNews.notifyDataSetChanged();
-            mAdapterNewsPromotion.notifyDataSetChanged();
-            swipeRefreshLayoutLayout.setRefreshing(false);
-        });
-        mTxtNameNewsLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bottomNavigationView.setSelectedItemId(R.id.navigation_account);
-            }
-        });
-        mImgNewsPerson.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bottomNavigationView.setSelectedItemId(R.id.navigation_account);
-            }
+            mPresenter.takeView(this);
         });
     }
-
 
     private void initActionBar() {
         userObj = new User();
         userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
         if (!(userObj == null)) {
             mTxtNameNewsLogin.setText(userObj.getFirstName());
-            loadImage(userObj.getImgAvatarUrl(),mImgNewsPerson);
+            loadImage(userObj.getImgAvatarUrl(), mImgNewsPerson);
             mViewLayoutActionBar.setDisplayedChild(0);
         } else {
             mViewLayoutActionBar.setDisplayedChild(1);
@@ -183,18 +159,20 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
 
     private void initShowStartupDialogNotification() {
         Intent intent = getActivity().getIntent();
-        if (intent.getStringExtra("firebase_id") != null) {
+        if (intent.getStringExtra(Constants.FIREBASE_ID) != null) {
             NotificationDetailsDialogFragment newsNotificationDialogFragment =
                     new NotificationDetailsDialogFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("title_notification", intent.getStringExtra("firebase_title"));
-            bundle.putString("content_notification", intent.getStringExtra("firebase_content"));
-            bundle.putString("image_notification", intent.getStringExtra("firebase_url"));
+            bundle.putString(Constants.KEY_BUNDLE_FIREBASE_TITLE, intent.getStringExtra(Constants.FIREBASE_TITLE));
+            bundle.putString(Constants.KEY_BUNDLE_FIREBASE_CONTENT, intent.getStringExtra(Constants.FIREBASE_CONTENT));
+            bundle.putString(Constants.KEY_BUNDLE_FIREBASE_IMAGE_URL, intent.getStringExtra(Constants.FIREBASE_IMAGE_URL));
             newsNotificationDialogFragment.setArguments(bundle);
             newsNotificationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
-        } else {
-
         }
+    }
+
+    private void initMappingViewId() {
+        bottomNavigationView = getActivity().findViewById(R.id.navigation);
     }
 
     @Override
@@ -211,12 +189,12 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
 
     @Override
     public void getHandleSuccess() {
-        swipeRefreshLayoutLayout.setOnRefreshListener(() -> swipeRefreshLayoutLayout.setRefreshing(false));
+        swipeRefreshLayoutLayout.setRefreshing(false);
     }
 
     @Override
     public void getHandleError() {
-
+        swipeRefreshLayoutLayout.setRefreshing(false);
     }
 
     @Override
@@ -224,20 +202,51 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
         //broadcast
         if (user != null) {
             mTxtNameNewsLogin.setText(user.getFirstName());
-            loadImage(user.getImgAvatarUrl(),mImgNewsPerson);
+            loadImage(user.getImgAvatarUrl(), mImgNewsPerson);
             mViewLayoutActionBar.setDisplayedChild(0);
-           // ActivityUtils.setDataObject(getActivity(),user);
+            // ActivityUtils.setDataObject(getActivity(),user);
         } else {
             mViewLayoutActionBar.setDisplayedChild(1);
         }
     }
-    public void loadImage(String url,ImageView imageView) {
+
+    public void loadImage(String url, ImageView imageView) {
         Glide.with(this)
                 .load(url)
                 .apply(RequestOptions.circleCropTransform())
                 .placeholder(R.drawable.user)
                 .error(R.drawable.user)
                 .into(imageView);
+    }
+
+    public void onBroadCastLogout() {
+        IntentFilter intentFilter = new IntentFilter(Constants.ACTION_USER_RESULT);
+        intentFilter.addAction(Constants.ACTION_LOG_OUT);
+        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
+                .registerReceiver(userBroadCast, intentFilter);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_login:
+                bottomNavigationView.setSelectedItemId(R.id.navigation_account);
+                break;
+            case R.id.img_news_notification_sign_in:
+                newsNotificationDialogFragment = new NewsNotificationDialogFragment();
+                newsNotificationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
+                break;
+            case R.id.img_news_notification_sign_out:
+                newsNotificationDialogFragment = new NewsNotificationDialogFragment();
+                newsNotificationDialogFragment.show(getActivity().getSupportFragmentManager(), null);
+                break;
+            case R.id.txt_name_news_login:
+                bottomNavigationView.setSelectedItemId(R.id.navigation_account);
+                break;
+            case R.id.img_news_person:
+                bottomNavigationView.setSelectedItemId(R.id.navigation_account);
+                break;
+        }
     }
 
     @Override
@@ -252,10 +261,7 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        IntentFilter intentFilter = new IntentFilter(Constants.ACTION_USER_RESULT);
-        intentFilter.addAction(Constants.ACTION_LOG_OUT);
-        LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
-                .registerReceiver(userBroadCast, intentFilter);
+        onBroadCastLogout();
     }
 
     @Override
@@ -277,4 +283,6 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View {
         EventBus.getDefault().unregister(this);
         mPresenter.dropView();
     }
+
+
 }

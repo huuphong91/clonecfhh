@@ -57,7 +57,7 @@ public class NewsPresenter extends FirebaseMessagingService implements NewsContr
                     @Override
                     public void onComplete() {
                         if (mNewsView != null) {
-                            mNewsView.getHandleSuccess();
+                          //  mNewsView.getHandleSuccess();
                         }
                     }
                 });

@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
+    android:layout_marginBottom="@dimen/margin_material_16dp"
     android:gravity="center_horizontal">
 
         <RelativeLayout
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txt_news_item_tilte_notification"
                 android:layout_marginLeft="8dp"
-                android:paddingRight="16dp"
+                android:paddingRight="@dimen/margin_material_16dp"
                 android:layout_toRightOf="@+id/img_news_item_ring_notification"
                 android:text="Content"
                 android:lineSpacingExtra="6dp"

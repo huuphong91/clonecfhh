@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
+import com.teamducati.cloneappcfh.utils.Constants;
 
 import androidx.fragment.app.DialogFragment;
 
@@ -46,15 +47,7 @@ public class NotificationDetailsDialogFragment extends DialogFragment {
                 .load(mUrl)
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(mImgDetailsNotifications);
-
-        mBtnCloseDetailsNotification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-//                sendNotification("1", "2",
-//                        "https://feed.thecoffeehouse.com/content/images/2019/03/banner-caramel-macchiato.jpg");
-            }
-        });
+        mBtnCloseDetailsNotification.setOnClickListener(view -> {dialog.dismiss();});
     }
 
     @Override
@@ -67,9 +60,9 @@ public class NotificationDetailsDialogFragment extends DialogFragment {
     private void initData() {
         bundle = this.getArguments();
         if (bundle != null) {
-            mTitle = bundle.getString("title_notification");
-            mContent = bundle.getString("content_notification");
-            mUrl = bundle.getString("image_notification");
+            mTitle = bundle.getString(Constants.KEY_BUNDLE_FIREBASE_TITLE);
+            mContent = bundle.getString(Constants.KEY_BUNDLE_FIREBASE_CONTENT);
+            mUrl = bundle.getString(Constants.KEY_BUNDLE_FIREBASE_IMAGE_URL);
         }
     }
 
