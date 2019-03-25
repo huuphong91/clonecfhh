@@ -4,16 +4,25 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 
 import com.example.thecoffeehouse.RxBus;
+import com.example.thecoffeehouse.data.model.bill.Bill;
 import com.example.thecoffeehouse.data.model.user.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
 
 public class EditLastNamePresenter implements IEditLastNameContract.Presenter {
 
     private User mUser;
     private IEditLastNameContract.View callback;
     DatabaseReference mDataRef = FirebaseDatabase.getInstance().getReference("Users");
+    DatabaseReference mDataRefData = FirebaseDatabase.getInstance().getReference("Bill");
     private SharedPreferences mPrefs;
 //    private ProgressDialog dialog;
 
@@ -44,4 +53,6 @@ public class EditLastNamePresenter implements IEditLastNameContract.Presenter {
             RxBus.getInstance().postEvent(mUser);
         });
     }
+
+
 }

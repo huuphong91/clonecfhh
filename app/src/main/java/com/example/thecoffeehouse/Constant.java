@@ -35,6 +35,7 @@ public class Constant {
     public static final String CURRENT_LATITUDE = "lat";
     public static final String CURRENT_LONGITUDE = "long";
     public static final String PRICE = "price";
+    public static final String CUP = "cup";
     public static final String PRODUCT = "product";
     public static final String USERNAME = "username";
     public static final String PHONENUMBER = "phonenumber";

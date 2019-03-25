@@ -20,7 +20,6 @@ public class PresenterLogin implements IPresenterLoginContract.Presenter {
     public PresenterLogin(IPresenterLoginContract.View callback){
         this.callback = callback;
         mPrefs = callback.activity().getSharedPreferences("dataUser",Activity.MODE_PRIVATE);
-
     }
 
     @Override

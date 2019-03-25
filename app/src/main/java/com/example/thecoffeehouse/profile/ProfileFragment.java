@@ -140,7 +140,7 @@ public class ProfileFragment extends Fragment {
                 editor.commit();
                 AccountKit.logOut();
 //                checkUserLogin();
-                aaa();
+                resetUI();
             }
         });
 
@@ -155,12 +155,14 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    private void aaa() {
+    private void resetUI() {
         mLogoutButton.setVisibility(View.GONE);
         mTextviewLogin.setTypeface(null, Typeface.BOLD);
         mImgeUser.setImageResource(R.drawable.img_user_white);
         toolbar.setBackgroundColor(getContext().getResources().getColor(R.color.colorOrange));
         mTextviewLogin.setText(getContext().getResources().getString(R.string.label_login));
         mTextviewLogin.setTextColor(Color.WHITE);
+        mLoginButton.setOnClickListener(v -> mListener.onChangeFragment(LoginDialogFragment.newInstance(), Constant.LOGIN_FRAGMENT));
+
     }
 }

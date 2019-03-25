@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,9 +14,8 @@ import android.widget.Toast;
 import com.example.thecoffeehouse.Constant;
 import com.example.thecoffeehouse.R;
 import com.example.thecoffeehouse.data.model.user.User;
-import com.example.thecoffeehouse.main.MainActivity;
 import com.example.thecoffeehouse.main.OnUpdateListener;
-import com.example.thecoffeehouse.order.ConfirmDialogFragment;
+import com.example.thecoffeehouse.order.confirmcart.ConfirmDialogFragment;
 import com.example.thecoffeehouse.order.FormatPrice;
 import com.example.thecoffeehouse.order.cart.adpater.CartAdapter;
 import com.example.thecoffeehouse.order.cart.adpater.OnOrderListCartListener;
@@ -36,7 +34,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -126,7 +123,13 @@ public class CartFragment extends Fragment implements CartFragmentView {
         });
         btnOrder.setOnClickListener (v -> {
             if (!"".equals (edtUsername.getText ().toString ()) && !"".equals (edtPhoneNumber.getText ().toString ())) {
-                ConfirmDialogFragment.newInstance ((int) total, edtUsername.getText ().toString (), edtPhoneNumber.getText ().toString ()).show (getFragmentManager (), "");
+                List<Cart> listCart  = CartInstance.getInstance().getListCart();
+                int listCount = 0;
+                int listSize = listCart.size();
+                for (int i = 0; i < listSize; i++) {
+                    listCount = listCount+listCart.get(i).getCount();
+                }
+                ConfirmDialogFragment.newInstance ((int) total, listCount, edtUsername.getText ().toString (), edtPhoneNumber.getText ().toString ()).show (getFragmentManager (), "");
             } else {
                 Toast.makeText (getContext (), "Điền thông tin giao hàng!", Toast.LENGTH_SHORT).show ();
             }

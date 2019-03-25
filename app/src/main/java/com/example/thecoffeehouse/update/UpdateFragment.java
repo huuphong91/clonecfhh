@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.thecoffeehouse.Constant;
 import com.example.thecoffeehouse.R;
+import com.example.thecoffeehouse.data.model.bill.Bill;
 import com.example.thecoffeehouse.data.model.user.User;
 import com.example.thecoffeehouse.main.FragmentInteractionListener;
 import com.example.thecoffeehouse.main.IIIII;
@@ -36,10 +38,16 @@ import com.example.thecoffeehouse.update.editgender.EditGenderFragment;
 import com.example.thecoffeehouse.update.editimage.EditImagePresenter;
 import com.example.thecoffeehouse.update.editimage.IEditImageContract;
 import com.example.thecoffeehouse.update.editlastname.EditLastNameFragment;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -63,12 +71,17 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
     private TextView mTextViewBirthDay;
     private TextView mTextViewPhone;
     private TextView mTextViewGendle;
+    private TextView mTextViewScore;
+    private TextView mTextViewCupCount;
+    private TextView mTextViewTimecount;
     private ImageView mImageViewBack;
     private ImageView mImageViewUser;
     private SharedPreferences mPrefs;
+    private SharedPreferences mPrefsService;
     private AppCompatActivity activity;
     private FragmentInteractionListener mListener;
     private OnUpdateListener onUpdateListener;
+    DatabaseReference mDataRefData = FirebaseDatabase.getInstance().getReference("Bill");
 
     public static UpdateFragment newInstance() {
         UpdateFragment fragment = new UpdateFragment();
@@ -98,6 +111,7 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
         initView(view);
         checkdataUser();
         initEvents();
+
         return view;
     }
 
@@ -112,10 +126,14 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
         mTextViewBirthDay = view.findViewById(R.id.update_frag_tvBirthDay);
         mTextViewPhone = view.findViewById(R.id.update_frag_tvNumberPhone);
         mTextViewGendle = view.findViewById(R.id.update_frag_tvGendle);
+        mTextViewScore = view.findViewById(R.id.update_frag_tvScore);
+        mTextViewCupCount = view.findViewById(R.id.update_frag_tvCupCount);
+        mTextViewTimecount = view.findViewById(R.id.update_frag_tvTimeCount);
         mImageViewBack = view.findViewById(R.id.update_frag_imgBack);
         mImageViewUser = view.findViewById(R.id.update_frag_imgUser);
         activity = new AppCompatActivity();
         mPrefs = getActivity().getSharedPreferences("dataUser", MODE_PRIVATE);
+        mPrefsService = getActivity().getSharedPreferences("dataService", MODE_PRIVATE);
         presenter = new EditImagePresenter(this);
 
 
@@ -167,6 +185,27 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
             mTextViewGendle.setText(user.getGender());
             Glide.with(getContext()).load(user.getImage()).placeholder(R.mipmap.store_placeholder).into(mImageViewUser);
         }
+
+        mDataRefData.orderByKey().equalTo(user.getPhoneNumber()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                        Bill bill = dataSnapshot1.getValue(Bill.class);
+                        int mScore = bill.getTotalPrice()/5000;
+                        mTextViewScore.setText(Integer.toString(mScore));
+                        mTextViewCupCount.setText(Integer.toString(bill.getCupCount()));
+                        mTextViewTimecount.setText(Integer.toString(bill.getTimeCount()));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 
@@ -201,11 +240,12 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
                 presenter.editImage(user.getPhoneNumber(), user.getImage(), selectedImage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Thử Lại", Toast.LENGTH_LONG).show();
             }
 
         } else {
-            Toast.makeText(getContext(), "You haven't picked Image", Toast.LENGTH_LONG).show();
+            onUpdateListener.onUpdateFragment();
+            Toast.makeText(getContext(), "Bạn chưa chọn hình", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -223,22 +263,4 @@ public class UpdateFragment extends Fragment implements IEditImageContract.View 
     public Context getContextt() {
         return getContext();
     }
-
-    public void dialogBox() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
-        alertDialogBuilder.setMessage("Click on Image for tag");
-        alertDialogBuilder.setPositiveButton("Ok",
-                (arg0, arg1) -> {
-                    Toast.makeText(getContext(), "OKE", Toast.LENGTH_SHORT).show();
-                });
-
-        alertDialogBuilder.setNegativeButton("cancel",
-                (arg0, arg1) -> {
-                    Toast.makeText(getContext(), "Cacel", Toast.LENGTH_SHORT).show();
-                });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
-
 }
