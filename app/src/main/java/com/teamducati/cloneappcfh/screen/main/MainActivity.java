@@ -9,7 +9,6 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.screen.account.AccountFragment;
 import com.teamducati.cloneappcfh.screen.account.AccountPresenter;
@@ -17,6 +16,7 @@ import com.teamducati.cloneappcfh.screen.news.NewsFragment;
 import com.teamducati.cloneappcfh.screen.news.NewsPresenter;
 import com.teamducati.cloneappcfh.screen.order.OrderFragment;
 import com.teamducati.cloneappcfh.screen.order.OrderPresenter;
+import com.teamducati.cloneappcfh.screen.splash.SplashScreenFragment;
 import com.teamducati.cloneappcfh.screen.store.StoreFragment;
 import com.teamducati.cloneappcfh.screen.store.StorePresenter;
 import com.teamducati.cloneappcfh.utils.ActivityUtils;
@@ -31,11 +31,11 @@ import dagger.android.support.DaggerAppCompatActivity;
 
 public class MainActivity extends DaggerAppCompatActivity {
 
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
     @BindView(R.id.navigation)
     BottomNavigationView mNavigationView;
     @BindView(R.id.viewPager)
     MainViewPager mViewPager;
-
     @Inject
     NewsPresenter mNewsPresenter;
     @Inject
@@ -52,22 +52,51 @@ public class MainActivity extends DaggerAppCompatActivity {
     StoreFragment mStoreFragment;
     @Inject
     AccountFragment mAccountFragment;
-
-    private static final int REQUEST_LOCATION_PERMISSION = 1;
-
     private boolean isFirstClickOnOrderTab;
     private boolean isFirstClickOnStoreTab;
 
     private MainFragmentsPagerAdapter mFragmentsPagerAdapter;
 
     private FusedLocationProviderClient mFusedLocation;
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = item -> {
+        int positionFragment;
+        switch (item.getItemId()) {
+            case R.id.navigation_news:
+                positionFragment = 0;
+                setCurrentItem(positionFragment);
+                return true;
+            case R.id.navigation_order:
+                positionFragment = 1;
+                setCurrentItem(positionFragment);
+                if (isFirstClickOnOrderTab) {
+                    getLocation(R.id.navigation_order);
+                    isFirstClickOnOrderTab = false;
+                }
+
+                return true;
+            case R.id.navigation_store:
+                positionFragment = 2;
+                setCurrentItem(positionFragment);
+                if (isFirstClickOnStoreTab) {
+                    getLocation(R.id.navigation_store);
+                    isFirstClickOnStoreTab = false;
+                }
+                return true;
+            case R.id.navigation_account:
+                positionFragment = 3;
+                setCurrentItem(positionFragment);
+                return true;
+        }
+        return false;
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        showSplash();
         isFirstClickOnOrderTab = true;
         isFirstClickOnStoreTab = true;
 
@@ -80,6 +109,12 @@ public class MainActivity extends DaggerAppCompatActivity {
         initData();
 
         initUI();
+    }
+
+    private void showSplash() {
+        SplashScreenFragment splashScreenFragment =
+                new SplashScreenFragment();
+        splashScreenFragment.show(getSupportFragmentManager(), null);
     }
 
     private void checkApiKeyOfPlaces() {
@@ -119,39 +154,6 @@ public class MainActivity extends DaggerAppCompatActivity {
         mFragmentsPagerAdapter.addFragments(mAccountFragment);
         mViewPager.setAdapter(mFragmentsPagerAdapter);
     }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = item -> {
-        int positionFragment;
-        switch (item.getItemId()) {
-            case R.id.navigation_news:
-                positionFragment = 0;
-                setCurrentItem(positionFragment);
-                return true;
-            case R.id.navigation_order:
-                positionFragment = 1;
-                setCurrentItem(positionFragment);
-                if (isFirstClickOnOrderTab) {
-                    getLocation(R.id.navigation_order);
-                    isFirstClickOnOrderTab = false;
-                }
-
-                return true;
-            case R.id.navigation_store:
-                positionFragment = 2;
-                setCurrentItem(positionFragment);
-                if (isFirstClickOnStoreTab) {
-                    getLocation(R.id.navigation_store);
-                    isFirstClickOnStoreTab = false;
-                }
-                return true;
-            case R.id.navigation_account:
-                positionFragment = 3;
-                setCurrentItem(positionFragment);
-                return true;
-        }
-        return false;
-    };
 
     public void getLocation(int itemId) {
         if (ActivityCompat.checkSelfPermission(this,
