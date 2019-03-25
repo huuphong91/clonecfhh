@@ -8,5 +8,4 @@ public interface OrderPresenter {
 
     void getCartItem(LifecycleOwner owner);
     void getLocationAddress(Location location);
-
 }

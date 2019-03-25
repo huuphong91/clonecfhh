@@ -184,7 +184,6 @@ public class CartDetail extends DialogFragment implements CartDetailView {
                     if (item != null) {
                         item.setId (cartItem.getId ());
                         cartDetailPresenter.updateCartItem (item);
-
                         Toast.makeText (getContext (), dataItem.getProductName () + " Được thêm vào",
                                 Toast.LENGTH_SHORT).show ();
                     }

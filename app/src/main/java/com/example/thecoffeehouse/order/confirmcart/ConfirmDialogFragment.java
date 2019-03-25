@@ -103,8 +103,6 @@ public class ConfirmDialogFragment extends DialogFragment implements IConfirmCar
             btnConfirm.startLoading();
             cartViewModel.delall ();
             presenter.confirmCart(mPhonenumber,mPrice,mCupCount,1);
-//            ConfirmDialogFragment.this.dismiss ();
-//            mListener.onUpdateFragment ();
         });
         btnChange.setOnClickListener (v -> ConfirmDialogFragment.this.dismiss ());
     }
