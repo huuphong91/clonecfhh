@@ -1,6 +1,7 @@
 package com.example.thecoffeehouse.order;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.thecoffeehouse.Constant;
 import com.example.thecoffeehouse.R;
+import com.example.thecoffeehouse.data.model.user.User;
 import com.example.thecoffeehouse.main.OnUpdateListener;
 import com.example.thecoffeehouse.order.cart.CartInstance;
 import com.example.thecoffeehouse.order.cart.database.CartViewModel;
 import com.example.thecoffeehouse.order.cart.model.Cart;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -24,23 +32,22 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class ConfirmDialogFragment extends DialogFragment {
 
-    private TextView tvAddress;
-    private TextView tvUserName;
-    private TextView tvPhone;
-    private TextView tvPrice;
-    private MapView mapView;
-    private TextView btnChange;
-    private TextView btnConfirm;
+    private TextView tvAddress, tvUserName, tvPhone, tvPrice, btnChange, btnConfirm;
+    private MapView mMapView;
     private int price;
     private ImageView btnClose;
     private List<Cart> cartList;
     private CartViewModel cartViewModel;
     private OnUpdateListener mListener;
+    private String mUsername, mPhonenumber;
+    private double longitude, latitude;
 
-    public static ConfirmDialogFragment newInstance(int price) {
+    public static ConfirmDialogFragment newInstance(int price, String username, String phonenumber) {
         ConfirmDialogFragment fragment = new ConfirmDialogFragment ();
         Bundle bundle = new Bundle ();
-        bundle.putInt ("data", price);
+        bundle.putInt (Constant.PRICE, price);
+        bundle.putString (Constant.USERNAME, username);
+        bundle.putString (Constant.PHONENUMBER, phonenumber);
         fragment.setArguments (bundle);
         return fragment;
     }
@@ -49,7 +56,9 @@ public class ConfirmDialogFragment extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach (context);
         if (getArguments () != null) {
-            price = (int) getArguments ().get ("data");
+            price = (int) getArguments ().get (Constant.PRICE);
+            mUsername = getArguments ().getString (Constant.USERNAME);
+            mPhonenumber = getArguments ().getString (Constant.PHONENUMBER);
         }
         if (context instanceof OnUpdateListener) {
             mListener = (OnUpdateListener) context;
@@ -74,6 +83,8 @@ public class ConfirmDialogFragment extends DialogFragment {
         super.onViewCreated (view, savedInstanceState);
         initViewID (view);
         initViewEvent ();
+        checkdataUser ();
+        setupMapView (savedInstanceState);
     }
 
     private void initViewEvent() {
@@ -94,7 +105,7 @@ public class ConfirmDialogFragment extends DialogFragment {
         tvUserName = view.findViewById (R.id.tv_user_name);
         tvPhone = view.findViewById (R.id.tv_phone_number);
         tvPrice = view.findViewById (R.id.tv_total_confirm_cart);
-        mapView = view.findViewById (R.id.map_view_confirm);
+        mMapView = view.findViewById (R.id.map_view_confirm);
         btnChange = view.findViewById (R.id.btn_change_confirm);
         btnClose = view.findViewById (R.id.img_view_close_confirm_cart);
         btnConfirm = view.findViewById (R.id.btn_confirm);
@@ -105,5 +116,59 @@ public class ConfirmDialogFragment extends DialogFragment {
     public void onDestroy() {
         super.onDestroy ();
         mListener = null;
+        mMapView.onDestroy ();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume ();
+        mMapView.onResume ();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart ();
+        mMapView.onStart ();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop ();
+        mMapView.onStop ();
+    }
+
+    private void checkdataUser() {
+        Gson gson = new Gson ();
+        SharedPreferences mSharedPrefs = getActivity ().getSharedPreferences ("dataUser", Context.MODE_PRIVATE);
+        String json = mSharedPrefs.getString ("myObject", null);
+        if (json != null) {
+            User user = gson.fromJson (json, User.class);
+            if (user != null) {
+                tvUserName.setText (user.getFirstName () + " " + user.getLastName ());
+                tvPhone.setText (user.getPhoneNumber ());
+            }
+        } else {
+            tvUserName.setText (mUsername);
+            tvPhone.setText (mPhonenumber);
+        }
+        SharedPreferences sharedPreferences = getContext ().getSharedPreferences (Constant.USER_LOCATION, Context.MODE_PRIVATE);
+        String address = sharedPreferences.getString (Constant.LAST_KNOWN_LOCATION, "");
+        longitude = sharedPreferences.getFloat (Constant.CURRENT_LONGITUDE, 106.6297f);
+        latitude = sharedPreferences.getFloat (Constant.CURRENT_LATITUDE, 10.8231f);
+        tvAddress.setText (address);
+    }
+
+    private void setupMapView(Bundle savedInstanceState) {
+        mMapView.onCreate (savedInstanceState);
+        mMapView.getMapAsync (googleMap -> {
+            googleMap.getUiSettings ().setMapToolbarEnabled (false);
+            googleMap.getUiSettings ().setMyLocationButtonEnabled (false);
+            googleMap.getUiSettings ().setZoomControlsEnabled (false);
+            MarkerOptions markerOptions = new MarkerOptions ();
+            markerOptions.position (new LatLng (latitude, longitude));
+            markerOptions.icon (BitmapDescriptorFactory.fromResource (R.drawable.ic_marker_map));
+            googleMap.addMarker (markerOptions);
+            googleMap.moveCamera (CameraUpdateFactory.newLatLngZoom (new LatLng (latitude, longitude), 14f));
+        });
     }
 }

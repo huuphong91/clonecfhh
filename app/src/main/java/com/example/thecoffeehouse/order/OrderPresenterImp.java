@@ -33,15 +33,17 @@ public class OrderPresenterImp implements OrderPresenter {
 
     @Override
     public void getLocationAddress(Location location) {
-        Geocoder geocoder = new Geocoder (orderView.getActivity (), Locale.getDefault ());
-        Disposable disposable = Single
-                .fromCallable (() -> geocoder.getFromLocation (location.getLatitude (), location.getLongitude (), 1))
-                .subscribeOn (Schedulers.single ())
-                .toObservable ()
-                .flatMap (Observable::fromIterable)
-                .observeOn (AndroidSchedulers.mainThread ())
-                .subscribe (address -> {
-                    orderView.onLocationAddressUpdate (address);
-                });
+        if (orderView.getActivity () != null) {
+            Geocoder geocoder = new Geocoder (orderView.getActivity (), Locale.getDefault ());
+            Disposable disposable = Single
+                    .fromCallable (() -> geocoder.getFromLocation (location.getLatitude (), location.getLongitude (), 1))
+                    .subscribeOn (Schedulers.io ())
+                    .toObservable ()
+                    .flatMap (Observable::fromIterable)
+                    .observeOn (AndroidSchedulers.mainThread ())
+                    .subscribe (address -> {
+                        orderView.onLocationAddressUpdate (address);
+                    }, throwable -> Log.d ("getLocationAddress: ", throwable + "--"));
+        }
     }
 }

@@ -180,13 +180,13 @@ public class NewsFragment extends Fragment implements NewsView, ForYouView {
     public void onStart() {
         super.onStart();
         Log.d("LOGGGGGGGGGG", "onStart: ");
-        RxBus.getInstance()
-                .getObservable()
-                .filter(o -> o instanceof User)
-                .subscribe(o -> {
-                    User user = (User) o;
-                    loggedView(user);
-                });
+//        RxBus.getInstance()
+//                .getObservable()
+//                .filter(o -> o instanceof User)
+//                .subscribe(o -> {
+//                    User user = (User) o;
+//                    loggedView(user);
+//                });
     }
 
     @Override
