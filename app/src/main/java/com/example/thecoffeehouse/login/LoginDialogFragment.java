@@ -52,7 +52,6 @@ public class LoginDialogFragment extends Fragment implements IPresenterLoginCont
     private AppCompatActivity activity;
     private String numberPhone;
     private FragmentInteractionListener mListener;
-//    private IIIII iiiii;
     private OnUpdateListener onUpdateListener;
 
     public static LoginDialogFragment newInstance() {
@@ -69,9 +68,6 @@ public class LoginDialogFragment extends Fragment implements IPresenterLoginCont
         if(context instanceof OnUpdateListener){
             onUpdateListener = (OnUpdateListener) context;
         }
-//        if( context instanceof IIIII){
-//            iiiii = (IIIII) context;
-//        }
     }
 
     @Override

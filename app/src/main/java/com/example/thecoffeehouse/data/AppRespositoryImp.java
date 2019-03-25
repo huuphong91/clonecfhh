@@ -23,10 +23,13 @@ import java.util.List;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class AppRespositoryImp implements AppRepository {
@@ -42,8 +45,8 @@ public class AppRespositoryImp implements AppRepository {
         this.storeDao = database.storeDao();
         NewsDatabase databasenews = NewsDatabase.getDatabase(app);
         this.newsDao = databasenews.newsDao();
-        ForYouDatabase databaseForYou = ForYouDatabase.getDatabase(app);
-        this.forYouDao = databaseForYou.forYouDao();
+        ForYouDatabase databaseForYou=ForYouDatabase.getDatabase(app);
+        this.forYouDao=databaseForYou.forYouDao();
         this.notificationDAO = notificationDatabase.notificationDAO();
 
     }
@@ -65,9 +68,9 @@ public class AppRespositoryImp implements AppRepository {
 
     @Override
     public Flowable<Long> loadApiForNewsToDatabase() {
-        return getNews().toFlowable()
+        return  getNews().toFlowable()
                 .subscribeOn(Schedulers.io())
-                .flatMap(responseNews -> {
+                .flatMap(responseNews-> {
                     newsDao.deleteAll();
                     return Flowable.fromIterable(responseNews);
                 })
@@ -86,15 +89,14 @@ public class AppRespositoryImp implements AppRepository {
 
     @Override
     public Flowable<Long> loadApiNewsToDatabase() {
-        return getForYou().toFlowable()
-                .subscribeOn(Schedulers.io())
-                .flatMap(responseForYou -> {
-                    forYouDao.deleteAll();
-                    return Flowable.fromIterable(responseForYou);
+        return getForYou ().toFlowable ()
+                .subscribeOn (Schedulers.io ())
+                .flatMap (responseForYou -> {
+                    forYouDao.deleteAll ();
+                    return Flowable.fromIterable (responseForYou);
                 })
-                .flatMap(responseForYou -> Flowable.fromCallable(() -> forYouDao.insertForYouNews(responseForYou)));
+                .flatMap (responseForYou -> Flowable.fromCallable (() -> forYouDao.insertForYouNews (responseForYou)));
     }
-
     @Override
     public void insertNotification(Notification notification) {
         Single.fromCallable(() -> notificationDAO.insertNotification(notification))

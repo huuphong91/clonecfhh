@@ -2,6 +2,11 @@ package com.example.thecoffeehouse.update.editlastname;
 
 import android.content.Context;
 
+import com.example.thecoffeehouse.data.model.bill.Bill;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public interface IEditLastNameContract {
 
     interface View{
@@ -12,6 +17,7 @@ public interface IEditLastNameContract {
 
     interface Presenter{
         void editLastName(String numberPhone,String lastName);
+
     }
 
 }

@@ -1,8 +1,13 @@
 package com.example.thecoffeehouse.order;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,19 +23,30 @@ import com.example.thecoffeehouse.order.drinks.DrinksFragment;
 import com.example.thecoffeehouse.order.filter.FilterDialogFragment;
 import com.example.thecoffeehouse.order.hightlight.HighLightDrinks;
 import com.example.thecoffeehouse.order.search.SearchDialogFragment;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderApi;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-public class OrderFragment extends Fragment implements OrderView {
+public class OrderFragment extends Fragment implements OrderView,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
 
     private TabLayout mTabLayout;
     private FragmentManager mFragmentManager;
@@ -40,10 +56,13 @@ public class OrderFragment extends Fragment implements OrderView {
     private ConstraintLayout constraintLayout;
     private List<Cart> mValues = new ArrayList<> ();
     private OrderPresenterImp orderPresenter;
-    private TextView txtCartSize, txtTotal;
+    private TextView txtCartSize, txtTotal, txtAddress;
     private FloatingActionButton fabFilter;
     private FormatPrice formatPrice = new FormatPrice ();
     private FragmentInteractionListener mListener;
+    private FusedLocationProviderApi fusedLocationProviderApi;
+    private LocationRequest locationRequest;
+    private GoogleApiClient googleApiClient;
 
     public static OrderFragment newInstance() {
         OrderFragment fragment = new OrderFragment ();
@@ -87,11 +106,10 @@ public class OrderFragment extends Fragment implements OrderView {
 
         constraintLayout.setOnClickListener (v ->
         {
-//            CartFragment.newInstance ().show (mFragmentManager, Constant.CART_FRAGMENT);
             mListener.onChangeFragment (CartFragment.newInstance (), Constant.CART_FRAGMENT);
         });
         fabFilter.setOnClickListener (v -> {
-//            FilterDialogFragment.newInstance ().show (mFragmentManager, "as");
+            FilterDialogFragment.newInstance (constraintLayout.getVisibility () == View.GONE ? true : false).show (mFragmentManager, "as");
         });
     }
 
@@ -109,6 +127,8 @@ public class OrderFragment extends Fragment implements OrderView {
         txtCartSize = view.findViewById (R.id.tv_cart_size);
         txtTotal = view.findViewById (R.id.tv_cart_total);
         fabFilter = view.findViewById (R.id.fab_filter);
+        txtAddress = view.findViewById (R.id.order_text_address);
+        getLocation ();
     }
 
     private TabLayout.OnTabSelectedListener onTabSelectedListener = new TabLayout.OnTabSelectedListener () {
@@ -161,8 +181,76 @@ public class OrderFragment extends Fragment implements OrderView {
     }
 
     @Override
+    public void onLocationAddressUpdate(Address address) {
+        txtAddress.setText (address.getAddressLine (0));
+        SharedPreferences sharedPreferences = getContext ().getSharedPreferences (Constant.USER_LOCATION, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit ();
+        editor.putString (Constant.LAST_KNOWN_LOCATION, address.getAddressLine (0));
+        editor.putFloat (Constant.CURRENT_LATITUDE, (float) address.getLatitude ());
+        editor.putFloat (Constant.CURRENT_LONGITUDE, (float) address.getLongitude ());
+        editor.commit ();
+    }
+
+    @Override
     public void onResume() {
         super.onResume ();
         initData ();
+    }
+
+    private void getLocation() {
+        locationRequest = LocationRequest.create ();
+        locationRequest.setPriority (LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval (Constant.LOCATION_INTERVAL);
+        locationRequest.setFastestInterval (Constant.LOCATION_INTERVAL);
+        fusedLocationProviderApi = LocationServices.FusedLocationApi;
+        googleApiClient = new GoogleApiClient.Builder (getContext ())
+                .addApi (LocationServices.API)
+                .addConnectionCallbacks (this)
+                .addOnConnectionFailedListener (this)
+                .build ();
+        if (googleApiClient != null) {
+            googleApiClient.connect ();
+        }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getContext ().checkSelfPermission (Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && getContext ().checkSelfPermission (Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions (Objects.requireNonNull (getActivity ()), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 696);
+                return;
+            }
+        }
+        fusedLocationProviderApi.requestLocationUpdates (googleApiClient, locationRequest, this);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if (location != null) {
+            orderPresenter.getLocationAddress (location);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult (requestCode, permissions, grantResults);
+        if (requestCode == 696) {
+            if (permissions[0].equals (Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            }
+            if (ContextCompat.checkSelfPermission (getContext (), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                getLocation ();
+            }
+        }
     }
 }

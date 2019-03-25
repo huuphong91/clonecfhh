@@ -37,13 +37,18 @@
 
             <TextView
                 android:id="@+id/order_text_address"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/fab_margin"
+                android:layout_marginEnd="@dimen/fab_margin"
                 android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="Nhập địa chỉ"
-                android:textColor="@color/moca_rs_black_two_50"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/order_action_search"
                 app:layout_constraintStart_toEndOf="@id/order_account_image" />
 
             <TextView
@@ -81,11 +86,10 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/colorWhite"
+            android:elevation="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:elevation="1dp">
-        </com.google.android.material.tabs.TabLayout>
+            app:layout_constraintTop_toTopOf="parent"></com.google.android.material.tabs.TabLayout>
 
         <FrameLayout
             android:id="@+id/order_frame_layout"

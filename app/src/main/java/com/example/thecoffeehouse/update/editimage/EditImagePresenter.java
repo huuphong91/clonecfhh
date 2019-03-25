@@ -3,17 +3,22 @@ package com.example.thecoffeehouse.update.editimage;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.thecoffeehouse.data.model.bill.Bill;
 import com.example.thecoffeehouse.data.model.user.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -21,6 +26,7 @@ import com.google.gson.Gson;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import androidx.annotation.NonNull;
@@ -34,6 +40,9 @@ public class EditImagePresenter implements IEditImageContract.Presenter {
     private IEditImageContract.View callback;
     private User mUser;
     DatabaseReference mDataRef = FirebaseDatabase.getInstance().getReference("Users");
+    DatabaseReference mDataRefData = FirebaseDatabase.getInstance().getReference("Bill");
+    private ArrayList<Bill> billArrayList = new ArrayList<>();
+
     private SharedPreferences mPrefs;
 //    private ProgressDialog dialog;
     private KProgressHUD hud;
@@ -44,7 +53,6 @@ public class EditImagePresenter implements IEditImageContract.Presenter {
         hud = KProgressHUD.create(callback.getContextt())
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setLabel("Please wait")
-                .setDetailsLabel("Uploading data")
                 .setCancellable(true)
                 .setAnimationSpeed(2)
                 .setDimAmount(0.5f);
@@ -53,8 +61,9 @@ public class EditImagePresenter implements IEditImageContract.Presenter {
 //        dialog.setMessage("Please Wait!");
     }
 
+
     @Override
-    public void editImage(String numberPhone, String linkOldImage,Bitmap imageBitmapNew) {
+    public void editImage(String numberPhone, String linkOldImage,  Bitmap imageBitmapNew) {
 //        dialog.show();
         hud.show();
         mImageRef = mFirebaseStore.getReferenceFromUrl(linkOldImage);
@@ -64,7 +73,8 @@ public class EditImagePresenter implements IEditImageContract.Presenter {
                 Calendar calendar = Calendar.getInstance();
                 mFilePathImage = mStorageRef.child("image").child("image"+calendar.getTimeInMillis()+".png");
                 ByteArrayOutputStream baosImage = new ByteArrayOutputStream();
-                imageBitmapNew.compress(Bitmap.CompressFormat.PNG,50,baosImage);
+                Bitmap imageBitmapNew2 = getResizedBitmap(imageBitmapNew,100,100);
+                imageBitmapNew2.compress(Bitmap.CompressFormat.PNG,50,baosImage);
                 byte[] dataImage =baosImage.toByteArray();
 
                 UploadTask uploadTaskImage = mFilePathImage.putBytes(dataImage);
@@ -95,8 +105,6 @@ public class EditImagePresenter implements IEditImageContract.Presenter {
                                         String json1 = gson1.toJson(mUser);
                                         editor.putString("myObject",json1);
                                         editor.apply();
-//                                        callback.onChangeSuccess("Change Success!");
-//                                        dialog.dismiss();
                                         hud.dismiss();
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -120,29 +128,20 @@ public class EditImagePresenter implements IEditImageContract.Presenter {
         });
     }
 
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
 
-//    @Override
-//    public void changeImage(String numberPhone, Bitmap imageBitmap) {
-//        Toast.makeText(callback.getContextt(), "Chua Vo", Toast.LENGTH_SHORT).show();
-//        dialog.show();
-//        String image = BitMapToString(imageBitmap);
-//        Gson gson = new Gson();
-//        String json = mPrefs.getString("myObject", null);
-//        mUser = gson.fromJson(json, User.class);
-//        mDataRef.child(numberPhone).child("image").setValue(image).addOnCompleteListener(task -> {
-//            Toast.makeText(callback.getContextt(), "Vo Roi", Toast.LENGTH_SHORT).show();
-//            mUser.setImage(image);
-//            SharedPreferences.Editor editor = mPrefs.edit();
-//            editor.clear();
-//            Gson gson1 = new Gson();
-//            String json1 = gson1.toJson(mUser);
-//            editor.putString("myObject",json1);
-//            editor.commit();
-//            dialog.dismiss();
-//            callback.onChangeSuccess("Changed");
-//        });
-//    }
-
-
-
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
+    }
 }

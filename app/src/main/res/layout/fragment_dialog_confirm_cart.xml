@@ -2,8 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="8dp">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/fab_margin">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout_tool"
@@ -31,7 +32,7 @@
             android:id="@+id/img_view_close_confirm_cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="@dimen/fab_margin"
             android:src="@drawable/ic_close"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -49,19 +50,23 @@
 
     <TextView
         android:id="@+id/tv_address"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/fab_margin"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="8dp"
         android:drawableLeft="@drawable/ic_marker_map"
         android:drawablePadding="8dp"
-        android:gravity="center"
+        android:ellipsize="end"
+        android:gravity="center|left"
+        android:maxLines="1"
+        android:padding="5dp"
         android:text="Text"
+        android:textColor="@color/colorBlack"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map_view_confirm"
-        app:layout_constraintVertical_chainStyle="spread_inside" />
+        app:layout_constraintTop_toBottomOf="@+id/map_view_confirm" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -80,10 +85,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/fab_margin"
         android:layout_marginTop="8dp"
-        android:drawableLeft="@drawable/ic_person_24px_organce"
+        android:drawableLeft="@drawable/ic_person_orange_24dp"
         android:drawablePadding="8dp"
-        android:gravity="center"
         android:text="Nguyen Van A"
+        android:textColor="@color/colorBlack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
@@ -92,10 +97,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/fab_margin"
+        android:layout_marginTop="8dp"
         android:drawableLeft="@drawable/ic_phone_org_24dp"
         android:drawablePadding="8dp"
-        android:gravity="center"
         android:text="0898401805"
+        android:textColor="@color/colorBlack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_user_name" />
 
@@ -122,8 +128,8 @@
         android:layout_marginTop="8dp"
         android:drawableLeft="@drawable/ic_payment_orange_24dp"
         android:drawablePadding="8dp"
-        android:gravity="center"
         android:text="Thanh toán khi giao hàng"
+        android:textColor="@color/colorBlack"
         app:layout_constraintBottom_toTopOf="@id/linearLayout4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
@@ -167,20 +173,20 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_confirm"
         app:layout_constraintTop_toTopOf="@+id/btn_confirm" />
 
-    <TextView
+    <com.dx.dxloadingbutton.lib.LoadingButton
+        app:lb_btnColor="@color/colorOrange"
         android:id="@+id/btn_confirm"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/fab_margin"
         android:layout_marginEnd="@dimen/fab_margin"
-        android:background="@drawable/btn_confirm_background_selector"
+        app:lb_cornerRadius="16"
+        app:lb_btnText="Xác nhận"
         android:clickable="true"
         android:paddingStart="25dp"
         android:paddingTop="7dp"
         android:paddingEnd="25dp"
         android:paddingBottom="7dp"
-        android:text="Xác nhận"
-        android:textColor="@drawable/btn_confirm_background_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/linearLayout4" />
 </androidx.constraintlayout.widget.ConstraintLayout>

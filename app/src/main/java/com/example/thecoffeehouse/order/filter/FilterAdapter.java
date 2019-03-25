@@ -16,6 +16,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterViewHolder> {
 
     private Context mContext;
     private List<Category> mValues;
+    private FilterAdapterInteractionListener mListener;
 
     public FilterAdapter(Context mContext, List<Category> mValues) {
         this.mContext = mContext;
@@ -35,7 +36,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterViewHolder> {
         Category category = mValues.get (position);
         holder.bindTo (category);
         holder.itemView.setOnClickListener (v -> {
-
+            mListener.onClickListener ();
         });
     }
 
@@ -44,9 +45,13 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterViewHolder> {
         return mValues.size ();
     }
 
-    public void setValues(List<Category> categList){
+    public void setValues(List<Category> categList) {
         mValues.clear ();
         mValues.addAll (categList);
         notifyDataSetChanged ();
+    }
+
+    public void setListener(FilterAdapterInteractionListener filterAdapterInteractionListener) {
+        this.mListener = filterAdapterInteractionListener;
     }
 }

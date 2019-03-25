@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.util.Base64;
 import com.example.thecoffeehouse.R;
@@ -84,13 +85,6 @@ public class FirstUpdatePresenter implements IFirstUpdateContract.Presenter {
 //        });
 //    }
 
-    private String BitMapToString(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String temp = Base64.encodeToString(b, Base64.DEFAULT);
-        return temp;
-    }
 
     @Override
     public void insertUser(String numberPhone, String firstName, String lastName) {
@@ -98,7 +92,8 @@ public class FirstUpdatePresenter implements IFirstUpdateContract.Presenter {
         mFilePathImage = mStorageRef.child("image").child("image"+calendar.getTimeInMillis()+".png");
         imageBitmap = BitmapFactory.decodeResource(callback.activity().getResources(), R.drawable.img_bg_tch);
         ByteArrayOutputStream baosImage = new ByteArrayOutputStream();
-        imageBitmap.compress(Bitmap.CompressFormat.PNG,50,baosImage);
+        imageBitmap = getResizedBitmap(imageBitmap,100,100);
+        imageBitmap.compress(Bitmap.CompressFormat.PNG,10,baosImage);
         byte[] dataImage =baosImage.toByteArray();
 
         UploadTask uploadTaskImage = mFilePathImage.putBytes(dataImage);
@@ -147,5 +142,22 @@ public class FirstUpdatePresenter implements IFirstUpdateContract.Presenter {
                 });
             }
         });
+    }
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
     }
 }

@@ -3,6 +3,10 @@ package com.example.thecoffeehouse.update.editimage;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import com.example.thecoffeehouse.data.model.bill.Bill;
+
+import java.util.ArrayList;
+
 public interface IEditImageContract {
 
     interface View {

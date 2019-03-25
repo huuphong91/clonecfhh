@@ -84,6 +84,7 @@
                         android:text="Tổng điểm" />
 
                     <TextView
+                        android:id="@+id/update_frag_tvScore"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0"
@@ -124,6 +125,7 @@
                             android:text="Bạn đã uống (ly)" />
 
                         <TextView
+                            android:id="@+id/update_frag_tvCupCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="0"
@@ -216,6 +218,7 @@
                                 android:text="Giao hàng tận nơi (lần)" />
 
                             <TextView
+                                android:id="@+id/update_frag_tvTimeCount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0"
