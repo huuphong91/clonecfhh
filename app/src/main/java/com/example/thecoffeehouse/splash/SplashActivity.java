@@ -31,6 +31,7 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_splash);
+        setAnimation ();
         presenter = new SplashPresenterImp (getApplication (), this);
         Completable.complete ()
                 .delay (3000, TimeUnit.MILLISECONDS)
@@ -38,7 +39,7 @@ public class SplashActivity extends AppCompatActivity implements SplashView {
                     presenter.loadStore ();
                     presenter.loadNews ();
                     presenter.loadpromotionNews ();
-                    setAnimation ();
+
                 })
                 .subscribe ();
     }

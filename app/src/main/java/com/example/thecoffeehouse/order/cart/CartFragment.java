@@ -159,7 +159,6 @@ public class CartFragment extends Fragment implements CartFragmentView {
 
     @Override
     public void setData(List<Cart> carts) {
-
         if (!carts.isEmpty ()) {
             int cartSize = 0;
             total = 0;

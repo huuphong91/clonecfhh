@@ -34,13 +34,11 @@ public class MyMessagingService extends FirebaseMessagingService {
 
         showNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody(),
                 remoteMessage.getData().get("image"));
-
         appRespositoryImp = new AppRespositoryImp(getApplication());
         appRespositoryImp.insertNotification(
                 new Notification(remoteMessage.getNotification().getTitle()
                         , remoteMessage.getNotification().getBody()
                         , remoteMessage.getData().get("image")));
-
     }
 
     public void showNotification(String tittle, String messege, String linkUrl) {

@@ -52,21 +52,21 @@ public class LoginDialogFragment extends Fragment implements IPresenterLoginCont
     private AppCompatActivity activity;
     private String numberPhone;
     private FragmentInteractionListener mListener;
-//    private IIIII iiiii;
+    //    private IIIII iiiii;
     private OnUpdateListener onUpdateListener;
 
     public static LoginDialogFragment newInstance() {
-        LoginDialogFragment fragment = new LoginDialogFragment();
+        LoginDialogFragment fragment = new LoginDialogFragment ();
         return fragment;
     }
 
     @Override
     public void onAttach(Context context) {
-        super.onAttach(context);
+        super.onAttach (context);
         if (context instanceof FragmentInteractionListener) {
             mListener = (FragmentInteractionListener) context;
         }
-        if(context instanceof OnUpdateListener){
+        if (context instanceof OnUpdateListener) {
             onUpdateListener = (OnUpdateListener) context;
         }
 //        if( context instanceof IIIII){
@@ -77,49 +77,49 @@ public class LoginDialogFragment extends Fragment implements IPresenterLoginCont
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login_dialog, container, false);
-        initView(view);
-        initEvent();
+        View view = inflater.inflate (R.layout.fragment_login_dialog, container, false);
+        initView (view);
+        initEvent ();
         return view;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate (savedInstanceState);
 //        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Light_NoActionBar);
     }
 
     private void startLoginPage(LoginType loginType, String numberPhone) {
         if (loginType == LoginType.EMAIL) {
-            Intent i = new Intent(activity, AccountKitActivity.class);
+            Intent i = new Intent (activity, AccountKitActivity.class);
             AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder =
-                    new AccountKitConfiguration.AccountKitConfigurationBuilder(LoginType.EMAIL,
+                    new AccountKitConfiguration.AccountKitConfigurationBuilder (LoginType.EMAIL,
                             AccountKitActivity.ResponseType.TOKEN);
-            i.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION, configurationBuilder.build());
-            startActivityForResult(i, REQUEST_CODE);
+            i.putExtra (AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION, configurationBuilder.build ());
+            startActivityForResult (i, REQUEST_CODE);
         } else if (loginType == LoginType.PHONE) {
-            Intent i = new Intent(activity, AccountKitActivity.class);
+            Intent i = new Intent (activity, AccountKitActivity.class);
             AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder =
-                    new AccountKitConfiguration.AccountKitConfigurationBuilder(LoginType.PHONE,
+                    new AccountKitConfiguration.AccountKitConfigurationBuilder (LoginType.PHONE,
                             AccountKitActivity.ResponseType.TOKEN);
-            configurationBuilder.setInitialPhoneNumber(new PhoneNumber("+84", numberPhone));
-            i.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION, configurationBuilder.build());
-            startActivityForResult(i, REQUEST_CODE);
+            configurationBuilder.setInitialPhoneNumber (new PhoneNumber ("+84", numberPhone));
+            i.putExtra (AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION, configurationBuilder.build ());
+            startActivityForResult (i, REQUEST_CODE);
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult (requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE) {
-            AccountKitLoginResult accountKitLoginResult = data.getParcelableExtra(AccountKitLoginResult.RESULT_KEY);
-            if (accountKitLoginResult.getError() != null) {
+            AccountKitLoginResult accountKitLoginResult = data.getParcelableExtra (AccountKitLoginResult.RESULT_KEY);
+            if (accountKitLoginResult.getError () != null) {
                 return;
-            } else if (accountKitLoginResult.wasCancelled()) {
+            } else if (accountKitLoginResult.wasCancelled ()) {
                 return;
             } else {
-                presenter.checkFirstLogin(numberPhone);
-                if (accountKitLoginResult.getAccessToken() != null) {
+                presenter.checkFirstLogin (numberPhone);
+                if (accountKitLoginResult.getAccessToken () != null) {
 //                    Toast.makeText(activity, "Success! %s" + accountKitLoginResult.getAccessToken().getAccountId(), Toast.LENGTH_SHORT).show();
                 } else {
 //                    Toast.makeText(activity, "Success! %s" + accountKitLoginResult.getAuthorizationCode().substring(10, 0), Toast.LENGTH_SHORT).show();
@@ -130,68 +130,72 @@ public class LoginDialogFragment extends Fragment implements IPresenterLoginCont
 
     @Override
     public void onCheckSucess(String result) {
-        Log.d(TAG, "onCheckSucess: "+result);
+        Log.d (TAG, "onCheckSucess: " + result);
     }
 
     @Override
     public void onCheckFail(String result) {
-        mListener.onChangeFragment(FirstUpdateFragment.newInstance(), Constant.FIRST_UPDATE_FRAGMENT);
+        mListener.onChangeFragment (FirstUpdateFragment.newInstance (), Constant.FIRST_UPDATE_FRAGMENT);
     }
 
     @Override
     public void onLoadSucess(String result) {
-        mImageDelete.setVisibility(View.GONE);
-        mButtonCommit.loadingSuccessful();
-        new Handler().postDelayed(() -> {
-            Intent mStartActivity = new Intent(getContext(), MainActivity.class);
-            int mPendingIntentId = 123456;
-            PendingIntent mPendingIntent = PendingIntent.getActivity(getContext(), mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
-            AlarmManager mgr = (AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
-            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-            System.exit(0);
-        }, 1000);
+        mImageDelete.setVisibility (View.GONE);
+        mButtonCommit.loadingSuccessful ();
+
+        if (getContext () != null) {
+            new Handler ().postDelayed (() -> {
+                Intent mStartActivity = new Intent (getContext (), MainActivity.class);
+                int mPendingIntentId = 123456;
+                PendingIntent mPendingIntent = PendingIntent.getActivity (getContext (), mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+                AlarmManager mgr = (AlarmManager) getContext ().getSystemService (Context.ALARM_SERVICE);
+                mgr.set (AlarmManager.RTC, System.currentTimeMillis () + 100, mPendingIntent);
+//            System.exit(0);
+                getActivity ().finish ();
+
+            }, 1000);
+        }
+
     }
 
     @Override
     public void onFirstLogin(String result) {
-        Log.d(TAG, "onFirstLogin: "+result);
+        Log.d (TAG, "onFirstLogin: " + result);
     }
 
     @Override
     public void onCancel(String result) {
-        mImageDelete.setEnabled(true);
-        Log.d(TAG, "onCancel: "+result);
-        mButtonCommit.loadingFailed();
-        mButtonCommit.reset();
+        mImageDelete.setEnabled (true);
+        Log.d (TAG, "onCancel: " + result);
+        mButtonCommit.loadingFailed ();
+        mButtonCommit.reset ();
     }
 
     @Override
     public Context activity() {
-        return getContext();
+        return getContext ();
     }
 
     private void initView(View view) {
-        toolbar = view.findViewById(R.id.frag_login_toolbar);
-        toolbar.setTitle("");
-        activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
-        mImageDelete = toolbar.findViewById(R.id.frag_login_img_delete);
-        mButtonCommit = view.findViewById(R.id.frag_login_btn_commit);
-        mButtonFB = view.findViewById(R.id.frag_login_btn_fb);
-        mButtonEmail = view.findViewById(R.id.frag_login_btn_email);
-        mEditTextPhone = view.findViewById(R.id.fragment_edt_phone);
-        final AppCompatActivity activity = (AppCompatActivity) getActivity();
-        presenter = new PresenterLogin(this);
-        activity.setSupportActionBar(toolbar);
+        toolbar = view.findViewById (R.id.frag_login_toolbar);
+        toolbar.setTitle ("");
+        activity = (AppCompatActivity) getActivity ();
+        activity.setSupportActionBar (toolbar);
+        mImageDelete = toolbar.findViewById (R.id.frag_login_img_delete);
+        mButtonCommit = view.findViewById (R.id.frag_login_btn_commit);
+        mButtonFB = view.findViewById (R.id.frag_login_btn_fb);
+        mButtonEmail = view.findViewById (R.id.frag_login_btn_email);
+        mEditTextPhone = view.findViewById (R.id.fragment_edt_phone);
+        presenter = new PresenterLogin (this);
     }
 
     private void initEvent() {
-        mImageDelete.setOnClickListener(v -> onUpdateListener.onUpdateFragment());
+        mImageDelete.setOnClickListener (v -> onUpdateListener.onUpdateFragment ());
 
-        mButtonEmail.setOnClickListener(v -> {
+        mButtonEmail.setOnClickListener (v -> {
         });
 
-        mButtonFB.setOnClickListener(v -> {
+        mButtonFB.setOnClickListener (v -> {
 //            SharedPreferences mPrefs = getContext().getSharedPreferences("dataUser", Context.MODE_PRIVATE);
 //            SharedPreferences.Editor editor = mPrefs.edit();
 //            editor.clear();
@@ -199,13 +203,13 @@ public class LoginDialogFragment extends Fragment implements IPresenterLoginCont
 //            AccountKit.logOut();
 //            Log.d(TAG, "initEvent: ");
 //            onUpdateListener.onUpdateFragment();
-            Toast.makeText(activity, "Hello EveryBody", Toast.LENGTH_SHORT).show();
+            Toast.makeText (activity, "Hello EveryBody", Toast.LENGTH_SHORT).show ();
         });
 
-        mButtonCommit.setOnClickListener(v -> {
-            mButtonCommit.startLoading();
-            numberPhone = mEditTextPhone.getText().toString();
-            startLoginPage(LoginType.PHONE, numberPhone);
+        mButtonCommit.setOnClickListener (v -> {
+            mButtonCommit.startLoading ();
+            numberPhone = mEditTextPhone.getText ().toString ();
+            startLoginPage (LoginType.PHONE, numberPhone);
         });
     }
 }
