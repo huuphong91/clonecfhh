@@ -1,6 +1,7 @@
 package com.example.thecoffeehouse.order.filter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -31,6 +32,7 @@ public class FilterDialogFragment extends DialogFragment implements FilterView, 
     private FilterAdapter mAdapter;
     private FilterPresenter filterPresenter;
     private boolean isCheckedViewVisible;
+    private FabAnimation fabAnimation;
 
     public static FilterDialogFragment newInstance(boolean isVisibile) {
         FilterDialogFragment fragment = new FilterDialogFragment ();
@@ -38,6 +40,10 @@ public class FilterDialogFragment extends DialogFragment implements FilterView, 
         bundle.putBoolean (Constant.CHECK_VISIBLE, isVisibile);
         fragment.setArguments (bundle);
         return fragment;
+    }
+
+    public void setFabAnimation(FabAnimation animation) {
+        this.fabAnimation = animation;
     }
 
     @Override
@@ -81,6 +87,7 @@ public class FilterDialogFragment extends DialogFragment implements FilterView, 
             window.getAttributes ().horizontalMargin = 0.1F;
         }
         window.setAttributes (params);
+        fabAnimation.onOpen ();
     }
 
     @Override
@@ -109,6 +116,13 @@ public class FilterDialogFragment extends DialogFragment implements FilterView, 
 
     @Override
     public void onClickListener() {
+        fabAnimation.onClose ();
         dismiss ();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss (dialog);
+        fabAnimation.onClose ();
     }
 }

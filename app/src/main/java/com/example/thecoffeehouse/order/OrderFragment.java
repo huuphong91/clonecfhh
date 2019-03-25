@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +22,7 @@ import com.example.thecoffeehouse.main.FragmentInteractionListener;
 import com.example.thecoffeehouse.order.cart.CartFragment;
 import com.example.thecoffeehouse.order.cart.model.Cart;
 import com.example.thecoffeehouse.order.drinks.DrinksFragment;
+import com.example.thecoffeehouse.order.filter.FabAnimation;
 import com.example.thecoffeehouse.order.filter.FilterDialogFragment;
 import com.example.thecoffeehouse.order.hightlight.HighLightDrinks;
 import com.example.thecoffeehouse.order.search.SearchDialogFragment;
@@ -46,7 +49,7 @@ import androidx.fragment.app.FragmentManager;
 
 public class OrderFragment extends Fragment implements OrderView,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener, FabAnimation {
 
     private TabLayout mTabLayout;
     private FragmentManager mFragmentManager;
@@ -63,6 +66,8 @@ public class OrderFragment extends Fragment implements OrderView,
     private FusedLocationProviderApi fusedLocationProviderApi;
     private LocationRequest locationRequest;
     private GoogleApiClient googleApiClient;
+    private FilterDialogFragment filterDialogFragment;
+    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
 
     public static OrderFragment newInstance() {
         OrderFragment fragment = new OrderFragment ();
@@ -109,13 +114,15 @@ public class OrderFragment extends Fragment implements OrderView,
             mListener.onChangeFragment (CartFragment.newInstance (), Constant.CART_FRAGMENT);
         });
         fabFilter.setOnClickListener (v -> {
-            FilterDialogFragment.newInstance (constraintLayout.getVisibility () == View.GONE ? true : false).show (mFragmentManager, "as");
+            filterDialogFragment = FilterDialogFragment.newInstance (constraintLayout.getVisibility () == View.GONE ? true : false);
+            filterDialogFragment.setFabAnimation (this);
+            filterDialogFragment.show (mFragmentManager, "filter");
         });
     }
 
     private void initView(View view) {
         orderPresenter = new OrderPresenterImp (getActivity ().getApplication (), this);
-        mFragmentManager = getFragmentManager ();
+        mFragmentManager = getChildFragmentManager ();
         mTabLayout = view.findViewById (R.id.tabLayout);
         imgViewSearch = view.findViewById (R.id.order_action_search);
         constraintLayout = view.findViewById (R.id.layout_display_cart);
@@ -128,6 +135,12 @@ public class OrderFragment extends Fragment implements OrderView,
         txtTotal = view.findViewById (R.id.tv_cart_total);
         fabFilter = view.findViewById (R.id.fab_filter);
         txtAddress = view.findViewById (R.id.order_text_address);
+
+        fab_open = AnimationUtils.loadAnimation (getContext (), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation (getContext (), R.anim.fab_close);
+        rotate_forward = AnimationUtils.loadAnimation (getContext (), R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation (getContext (), R.anim.rotate_backward);
+
         getLocation ();
     }
 
@@ -215,10 +228,12 @@ public class OrderFragment extends Fragment implements OrderView,
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (getContext ().checkSelfPermission (Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && getContext ().checkSelfPermission (Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions (Objects.requireNonNull (getActivity ()), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 696);
-                return;
+        if (getActivity () != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (getActivity ().checkSelfPermission (Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions (Objects.requireNonNull (getActivity ()), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 696);
+                    return;
+                }
             }
         }
         fusedLocationProviderApi.requestLocationUpdates (googleApiClient, locationRequest, this);
@@ -252,5 +267,17 @@ public class OrderFragment extends Fragment implements OrderView,
                 getLocation ();
             }
         }
+    }
+
+    @Override
+    public void onOpen() {
+        fabFilter.setImageDrawable (getContext ().getResources ().getDrawable (R.drawable.ic_action_fab_24dp));
+        fabFilter.startAnimation (rotate_forward);
+    }
+
+    @Override
+    public void onClose() {
+        fabFilter.startAnimation (rotate_backward);
+        fabFilter.setImageDrawable (getContext ().getResources ().getDrawable (R.drawable.ic_action_filter));
     }
 }
