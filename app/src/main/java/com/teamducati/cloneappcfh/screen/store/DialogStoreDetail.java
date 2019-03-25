@@ -44,7 +44,7 @@ public class DialogStoreDetail {
             ImageView imageView = new ImageView(context);
             Glide.with(context)
                     .load(listImage.get(i))
-                    .placeholder(R.drawable.common_full_open_on_phone)
+                    .placeholder(R.drawable.imgabc)
                     .into(imageView);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             mStroreDetail.addView(imageView);
