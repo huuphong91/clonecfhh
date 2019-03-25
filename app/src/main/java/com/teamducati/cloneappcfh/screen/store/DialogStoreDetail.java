@@ -28,7 +28,7 @@ public class DialogStoreDetail {
                            String time, String numberPhone) {
         Dialog dialog = new Dialog(context, android.R.style.Theme_Light);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
+        //dialog.setCancelable(false);
         dialog.setContentView(R.layout.layout_detail_store);
 
         Toolbar exit = (Toolbar) dialog.findViewById(R.id.tbrExitStroreDetail);
