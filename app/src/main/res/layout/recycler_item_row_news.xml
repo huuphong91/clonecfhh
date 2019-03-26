@@ -23,7 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:src="@drawable/banner_caramel_macchiato"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/image" />
             <TextView
                 android:id="@+id/txt_tilte_news"
                 android:layout_width="match_parent"
@@ -31,7 +32,7 @@
                 android:paddingTop="8dp"
                 android:paddingLeft="@dimen/margin_material_16dp"
                 android:paddingRight="@dimen/margin_material_16dp"
-                android:text="Title"
+                android:text="@string/title"
                 android:textColor="#333333"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -45,8 +46,8 @@
                 android:paddingLeft="@dimen/margin_material_16dp"
                 android:paddingBottom="24dp"
                 android:paddingRight="@dimen/margin_material_16dp"
-                android:text="Content"
-                android:textSize="14dp"
+                android:text="@string/content"
+                android:textSize="14sp"
                 android:lineSpacingExtra="6dp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

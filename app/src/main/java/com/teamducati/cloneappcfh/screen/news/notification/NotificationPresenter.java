@@ -6,33 +6,24 @@ import com.teamducati.cloneappcfh.data.local.repository.NotificationRepository;
 import com.teamducati.cloneappcfh.entity.Notification;
 
 import androidx.lifecycle.LifecycleOwner;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-
+@SuppressWarnings("ALL")
 public class NotificationPresenter implements NoticationContract.Presenter {
     private  NoticationContract.View mNotificationNews;
-    private CompositeDisposable mCompositeDisposable;
-    private Disposable disposable;
     private NotificationRepository notificationRepository;
     private LifecycleOwner lifecycleOwner;
-    private Context application;
-    public NotificationPresenter(NoticationContract.View mNotificationNews, Context application ,
+    private Context mContext;
+    public NotificationPresenter(NoticationContract.View mNotificationNews, Context context,
                                  LifecycleOwner lifecycleOwner) {
         this.mNotificationNews = mNotificationNews;
         this.lifecycleOwner = lifecycleOwner;
-        this.application = application;
-        mCompositeDisposable = new CompositeDisposable();
-        notificationRepository = new NotificationRepository(application);
+        this.mContext = context;
+        notificationRepository = new NotificationRepository(mContext);
     }
-
-    public NotificationPresenter(NoticationContract.View mNotificationNews, Context application ) {
+    //constructor insert firebase notifications
+    public NotificationPresenter(NoticationContract.View mNotificationNews, Context context ) {
         this.mNotificationNews = mNotificationNews;
-        this.application = application;
-        mCompositeDisposable = new CompositeDisposable();
-        notificationRepository = new NotificationRepository(application);
-    }
-
-    public NotificationPresenter() {
+        this.mContext = context;
+        notificationRepository = new NotificationRepository(mContext);
     }
 
     @Override

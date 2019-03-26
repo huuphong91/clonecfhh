@@ -1,18 +1,3 @@
-/**
- * Copyright 2016 Google Inc. All Rights Reserved.
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 package com.teamducati.cloneappcfh.screen.news.notification.firebase;
 
@@ -45,27 +30,21 @@ import java.util.concurrent.ExecutionException;
 import androidx.core.app.NotificationCompat;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-
+@SuppressWarnings("unchecked")
 public class NotificationFirebaseMessagingService extends FirebaseMessagingService implements NoticationContract.View {
 
     private static final String TAG = "MyFirebaseMsgService";
-    private NoticationContract.Presenter mPresenter;
     private Bitmap bitmapImage;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        mPresenter = new NotificationPresenter(this, getApplicationContext());
+        NoticationContract.Presenter mPresenter = new NotificationPresenter(this, getApplicationContext());
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
-            if (true) {
-                scheduleJob();
-            } else {
-                // Handle message within 10 seconds
-                handleNow();
-            }
+            scheduleJob();
         }
         if (remoteMessage.getNotification() != null) {
 
@@ -88,7 +67,7 @@ public class NotificationFirebaseMessagingService extends FirebaseMessagingServi
     public void onNewToken(String token) {
         Log.d(TAG, "Refreshed token: " + token);
 
-        sendRegistrationToServer(token);
+        sendRegistrationToServer();
     }
 
     private void scheduleJob() {
@@ -97,11 +76,7 @@ public class NotificationFirebaseMessagingService extends FirebaseMessagingServi
         WorkManager.getInstance().beginWith(work).enqueue();
     }
 
-    private void handleNow() {
-        Log.d(TAG, "Short lived task is done.");
-    }
-
-    private void sendRegistrationToServer(String token) {
+    private void sendRegistrationToServer() {
         // TODO: Implement this method to send token to your app server.
     }
 

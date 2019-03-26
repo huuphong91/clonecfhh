@@ -16,12 +16,9 @@ public class Constants {
             "resources_images_icons_ic_last_address"};
 
     public static final String KEY_BUNDLE_DETAIL = "KEY_BUNDLE_DETAIL";
-    public static final String SHARED_PREFERENCES_NAME = "SHARED_PREFERENCES_DATA";
 
-    public static final String SHARED_PREFERENCES_CART_NAME = "SHARED_PREFERENCES_CART_NAME";
-    public static final String KEY_PRODUCT_SHARED_PREF = "SHARED_PREFERENCES_CART_NAME";
-    public static final int PICK_IMAGE = 1;
-    public static final String STORAGE_URL = "gs://thecoffeehouseproject-1d85c.appspot.com/";
+    public static final String SHARED_PREFERENCES_FILE_NAME = "SHARED_PREFERENCES_DATA";
+    public static final String SHARED_PREFERENCES_KEY_DATA_OBJECT = "data_object";
 
     public static final String FIREBASE_ID="firebase_id";
     public static final String FIREBASE_TITLE="firebase_title";
@@ -34,5 +31,11 @@ public class Constants {
 
     public static final String KEY_BUNDLE_WEB_VIEW_TITLE="title";
     public static final String KEY_BUNDLE_WEB_VIEW_URL="url";
+
+    public static final String SHARED_PREFERENCES_CART_NAME = "SHARED_PREFERENCES_CART_NAME";
+    public static final String KEY_PRODUCT_SHARED_PREF = "SHARED_PREFERENCES_CART_NAME";
+    public static final int PICK_IMAGE = 1;
+    public static final String STORAGE_URL = "gs://thecoffeehouseproject-1d85c.appspot.com/";
+
 
 }

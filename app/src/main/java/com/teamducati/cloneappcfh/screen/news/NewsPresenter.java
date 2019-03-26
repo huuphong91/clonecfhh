@@ -16,6 +16,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+@SuppressWarnings("unchecked")
 public class NewsPresenter extends FirebaseMessagingService implements NewsContract.Presenter {
 
     @Nullable
@@ -44,7 +45,6 @@ public class NewsPresenter extends FirebaseMessagingService implements NewsContr
                         if (mNewsView != null) {
                             mNewsView.getListNewsPromotion(value);
                         }
-
                     }
 
                     @Override
@@ -57,11 +57,10 @@ public class NewsPresenter extends FirebaseMessagingService implements NewsContr
                     @Override
                     public void onComplete() {
                         if (mNewsView != null) {
-                          //  mNewsView.getHandleSuccess();
+                            mNewsView.getHandleSuccess();
                         }
                     }
                 });
-
     }
 
     @Override

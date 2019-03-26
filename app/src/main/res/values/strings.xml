@@ -21,6 +21,16 @@
     <string name="ship_address">Nhập địa chỉ giao hàng</string>
     <string name="address_to_ship">Địa chỉ giao hàng</string>
     <string name="error_api_key">No API key defined in gradle.properties</string>
+    <string name="title">Title</string>
+    <string name="date">Date</string>
+    <string name="content">Content</string>
+    <string name="image">image</string>
+    <string name="xem_ngay">Xem Ngay</string>
+    <string name="title_layout_news_promotion">Dành Cho Bạn</string>
+    <string name="title_layout_news">Tin Tức</string>
+    <string name="text_button_login">Đăng Nhập</string>
+    <string name="content_user_action_bar_login">• 0 Thành Viên Mới</string>
+    <string name="name_user_action_bar_login">Cao Trinh</string>
     <!-- News -->
 
     // Detail dialog
