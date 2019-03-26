@@ -24,6 +24,7 @@ import com.teamducati.cloneappcfh.utils.Constants;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import androidx.core.app.NotificationCompat;
@@ -125,9 +126,10 @@ public class NotificationFirebaseMessagingService extends FirebaseMessagingServi
             NotificationChannel channel = new NotificationChannel(channelId,
                     "Channel human readable title",
                     NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
+            Objects.requireNonNull(notificationManager).createNotificationChannel(channel);
         }
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        Objects.requireNonNull(notificationManager).
+                notify(0 /* ID of notification */, notificationBuilder.build());
 
     }
 

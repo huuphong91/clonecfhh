@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="@string/title"
+                android:text="@string/title_action_bar_notifications"
                 android:textAllCaps="false"
                 cardview:ignore="RelativeOverlap" />
 

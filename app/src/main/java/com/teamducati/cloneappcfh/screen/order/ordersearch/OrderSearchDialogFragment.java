@@ -68,7 +68,7 @@ public class OrderSearchDialogFragment extends DialogFragment {
     private void initSearchView() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             SearchManager manager = (SearchManager) Objects.requireNonNull(getActivity()).getSystemService(SEARCH_SERVICE);
-            SearchableInfo searchableInfo = manager.getSearchableInfo(getActivity().getComponentName());
+            SearchableInfo searchableInfo = Objects.requireNonNull(manager).getSearchableInfo(getActivity().getComponentName());
             mSearchViewOrderSearch.setSearchableInfo(searchableInfo);
         }
         mSearchViewOrderSearch.setFocusable(true);

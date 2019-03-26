@@ -2,7 +2,6 @@ package com.teamducati.cloneappcfh.screen.news;
 
 import android.annotation.SuppressLint;
 
-import com.google.firebase.messaging.FirebaseMessagingService;
 import com.teamducati.cloneappcfh.data.network.RetrofitFactory;
 import com.teamducati.cloneappcfh.entity.News;
 import com.teamducati.cloneappcfh.entity.NewsPromotion;
@@ -20,7 +19,7 @@ import io.reactivex.schedulers.Schedulers;
 
 @SuppressLint("Registered")
 @SuppressWarnings("unchecked")
-public class NewsPresenter extends FirebaseMessagingService implements NewsContract.Presenter {
+public class NewsPresenter implements NewsContract.Presenter {
 
     @Nullable
     private NewsContract.View mNewsView;

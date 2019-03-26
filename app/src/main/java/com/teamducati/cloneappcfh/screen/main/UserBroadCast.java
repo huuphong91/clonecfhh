@@ -13,6 +13,8 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import dagger.android.DaggerBroadcastReceiver;
+
 public class UserBroadCast extends BroadcastReceiver {
 
     private BaseView baseView;

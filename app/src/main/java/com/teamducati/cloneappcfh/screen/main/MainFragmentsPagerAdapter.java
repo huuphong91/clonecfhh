@@ -1,5 +1,7 @@
 package com.teamducati.cloneappcfh.screen.main;
 
+import com.teamducati.cloneappcfh.di.ActivityScoped;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+@ActivityScoped
 public class MainFragmentsPagerAdapter extends FragmentStatePagerAdapter {
 
     private List<Fragment> mFragments;

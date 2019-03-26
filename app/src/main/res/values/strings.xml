@@ -31,6 +31,7 @@
     <string name="text_button_login">Đăng Nhập</string>
     <string name="content_user_action_bar_login">Thành Viên Mới • 0</string>
     <string name="name_user_action_bar_login">Cao Trinh</string>
+    <string name="title_action_bar_notifications">Thông Báo</string>
     <!-- News -->
 
     // Detail dialog

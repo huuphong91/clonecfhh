@@ -73,8 +73,6 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
     private Unbinder unbinder;
 
     private User user;
-
-    private Uri filePath;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl(Constants.STORAGE_URL);
     private Uri imageUri;

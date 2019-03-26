@@ -218,7 +218,7 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View, V
                 .into(imageView);
     }
 
-    private void onBroadCastCheckLogin() {
+    private void registerBroadCastCheckLogin() {
         IntentFilter intentFilter = new IntentFilter(Constants.ACTION_USER_RESULT);
         intentFilter.addAction(Constants.ACTION_LOG_OUT);
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
@@ -260,7 +260,7 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View, V
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        onBroadCastCheckLogin();
+        registerBroadCastCheckLogin();
     }
 
     @Override

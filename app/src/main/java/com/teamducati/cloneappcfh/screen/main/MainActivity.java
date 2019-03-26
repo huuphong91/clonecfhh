@@ -54,8 +54,8 @@ public class MainActivity extends DaggerAppCompatActivity {
     AccountFragment mAccountFragment;
     private boolean isFirstClickOnOrderTab;
     private boolean isFirstClickOnStoreTab;
-
-    private MainFragmentsPagerAdapter mFragmentsPagerAdapter;
+    @Inject
+    MainFragmentsPagerAdapter mFragmentsPagerAdapter;
 
     private FusedLocationProviderClient mFusedLocation;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -100,7 +100,7 @@ public class MainActivity extends DaggerAppCompatActivity {
         isFirstClickOnOrderTab = true;
         isFirstClickOnStoreTab = true;
 
-        mFragmentsPagerAdapter = MainFragmentsPagerAdapter_Factory.newMainFragmentsPagerAdapter(getSupportFragmentManager());
+//        mFragmentsPagerAdapter = MainFragmentsPagerAdapter_Factory.newMainFragmentsPagerAdapter(getSupportFragmentManager());
 
         checkApiKeyOfPlaces();
 

@@ -23,6 +23,9 @@ import com.teamducati.cloneappcfh.screen.store.StoreFragment;
 import com.teamducati.cloneappcfh.screen.store.StoreModule;
 import com.teamducati.cloneappcfh.screen.store.StorePresenter;
 
+import org.greenrobot.eventbus.util.ErrorDialogManager;
+
+import androidx.fragment.app.FragmentManager;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
@@ -62,4 +65,10 @@ public abstract class MainModule {
     @ActivityScoped
     @Binds
     abstract AccountContract.Presenter accountPresenter(AccountPresenter accountPresenter);
+
+    @Provides
+    @ActivityScoped
+    static FragmentManager fragmentManager(MainActivity mainActivity) {
+        return mainActivity.getSupportFragmentManager();
+    }
 }

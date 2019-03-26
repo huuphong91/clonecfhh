@@ -17,12 +17,14 @@ import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.utils.Constants;
 
+import java.util.Objects;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 public class NotificationDetailsDialogFragment extends DialogFragment {
 
     private View view;
-    private Bundle bundle;
     private Dialog dialog;
     private String mUrl;
     private String mContent;
@@ -33,7 +35,7 @@ public class NotificationDetailsDialogFragment extends DialogFragment {
     private ImageView mImgDetailsNotifications;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_notification_details, container, false);
         initData();
         initMappingViewId();
@@ -43,22 +45,23 @@ public class NotificationDetailsDialogFragment extends DialogFragment {
     private void initEvent() {
         mTxtTilteDetailsNotifications.setText(mTitle);
         mTxtContentDetailsNotifications.setText(mContent);
-        Glide.with(getActivity())
+        Glide.with(Objects.requireNonNull(getActivity()))
                 .load(mUrl)
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(mImgDetailsNotifications);
-        mBtnCloseDetailsNotification.setOnClickListener(view -> {dialog.dismiss();});
+        mBtnCloseDetailsNotification.setOnClickListener(view -> dialog.dismiss());
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         dialog = super.onCreateDialog(savedInstanceState);
-        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        Objects.requireNonNull(dialog.getWindow()).requestFeature(Window.FEATURE_NO_TITLE);
         return dialog;
     }
 
     private void initData() {
-        bundle = this.getArguments();
+        Bundle bundle = this.getArguments();
         if (bundle != null) {
             mTitle = bundle.getString(Constants.KEY_BUNDLE_FIREBASE_TITLE);
             mContent = bundle.getString(Constants.KEY_BUNDLE_FIREBASE_CONTENT);
@@ -81,7 +84,7 @@ public class NotificationDetailsDialogFragment extends DialogFragment {
         super.onStart();
         Dialog dialog = getDialog();
         if (dialog != null) {
-            dialog.getWindow().setLayout(1000,
+            Objects.requireNonNull(dialog.getWindow()).setLayout(1000,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             dialog.getWindow().setGravity(Gravity.CENTER);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
