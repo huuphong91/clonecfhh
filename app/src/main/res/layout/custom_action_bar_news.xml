@@ -1,9 +1,9 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="56dp"
-    xmlns:cardview="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/custom_bottom_line_action_bar">
 
             <ImageView
@@ -11,28 +11,31 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/margin_material_16dp"
-                android:src="@drawable/ic_person_grey_700_24dp" />
+                android:layout_marginStart="@dimen/margin_material_16dp"
+                android:src="@drawable/ic_person_grey_700_24dp"
+                android:contentDescription="@string/image" />
 
             <Button
                 android:id="@+id/btn_login"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/margin_material_16dp"
-                android:layout_toRightOf="@id/img_news_person"
+                android:layout_marginStart="@dimen/margin_material_16dp"
+                android:layout_toEndOf="@id/img_news_person"
                 android:background="@drawable/custom_button"
-                android:text="Đăng Nhập"
-                android:textSize="10dp"
+                android:text="@string/text_button_login"
+                android:textSize="10sp"
                 android:textAllCaps="false"
-                android:textColor="@drawable/custom_button_selector" />
+                android:textColor="@drawable/custom_button_selector"
+                tools:ignore="RelativeOverlap,SmallSp" />
 
             <ImageView
                 android:id="@+id/img_news_notification_sign_out"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/margin_material_16dp"
-                android:src="@drawable/ic_notifications_grey_800_24dp" />
+                android:layout_marginEnd="@dimen/margin_material_16dp"
+                android:src="@drawable/ic_notifications_grey_800_24dp"
+                android:contentDescription="@string/image" />
         </RelativeLayout>

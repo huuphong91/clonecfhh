@@ -10,8 +10,9 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/margin_material_16dp"
-                android:src="@drawable/ic_close_grey_800_24dp" />
+                android:layout_marginStart="@dimen/margin_material_16dp"
+                android:src="@drawable/ic_close_grey_800_24dp"
+                android:contentDescription="@string/image" />
 
             <TextView
                 android:id="@+id/txt_title_notificaton"
@@ -20,16 +21,18 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="Thông Báo"
-                android:textAllCaps="false" />
+                android:text="@string/title"
+                android:textAllCaps="false"
+                cardview:ignore="RelativeOverlap" />
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/margin_material_16dp"
-                android:src="@drawable/ic_playlist_add_check_black_24dp" />
+                android:layout_marginEnd="@dimen/margin_material_16dp"
+                android:src="@drawable/ic_playlist_add_check_black_24dp"
+                android:contentDescription="@string/image" />
 
         </RelativeLayout>
 

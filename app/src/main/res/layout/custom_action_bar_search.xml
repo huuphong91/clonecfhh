@@ -8,18 +8,18 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/margin_material_16dp"
-        android:src="@drawable/ic_arrow_back_black_24dp" />
+        android:layout_marginStart="@dimen/margin_material_16dp"
+        android:src="@drawable/ic_arrow_back_black_24dp"
+        android:contentDescription="@string/image" />
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view_order_search"
-        android:layout_toRightOf="@id/img_back_search"
+        android:layout_toEndOf="@id/img_back_search"
         android:background="@drawable/custom_search"
         android:layout_marginLeft="@dimen/margin_material_16dp"
         android:layout_marginRight="@dimen/margin_material_16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true" />
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

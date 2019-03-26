@@ -29,13 +29,6 @@ public class ActivityUtils {
         transaction.commit();
     }
 
-    public static void removeFragmentDisplay(FragmentManager fragmentManager, Fragment fragment) {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.remove(fragment);
-        transaction.commit();
-    }
-
-
     public static void restartAllFragmentDisplay(Activity getActivity) {
         if (getActivity != null) {
             Intent intent = new Intent(getActivity, MainActivity.class);
@@ -44,11 +37,10 @@ public class ActivityUtils {
             getActivity.startActivity(intent);
             getActivity.overridePendingTransition(0, 0); //0 for no animation
         }
-
     }
 
     public static void createDataObject(Context context) {
-        mSharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        mSharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
 
     }
 
@@ -58,7 +50,7 @@ public class ActivityUtils {
         String mSetStringJSONObject = gson.toJson(objectData);
 //        mSharedPreferencesEditor.putString("data_object_" +
 //                objectData.getClass().getSimpleName().toLowerCase(), mSetStringJSONObject);
-        mSharedPreferencesEditor.putString("data_object", mSetStringJSONObject);
+        mSharedPreferencesEditor.putString(Constants.SHARED_PREFERENCES_KEY_DATA_OBJECT, mSetStringJSONObject);
         mSharedPreferencesEditor.commit();
     }
 
@@ -66,7 +58,7 @@ public class ActivityUtils {
         Gson gson = new Gson();
 //        String mGetStringJSONObject = mSharedPreferences.getString("data_object_" +
 //                objectData.getClass().getSimpleName().toLowerCase(), "");
-        String mGetStringJSONObject = mSharedPreferences.getString("data_object", null);
+        String mGetStringJSONObject = mSharedPreferences.getString(Constants.SHARED_PREFERENCES_KEY_DATA_OBJECT, null);
         return gson.fromJson(mGetStringJSONObject, objectData);
     }
 
@@ -74,7 +66,7 @@ public class ActivityUtils {
         mSharedPreferencesEditor = mSharedPreferences.edit();
 //        mSharedPreferencesEditor.remove("data_object_" +
 //                objectData.getClass().getSimpleName().toLowerCase());
-        mSharedPreferencesEditor.remove("data_object");
+        mSharedPreferencesEditor.remove(Constants.SHARED_PREFERENCES_KEY_DATA_OBJECT);
         mSharedPreferencesEditor.commit();
     }
 
