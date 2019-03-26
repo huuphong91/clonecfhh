@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -27,9 +26,10 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
-
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.inject.Inject;
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -45,18 +45,16 @@ import dagger.android.support.DaggerFragment;
 @ActivityScoped
 public class StoreFragment extends DaggerFragment implements StoreContract.View {
 
+    private static int GOOGLEPLEX = 1000;
+    private static int ZOOMSALLTORE = 6;
+    private static int BEARING = 0;
+    private static int TILT = 45;
+    private static Double LAT = 15.567900;
+    private static Double LON = 106.271446;
+
     @Inject
     StoreContract.Presenter mPresenter;
-
-    private SupportMapFragment mapFragment;
-    private List<StoresItem> mApiStores;
-    private List<StatesItem> mStatesItems;
-    private StoreAdapter mAdapterStore;
     private GoogleMap mMap;
-    private ProvinceAdapter mProvinceAdapter;
-
-    //////////
-    private int positionStoreSelected;
 
     @BindView(R.id.lnlChooseStore)
     LinearLayout mChooseStore;
@@ -82,7 +80,7 @@ public class StoreFragment extends DaggerFragment implements StoreContract.View 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_store, container, false);
@@ -106,16 +104,15 @@ public class StoreFragment extends DaggerFragment implements StoreContract.View 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusStore event) {
-        positionStoreSelected = event.position;
-        //Toast.makeText(getActivity(), "" + positionStoreSelected, Toast.LENGTH_SHORT).show();
+        int ZOOMSTORE = 15;
         CameraPosition googlePlex = CameraPosition.builder()
                 .target(new LatLng(event.lat, event.lon))
-                .zoom(15)
-                .bearing(0)
-                .tilt(45)
+                .zoom(ZOOMSTORE)
+                .bearing(BEARING)
+                .tilt(TILT)
                 .build();
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(googlePlex));
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), GOOGLEPLEX, null);
         showListStore(event.storesItems);
         HideShow();
         mStore.setText(event.name);
@@ -138,57 +135,48 @@ public class StoreFragment extends DaggerFragment implements StoreContract.View 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mStore.setOnClickListener(v -> {
-            HideShow();
-        });
+        mStore.setOnClickListener(v -> HideShow());
     }
 
     @Override
     public void showListStore(List<StoresItem> arrayList) {
-        this.mApiStores = arrayList;
-        mAdapterStore = new StoreAdapter(getActivity(), arrayList);
+        StoreAdapter mAdapterStore = new StoreAdapter(getActivity(), arrayList);
         mRecyclerStrore.setAdapter(mAdapterStore);
-        for (int i = 0; i < mApiStores.size(); i++) {
+        for (int i = 0; i < arrayList.size(); i++) {
             mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(Double.parseDouble(mApiStores.get(i).getLatitude())
-                            , Double.parseDouble(mApiStores.get(i).getLongitude())))
-                    .title(mApiStores.get(i).getName())
-                    .snippet(mApiStores.get(i).getAddress().getStreet()));
+                    .position(new LatLng(Double.parseDouble(arrayList.get(i).getLatitude())
+                            , Double.parseDouble(arrayList.get(i).getLongitude())))
+                    .title(arrayList.get(i).getName())
+                    .snippet(arrayList.get(i).getAddress().getStreet()));
         }
-        // initStoreCity();
     }
 
     @Override
     public void showListProvince(List<StatesItem> arrayList) {
-        this.mStatesItems = arrayList;
-        mProvinceAdapter = new ProvinceAdapter(getActivity(), arrayList);
-        mRcvListStrore.setAdapter(mProvinceAdapter);
+        AtomicReference<ProvinceAdapter> mProvinceAdapter = new AtomicReference<>(new ProvinceAdapter(getActivity(), arrayList));
+        mRcvListStrore.setAdapter(mProvinceAdapter.get());
     }
 
     private void initMap() {
-        mapFragment = (SupportMapFragment)
+        SupportMapFragment mapFragment = (SupportMapFragment)
                 getChildFragmentManager().findFragmentById(R.id.mpvStroreDetail);
-        mapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                mMap = googleMap;
-                mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-                if (ContextCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    mMap.setMyLocationEnabled(true);
-                }
-                mMap.clear(); //clear old markers
-                CameraPosition googlePlex = CameraPosition.builder()
-                        .target(new LatLng(10.782683, 106.675247))
-                        .zoom(7)
-                        .bearing(0)
-                        .tilt(45)
-                        .build();
-                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(googlePlex));
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);
+        Objects.requireNonNull(mapFragment).getMapAsync(googleMap -> {
+            mMap = googleMap;
+            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()),
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                mMap.setMyLocationEnabled(true);
             }
+            mMap.clear(); //clear old markers
+            CameraPosition googlePlex = CameraPosition.builder()
+                    .target(new LatLng(LAT, LON))
+                    .zoom(ZOOMSALLTORE)
+                    .bearing(BEARING)
+                    .tilt(TILT)
+                    .build();
+            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(googlePlex));
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), GOOGLEPLEX, null);
         });
     }
 

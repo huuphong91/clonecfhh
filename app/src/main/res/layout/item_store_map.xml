@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
-        android:layout_marginBottom="2dp">
+        android:layout_marginBottom="2dp"
+        tools:ignore="RtlHardcoded">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -27,7 +28,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/txtAddress"
@@ -39,13 +41,13 @@
                 android:layout_weight="2.5"
                 android:gravity="center|left"
                 android:paddingLeft="5dp"
-                android:text="114 Võ Văn Ngân"
                 android:textColor="#ffff"
-                android:textSize="10sp"
+                android:textSize="@dimen/dimen_10sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/imgStoreMap"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="RtlSymmetry" />
 
             <TextView
                 android:id="@+id/txtNameStoreMap"
@@ -57,13 +59,13 @@
                 android:layout_weight="1.5"
                 android:gravity="center|left"
                 android:paddingLeft="5dp"
-                android:text="Quận Thủ Đức"
                 android:textColor="#ffff"
-                android:textSize="7sp"
+                android:textSize="@dimen/dimen_7sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/txtAddress"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="RtlSymmetry" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

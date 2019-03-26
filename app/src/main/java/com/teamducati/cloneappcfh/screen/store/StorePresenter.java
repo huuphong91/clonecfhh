@@ -1,13 +1,10 @@
 package com.teamducati.cloneappcfh.screen.store;
 
 import com.teamducati.cloneappcfh.data.network.RetrofitFactory;
-import com.teamducati.cloneappcfh.entity.APIStoreMap.APIStore;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StatesItem;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StoresItem;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import androidx.annotation.Nullable;
 import io.reactivex.Observable;
 import io.reactivex.SingleObserver;
@@ -16,20 +13,17 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class StorePresenter implements StoreContract.Presenter {
-
     @Nullable
     private StoreContract.View mStoreView;
 
-    private RetrofitFactory mRetrofitFactory;
-
     @Inject
     public StorePresenter() {
-        mRetrofitFactory = new RetrofitFactory();
+       // RetrofitFactory mRetrofitFactory = new RetrofitFactory();
     }
 
     @Override
     public void onGetAllStore() {
-        mRetrofitFactory.getInstanceRetrofitInterface().getAllStoreMap()
+        RetrofitFactory.getInstanceRetrofitInterface().getAllStoreMap()
                 .subscribeOn(Schedulers.io())
                 .flatMap(apiStore -> Observable.fromIterable(apiStore.getStates()))
                 .flatMap(statesItem -> Observable.fromIterable(statesItem.getDistricts()))
@@ -44,6 +38,7 @@ public class StorePresenter implements StoreContract.Presenter {
 
                     @Override
                     public void onSuccess(List<StoresItem> value) {
+                        assert mStoreView != null;
                         mStoreView.showListStore(value);
                     }
 
@@ -56,7 +51,7 @@ public class StorePresenter implements StoreContract.Presenter {
 
     @Override
     public void onGetAllProvince() {
-        mRetrofitFactory.getInstanceRetrofitInterface().getAllStoreMap()
+        RetrofitFactory.getInstanceRetrofitInterface().getAllStoreMap()
                 .subscribeOn(Schedulers.io())
                 .flatMap(apiStore -> Observable.fromIterable(apiStore.getStates()))
                 .toList()
@@ -69,12 +64,12 @@ public class StorePresenter implements StoreContract.Presenter {
 
                     @Override
                     public void onSuccess(List<StatesItem> statesItems) {
+                        assert mStoreView != null;
                         mStoreView.showListProvince(statesItems);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
                     }
                 });
     }
