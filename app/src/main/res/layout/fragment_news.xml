@@ -20,8 +20,6 @@
 
     </ViewFlipper>
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -45,10 +43,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_material_16dp"
+                        android:layout_marginStart="@dimen/margin_material_16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="4dp"
-                        android:text="Dành Cho Bạn"
+                        android:text="@string/title_layout_news_promotion"
                         android:textColor="@android:color/black" />
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -59,10 +57,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_material_16dp"
+                        android:layout_marginStart="@dimen/margin_material_16dp"
                         android:layout_marginTop="4dp"
                         android:layout_marginBottom="4dp"
-                        android:text="Tin Tức"
+                        android:text="@string/title_layout_news"
                         android:textColor="@android:color/black" />
 
                     <androidx.recyclerview.widget.RecyclerView
