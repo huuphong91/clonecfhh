@@ -23,6 +23,7 @@ import com.teamducati.cloneappcfh.screen.order.adapter.OrderAdapter;
 import com.teamducati.cloneappcfh.utils.Constants;
 
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
@@ -34,17 +35,23 @@ import static android.content.Context.SEARCH_SERVICE;
 
 public class OrderSearchDialogFragment extends DialogFragment {
     private View view;
-    private Dialog dialog;
     private OrderAdapter fragmentOrderAdapter;
     private ItemProductResponse productResponse;
     private List<DataItem> dataItems;
     private RecyclerView mRvDrink;
-    private ImageView mImgBackWebView;
     private SearchView mSearchViewOrderSearch;
     private ImageView mImgBackSearch;
 
+    public static OrderSearchDialogFragment newInstance(ItemProductResponse itemProductResponse) {
+        OrderSearchDialogFragment fragment = new OrderSearchDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.KEY_BUNDLE_SEARCH_FRAGMENT, itemProductResponse);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_order_search, container, false);
         initData();
         initMappingViewId();
@@ -55,17 +62,12 @@ public class OrderSearchDialogFragment extends DialogFragment {
     }
 
     private void initEvent() {
-        mImgBackSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        mImgBackSearch.setOnClickListener(v -> dismiss());
     }
 
     private void initSearchView() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            SearchManager manager = (SearchManager) getActivity().getSystemService(SEARCH_SERVICE);
+            SearchManager manager = (SearchManager) Objects.requireNonNull(getActivity()).getSystemService(SEARCH_SERVICE);
             SearchableInfo searchableInfo = manager.getSearchableInfo(getActivity().getComponentName());
             mSearchViewOrderSearch.setSearchableInfo(searchableInfo);
         }
@@ -92,17 +94,16 @@ public class OrderSearchDialogFragment extends DialogFragment {
         });
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        dialog = super.onCreateDialog(savedInstanceState);
-        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        Objects.requireNonNull(dialog.getWindow()).requestFeature(Window.FEATURE_NO_TITLE);
         return dialog;
     }
 
-
     private void initMappingViewId() {
         mRvDrink = view.findViewById(R.id.rv_order_search);
-        mImgBackWebView = view.findViewById(R.id.img_back_web_view);
         mSearchViewOrderSearch = view.findViewById(R.id.search_view_order_search);
         mImgBackSearch = view.findViewById(R.id.img_back_search);
     }
@@ -112,7 +113,7 @@ public class OrderSearchDialogFragment extends DialogFragment {
             //hide RecyclerView when search
             mRvDrink.setVisibility(View.GONE);
             mRvDrink.setLayoutManager(new GridLayoutManager(getActivity(), 2, RecyclerView.VERTICAL, false));
-            fragmentOrderAdapter = new OrderAdapter(getActivity(), dataItems, getFragmentManager());
+            fragmentOrderAdapter = new OrderAdapter(Objects.requireNonNull(getActivity()), dataItems, getFragmentManager());
             mRvDrink.setAdapter(fragmentOrderAdapter);
         }
     }
@@ -132,20 +133,12 @@ public class OrderSearchDialogFragment extends DialogFragment {
 
     }
 
-    public static OrderSearchDialogFragment newInstance(ItemProductResponse itemProductResponse) {
-        OrderSearchDialogFragment fragment = new OrderSearchDialogFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.KEY_BUNDLE_SEARCH_FRAGMENT, itemProductResponse);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
     @Override
     public void onStart() {
         super.onStart();
         Dialog dialog = getDialog();
         if (dialog != null) {
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            Objects.requireNonNull(dialog.getWindow()).setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
     }

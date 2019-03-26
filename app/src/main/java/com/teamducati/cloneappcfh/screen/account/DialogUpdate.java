@@ -99,7 +99,7 @@ public class DialogUpdate extends DialogFragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myRef.child("User").setValue(user);
-                ActivityUtils.setDataObject(getActivity(), user);
+                ActivityUtils.setDataObject(user);
                 EventBus.getDefault().post(user);
             }
 

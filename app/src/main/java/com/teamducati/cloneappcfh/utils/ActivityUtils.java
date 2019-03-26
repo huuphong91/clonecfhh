@@ -14,8 +14,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 public class ActivityUtils {
 
-    static SharedPreferences mSharedPreferences;
-    static SharedPreferences.Editor mSharedPreferencesEditor;
+    private static SharedPreferences mSharedPreferences;
+    private static SharedPreferences.Editor mSharedPreferencesEditor;
 
     public static void addFragmentToActivity(FragmentManager fragmentManager, Fragment fragment, int frameId) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -44,36 +44,35 @@ public class ActivityUtils {
 
     }
 
-    public static void setDataObject(Context context, Object objectData) {
+    public static void setDataObject(Object objectData) {
         mSharedPreferencesEditor = mSharedPreferences.edit();
         Gson gson = new Gson();
         String mSetStringJSONObject = gson.toJson(objectData);
 //        mSharedPreferencesEditor.putString("data_object_" +
 //                objectData.getClass().getSimpleName().toLowerCase(), mSetStringJSONObject);
         mSharedPreferencesEditor.putString(Constants.SHARED_PREFERENCES_KEY_DATA_OBJECT, mSetStringJSONObject);
-        mSharedPreferencesEditor.commit();
+        mSharedPreferencesEditor.apply();
     }
 
-    public static <T> T getDataObject(Context context, Class<T> objectData) {
+    public static <T> T getDataObject(Class<T> objectData) {
         Gson gson = new Gson();
 //        String mGetStringJSONObject = mSharedPreferences.getString("data_object_" +
 //                objectData.getClass().getSimpleName().toLowerCase(), "");
         String mGetStringJSONObject = mSharedPreferences.getString(Constants.SHARED_PREFERENCES_KEY_DATA_OBJECT, null);
         return gson.fromJson(mGetStringJSONObject, objectData);
     }
+//    public static void removeDataObject(Object objectData) {
+//        mSharedPreferencesEditor = mSharedPreferences.edit();
+////        mSharedPreferencesEditor.remove("data_object_" +
+////                objectData.getClass().getSimpleName().toLowerCase());
+//        mSharedPreferencesEditor.remove(Constants.SHARED_PREFERENCES_KEY_DATA_OBJECT);
+//        mSharedPreferencesEditor.apply();
+//    }
 
-    public static void removeDataObject(Context context, Object objectData) {
-        mSharedPreferencesEditor = mSharedPreferences.edit();
-//        mSharedPreferencesEditor.remove("data_object_" +
-//                objectData.getClass().getSimpleName().toLowerCase());
-        mSharedPreferencesEditor.remove(Constants.SHARED_PREFERENCES_KEY_DATA_OBJECT);
-        mSharedPreferencesEditor.commit();
-    }
-
-    public static void removeAllDataObject(Context context) {
+    public static void removeAllDataObject() {
         mSharedPreferencesEditor = mSharedPreferences.edit();
         mSharedPreferencesEditor.clear();
-        mSharedPreferencesEditor.commit();
+        mSharedPreferencesEditor.apply();
 
     }
 
