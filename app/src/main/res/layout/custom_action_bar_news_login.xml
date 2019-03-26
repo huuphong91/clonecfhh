@@ -23,6 +23,7 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:text="@string/name_user_action_bar_login"
+        android:textStyle="bold"
         tools:ignore="RelativeOverlap" />
 
     <TextView
@@ -33,7 +34,7 @@
         android:layout_toEndOf="@id/img_news_person"
         android:layout_marginStart="4dp"
         android:drawableEnd="@drawable/resources_images_icons_ic_stars_yellow_resize"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:text="@string/content_user_action_bar_login"/>
 
     <ImageView

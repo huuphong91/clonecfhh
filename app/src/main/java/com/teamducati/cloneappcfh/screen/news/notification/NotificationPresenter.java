@@ -6,12 +6,14 @@ import com.teamducati.cloneappcfh.data.local.repository.NotificationRepository;
 import com.teamducati.cloneappcfh.entity.Notification;
 
 import androidx.lifecycle.LifecycleOwner;
+
 @SuppressWarnings("ALL")
 public class NotificationPresenter implements NoticationContract.Presenter {
-    private  NoticationContract.View mNotificationNews;
+    private NoticationContract.View mNotificationNews;
     private NotificationRepository notificationRepository;
     private LifecycleOwner lifecycleOwner;
     private Context mContext;
+
     public NotificationPresenter(NoticationContract.View mNotificationNews, Context context,
                                  LifecycleOwner lifecycleOwner) {
         this.mNotificationNews = mNotificationNews;
@@ -19,8 +21,9 @@ public class NotificationPresenter implements NoticationContract.Presenter {
         this.mContext = context;
         notificationRepository = new NotificationRepository(mContext);
     }
+
     //constructor insert firebase notifications
-    public NotificationPresenter(NoticationContract.View mNotificationNews, Context context ) {
+    public NotificationPresenter(NoticationContract.View mNotificationNews, Context context) {
         this.mNotificationNews = mNotificationNews;
         this.mContext = context;
         notificationRepository = new NotificationRepository(mContext);
@@ -34,7 +37,7 @@ public class NotificationPresenter implements NoticationContract.Presenter {
 
     @Override
     public void onInsertListNotification(Notification notification) {
-            notificationRepository.insert(notification);
+        notificationRepository.insert(notification);
 
     }
 

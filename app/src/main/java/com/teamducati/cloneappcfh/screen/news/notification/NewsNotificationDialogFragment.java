@@ -11,8 +11,8 @@ import android.view.Window;
 import android.widget.ImageView;
 
 import com.teamducati.cloneappcfh.R;
-import com.teamducati.cloneappcfh.screen.news.adapter.NotificationListAdapter;
 import com.teamducati.cloneappcfh.entity.Notification;
+import com.teamducati.cloneappcfh.screen.news.adapter.NotificationListAdapter;
 
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +31,7 @@ public class NewsNotificationDialogFragment extends DialogFragment implements No
     private ImageView imgCloseNotificaton;
     private View view;
     private Dialog dialog;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_news_notification, container, false);
@@ -39,6 +40,7 @@ public class NewsNotificationDialogFragment extends DialogFragment implements No
         initUI();
         return view;
     }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

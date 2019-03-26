@@ -14,6 +14,7 @@ public interface NoticationContract {
 
     interface Presenter extends BasePresenter {
         void onAllListNotification();
+
         void onInsertListNotification(Notification notification);
     }
 

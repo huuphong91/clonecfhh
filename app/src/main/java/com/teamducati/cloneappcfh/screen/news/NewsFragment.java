@@ -141,8 +141,7 @@ public class NewsFragment extends DaggerFragment implements NewsContract.View, V
     }
 
     private void initActionBar() {
-        User userObj = new User();
-        userObj = ActivityUtils.getDataObject(getActivity(), userObj.getClass());
+        User userObj = ActivityUtils.getDataObject(User.class);
         if (!(userObj == null)) {
             mTxtNameNewsLogin.setText(userObj.getFirstName());
             loadImage(userObj.getImgAvatarUrl(), mImgNewsPerson);

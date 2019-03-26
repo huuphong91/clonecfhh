@@ -108,7 +108,7 @@ public class DialogLoginFragment extends DialogFragment {
                                 && userList.get(0).getPassword().equals(user.getPassword().trim().toLowerCase())) {
                             Intent userIntent = new Intent(Constants.ACTION_USER_RESULT);
                             userIntent.putExtra("User", userList.get(0));
-                            ActivityUtils.setDataObject(getActivity(), userList.get(0));
+                            ActivityUtils.setDataObject(userList.get(0));
                             EventBus.getDefault().post(user);
                             LocalBroadcastManager.getInstance(getActivity())
                                     .sendBroadcast(userIntent);

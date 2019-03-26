@@ -1,5 +1,5 @@
 package com.teamducati.cloneappcfh.utils;
-
+@SuppressWarnings("All")
 public class Constants {
     public static final String BASE_URL = "https://api.thecoffeehouse.com/api/";
     public static final String ACTION_USER_RESULT = "ACTION_USER_RESULT";

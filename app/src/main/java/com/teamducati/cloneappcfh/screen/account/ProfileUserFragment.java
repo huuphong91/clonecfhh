@@ -195,7 +195,7 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
 
     private void sendBroadCastLogOut() {
         //remove data login
-        ActivityUtils.removeAllDataObject(getActivity());
+        ActivityUtils.removeAllDataObject();
         LocalBroadcastManager.getInstance(Objects.requireNonNull(getContext()))
                 .sendBroadcast(new Intent(Constants.ACTION_LOG_OUT));
     }
@@ -214,7 +214,7 @@ public class ProfileUserFragment extends Fragment implements View.OnClickListene
                 myRef.child("User").setValue(userData);
                 Intent userIntent = new Intent(Constants.ACTION_USER_RESULT);
                 userIntent.putExtra("User", userData);
-                ActivityUtils.setDataObject(getActivity(), userData);
+                ActivityUtils.setDataObject(userData);
                 EventBus.getDefault().post(user);
                 LocalBroadcastManager.getInstance(getActivity())
                         .sendBroadcast(userIntent);
