@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,15 +13,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="#000"
-            android:text="Cửa hàng"
-            android:textSize="20sp"
-            android:textStyle="bold"
             android:gravity="center"
-            />
+            android:text="@string/store"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -51,15 +50,15 @@
 
     <LinearLayout
         android:id="@+id/lnlChooseStore"
-        android:orientation="horizontal"
-        android:weightSum="10"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="64dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="64dp"
-        android:tag="0"
         android:background="@drawable/boder_item_store_map"
+        android:orientation="horizontal"
+        android:tag="0"
+        android:weightSum="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/mpvStroreDetail">
@@ -67,25 +66,29 @@
         <TextView
             android:id="@+id/txtChooseStore"
             android:layout_width="0dp"
-            android:layout_weight="8.5"
             android:layout_height="match_parent"
-            android:text="Bạn muốn đến cửa hàng nào"
-            android:textSize="14sp"
+            android:layout_weight="8.5"
+            android:gravity="center|left"
             android:paddingLeft="@dimen/margin_left_10dp"
-            android:textColor="#000"
-            android:gravity="center|left"/>
+            android:text="@string/choose_store"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            tools:ignore="RtlHardcoded,RtlSymmetry" />
+
         <LinearLayout
             android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1.5"
-            android:gravity="center"
-            android:layout_height="match_parent">
+            android:gravity="center">
+
             <ImageView
                 android:id="@+id/imgUpDown"
                 android:layout_width="wrap_content"
-                android:scaleType="matrix"
-                android:layout_gravity="center"
                 android:layout_height="wrap_content"
-                android:src="@drawable/icon_down"/>
+                android:layout_gravity="center"
+                android:scaleType="matrix"
+                android:src="@drawable/icon_down"
+                tools:ignore="ContentDescription" />
         </LinearLayout>
     </LinearLayout>
 
@@ -95,8 +98,8 @@
         android:layout_height="300dp"
         android:layout_marginStart="64dp"
         android:layout_marginEnd="64dp"
-        android:visibility="gone"
         android:background="#ffff"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lnlChooseStore">

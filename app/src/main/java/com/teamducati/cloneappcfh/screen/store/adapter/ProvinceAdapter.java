@@ -18,7 +18,6 @@ public class ProvinceAdapter extends RecyclerView.Adapter<ProvinceAdapter.Provin
     private Context context;
     private LayoutInflater mInflater;
     private List<StatesItem> mStatesItems;
-    private StoreInProvinceAdapter adapter;
 
     public ProvinceAdapter(Context context,
                            List<StatesItem> mApiState) {
@@ -36,7 +35,6 @@ public class ProvinceAdapter extends RecyclerView.Adapter<ProvinceAdapter.Provin
             mNameProvince = itemView.findViewById(R.id.txtNameProvince);
             mListStore = itemView.findViewById(R.id.rcvListStore);
         }
-
     }
 
     @NonNull
@@ -56,9 +54,8 @@ public class ProvinceAdapter extends RecyclerView.Adapter<ProvinceAdapter.Provin
         holder.mListStore.setHasFixedSize(true);
         LinearLayoutManager linearLayout = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
         holder.mListStore.setLayoutManager(linearLayout);
-        adapter = new StoreInProvinceAdapter(context, mStore, mStatesItems.get(position).getDistricts());
+        StoreInProvinceAdapter adapter = new StoreInProvinceAdapter(context, mStore, mStatesItems.get(position).getDistricts());
         holder.mListStore.setAdapter(adapter);
-
     }
 
     @Override

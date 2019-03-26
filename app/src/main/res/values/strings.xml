@@ -1,4 +1,4 @@
-<resources>
+﻿<resources>
     <string name="app_name">Clone App CFH</string>
     <string name="title_news">News</string>
     <string name="title_order">Order</string>
@@ -22,5 +22,12 @@
     <string name="address_to_ship">Địa chỉ giao hàng</string>
     <string name="error_api_key">No API key defined in gradle.properties</string>
     <!-- News -->
+
+    // Detail dialog
+    <string name="detail">Chi Tiết</string>
+    <string name="open_time"> Giờ mở cửa</string>
+    <string name="contact">Liên hệ</string>
+    <string name="store">Cửa hàng</string>
+    <string name="choose_store">Bạn muốn đến cửa hàng nào</string>
 
 </resources>

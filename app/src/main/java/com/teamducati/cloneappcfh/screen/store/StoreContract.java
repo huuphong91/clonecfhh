@@ -10,13 +10,11 @@ public interface StoreContract {
 
     interface Presenter extends BasePresenter<View> {
         void onGetAllStore();
-
         void onGetAllProvince();
     }
 
     interface View extends BaseView<Presenter> {
         void showListStore(List<StoresItem> arrayList);
-
         void showListProvince(List<StatesItem> arrayList);
     }
 }

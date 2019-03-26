@@ -9,9 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.teamducati.cloneappcfh.R;
 import com.teamducati.cloneappcfh.entity.APIStoreMap.StoresItem;
-import com.teamducati.cloneappcfh.screen.news.adapter.ItemClickListener;
 import com.teamducati.cloneappcfh.screen.store.DialogStoreDetail;
-import java.util.ArrayList;
 import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +19,6 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreAdapter
     private Context context;
     private LayoutInflater mInflater;
     private List<StoresItem> mApiStores;
-    private List<StoresItem> mStore;
 
     public StoreAdapter(Context context, List<StoresItem> mApiStores) {
         this.context = context;
@@ -33,7 +30,6 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreAdapter
         private ImageView imgStoreMap;
         private TextView txtNameStoreMap;
         private TextView txtAddress;
-        private ItemClickListener itemClickListener;
 
         private StoreAdapterViewHolder(View itemView) {
             super(itemView);
@@ -52,7 +48,6 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreAdapter
 
     @Override
     public void onBindViewHolder(@NonNull StoreAdapterViewHolder holder, int position) {
-        StoresItem storesItem = mApiStores.get(holder.getAdapterPosition());
         holder.txtNameStoreMap.setText(mApiStores.get(holder.getAdapterPosition()).getName());
         holder.txtAddress.setText(mApiStores.get(holder.getAdapterPosition()).getAddress().getStreet());
         Glide.with(context)
@@ -60,21 +55,18 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreAdapter
                 .placeholder(R.drawable.common_full_open_on_phone)
                 .into(holder.imgStoreMap);
 
-        holder.imgStoreMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.imgStoreMap.setOnClickListener(v -> {
 
-                DialogStoreDetail dialogStoreDetail = new DialogStoreDetail();
-                dialogStoreDetail.showDialog(context,
-                        mApiStores.get(position).getName(),
-                        mApiStores.get(position).getImages(),
-                        Double.parseDouble(mApiStores.get(position).getLatitude()),
-                        Double.parseDouble(mApiStores.get(position).getLongitude()),
-                        mApiStores.get(position).getAddress().getFullAddress(),
-                        mApiStores.get(position).getOpeningTime() + " - " +
-                                mApiStores.get(position).getClosingTime(),
-                        mApiStores.get(position).getPhone());
-            }
+            DialogStoreDetail dialogStoreDetail = new DialogStoreDetail();
+            dialogStoreDetail.showDialog(context,
+                    mApiStores.get(position).getName(),
+                    mApiStores.get(position).getImages(),
+                    Double.parseDouble(mApiStores.get(position).getLatitude()),
+                    Double.parseDouble(mApiStores.get(position).getLongitude()),
+                    mApiStores.get(position).getAddress().getFullAddress(),
+                    mApiStores.get(position).getOpeningTime() + " - " +
+                            mApiStores.get(position).getClosingTime(),
+                    mApiStores.get(position).getPhone());
         });
     }
 

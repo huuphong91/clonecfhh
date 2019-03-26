@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <TextView
         android:id="@+id/txtNameProvince"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Thành phố Hồ Chí Minh"
         android:textSize="20sp"
-        android:textColor="#000"
+        android:textColor="@color/black"
         android:padding="10dp"
         android:background="#E0E0E0"
         android:gravity="center|left"
-        />
+        tools:ignore="RtlHardcoded" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvListStore"
         android:layout_width="match_parent"

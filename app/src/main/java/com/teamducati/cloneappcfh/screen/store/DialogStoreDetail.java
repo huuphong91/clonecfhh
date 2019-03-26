@@ -2,7 +2,6 @@ package com.teamducati.cloneappcfh.screen.store;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -11,10 +10,8 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -31,13 +28,8 @@ public class DialogStoreDetail {
         //dialog.setCancelable(false);
         dialog.setContentView(R.layout.layout_detail_store);
 
-        Toolbar exit = (Toolbar) dialog.findViewById(R.id.tbrExitStroreDetail);
-        exit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        Toolbar exit = dialog.findViewById(R.id.tbrExitStroreDetail);
+        exit.setOnClickListener(v -> dialog.dismiss());
 
         ViewFlipper mStroreDetail = dialog.findViewById(R.id.imgStroreDetail);
         for (int i = 0; i < listImage.size(); i++) {
@@ -62,27 +54,24 @@ public class DialogStoreDetail {
         TextView mNameStoreMap = dialog.findViewById(R.id.txtNameStroreDetail);
         mNameStoreMap.setText(name);
 
-        MapView mMapView = (MapView) dialog.findViewById(R.id.mpvStroreDetail);
+        MapView mMapView = dialog.findViewById(R.id.mpvStroreDetail);
         MapsInitializer.initialize(context);
         mMapView.onCreate(dialog.onSaveInstanceState());
         mMapView.onResume();
 
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(final GoogleMap googleMap) {
-                CameraPosition googlePlex = CameraPosition.builder()
-                        .target(new LatLng(lat, lon))
-                        .zoom(15)
-                        .bearing(0)
-                        .tilt(45)
-                        .build();
-                googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(googlePlex));
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);
-                googleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(lat, lon))
-                        .title(name)
-                        .snippet(numberPhone));
-            }
+        mMapView.getMapAsync(googleMap -> {
+            CameraPosition googlePlex = CameraPosition.builder()
+                    .target(new LatLng(lat, lon))
+                    .zoom(15)
+                    .bearing(0)
+                    .tilt(45)
+                    .build();
+            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(googlePlex));
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 1000, null);
+            googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(lat, lon))
+                    .title(name)
+                    .snippet(numberPhone));
         });
 
         TextView mAddressStroreDetail = dialog.findViewById(R.id.txtAddressStroreDetail);
